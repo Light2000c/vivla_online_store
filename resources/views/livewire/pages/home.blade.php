@@ -2,116 +2,220 @@
 
     <main class="main-wrapper">
 
-        <!-- Start Slider Area -->
-        <div class="axil-main-slider-area main-slider-style-2">
-            <div class="container">
-                <div class="slider-offset-left">
-                    <div class="row row--20">
-                        <div class="col-lg-9">
-                            <div class="slider-box-wrap">
-                                <div class="slider-activation-one axil-slick-dots">
-                                    <div class="single-slide slick-slide">
-                                        <div class="main-slider-content">
-                                            <span class="subtitle"><i class="fal fa-watch"></i> Smartwatch</span>
-                                            <h1 class="title">Bloosom Smat Watch</h1>
-                                            <div class="shop-btn">
-                                                <a href="shop.html" class="axil-btn">Shop Now <i class="fal fa-long-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="main-slider-thumb">
-                                            <img src="assets/images/product/product-40.png" alt="Product">
-                                        </div>
-                                    </div>
-                                    <div class="single-slide slick-slide">
-                                        <div class="main-slider-content">
-                                            <span class="subtitle"><i class="fal fa-watch"></i> Smartwatch</span>
-                                            <h1 class="title">Delux Brand Watch</h1>
-                                            <div class="shop-btn">
-                                                <a href="shop.html" class="axil-btn">Shop Now <i class="fal fa-long-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="main-slider-thumb">
-                                            <img src="assets/images/product/product-46.png" alt="Product">
-                                        </div>
-                                    </div>
-                                    <div class="single-slide slick-slide">
-                                        <div class="main-slider-content">
-                                            <span class="subtitle"><i class="fal fa-watch"></i> Smartwatch</span>
-                                            <h1 class="title">Bloosom Smat Watch</h1>
-                                            <div class="shop-btn">
-                                                <a href="shop.html" class="axil-btn">Shop Now <i class="fal fa-long-arrow-right"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="main-slider-thumb">
-                                            <img src="assets/images/product/product-40.png" alt="Product">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="slider-product-box">
-                                <div class="product-thumb">
-                                    <a href="single-product.html">
-                                        <img src="assets/images/product/product-41.png" alt="Product">
-                                    </a>
-                                </div>
-                                <h6 class="title"><a href="single-product.html">Yantiti Leather Bags</a></h6>
-                                <span class="price">$29.99</span>
-                            </div>
-                        </div>
+       <!-- Start Categorie Area  -->
+       <div class="axil-categorie-area pt--30 bg-color-white">
+        <div class="container">
+            <div class="categrie-product-activation-2 categorie-product-two slick-layout-wrapper--15">
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-1.png" alt="product categorie">
+                            <h6 class="cat-title">Sofa</h6>
+                        </a>
                     </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-2.png" alt="product categorie">
+                            <h6 class="cat-title">Desk Table</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-3.png" alt="product categorie">
+                            <h6 class="cat-title">Long Chair</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-4.png" alt="product categorie">
+                            <h6 class="cat-title">Arm Chair</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-5.png" alt="product categorie">
+                            <h6 class="cat-title">Mirror Table</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-6.png" alt="product categorie">
+                            <h6 class="cat-title">Vintage Table</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-7.png" alt="product categorie">
+                            <h6 class="cat-title">Round Table</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-8.png" alt="product categorie">
+                            <h6 class="cat-title">Neon Sofa</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-9.png" alt="product categorie">
+                            <h6 class="cat-title">Reading</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-11.png" alt="product categorie">
+                            <h6 class="cat-title">Wear Drove</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-12.png" alt="product categorie">
+                            <h6 class="cat-title">Sofa Set</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-7.png" alt="product categorie">
+                            <h6 class="cat-title">Round Table</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-8.png" alt="product categorie">
+                            <h6 class="cat-title">Neon Sofa</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-9.png" alt="product categorie">
+                            <h6 class="cat-title">Reading</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-11.png" alt="product categorie">
+                            <h6 class="cat-title">Wear Drove</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
+                </div>
+                <!-- End .slick-single-layout -->
+                <div class="slick-single-layout slick-slide">
+                    <div class="categrie-product-2">
+                        <a href="#">
+                            <img class="img-fluid" src="/web/assets/images/product/categories/furni-12.png" alt="product categorie">
+                            <h6 class="cat-title">Sofa Set</h6>
+                        </a>
+                    </div>
+                    <!-- End .categrie-product -->
                 </div>
             </div>
         </div>
-        <!-- End Slider Area -->
+    </div>
+    <!-- End Categorie Area  -->
 
-        <div class="service-area">
-            <div class="container">
-                <div class="row row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-1 row--20">
-                    <div class="col">
-                        <div class="service-box">
-                            <div class="icon">
-                                <img src="./assets/images/icons/service1.png" alt="Service">
+    <!-- Start Slider Area -->
+    <div class="axil-main-slider-area main-slider-style-5">
+        <div class="container">
+            <div class="slider-box-wrap">
+                <div class="slider-activation-two axil-slick-dots">
+                    <div class="single-slide slick-slide">
+                        <div class="main-slider-content">
+                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                            <h1 class="title">Neon Stylish Sofa Chair</h1>
+                            <div class="shop-btn">
+                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i> Shop Now</a>
                             </div>
-                            <h6 class="title">Fast &amp; Secure Delivery</h6>
+                        </div>
+                        <div class="main-slider-thumb">
+                            <img src="/web/assets/images/product/product-47.png" alt="Product">
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="service-box">
-                            <div class="icon">
-                                <img src="./assets/images/icons/service2.png" alt="Service">
+                    <div class="single-slide slick-slide">
+                        <div class="main-slider-content">
+                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                            <h1 class="title">Sofa Chair with Lamp</h1>
+                            <div class="shop-btn">
+                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i> Shop Now</a>
                             </div>
-                            <h6 class="title">100% Guarantee On Product</h6>
+                        </div>
+                        <div class="main-slider-thumb">
+                            <img src="/web/assets/images/product/product-48.png" alt="Product">
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="service-box">
-                            <div class="icon">
-                                <img src="./assets/images/icons/service3.png" alt="Service">
+                    <div class="single-slide slick-slide">
+                        <div class="main-slider-content">
+                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
+                            <h1 class="title">Neon Stylish Sofa Chair</h1>
+                            <div class="shop-btn">
+                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i> Shop Now</a>
                             </div>
-                            <h6 class="title">24 Hour Return Policy</h6>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="service-box">
-                            <div class="icon">
-                                <img src="./assets/images/icons/service4.png" alt="Service">
-                            </div>
-                            <h6 class="title">24 Hour Return Policy</h6>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="service-box">
-                            <div class="icon">
-                                <img src="./assets/images/icons/service5.png" alt="Service">
-                            </div>
-                            <h6 class="title">Next Level Pro Quality</h6>
+                        <div class="main-slider-thumb">
+                            <img src="/web/assets/images/product/product-47.png" alt="Product">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- End Slider Area -->
 
         <!-- Start New Arrivals Product Area  -->
         <div class="axil-new-arrivals-product-area fullwidth-container bg-color-white axil-section-gap pb--0">
@@ -126,8 +230,8 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-1.png" alt="Product Images">
-                                        <img class="hover-img" src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-1.png" alt="Product Images">
+                                        <img class="hover-img" src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">20% OFF</div>
@@ -156,8 +260,8 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-2.png" alt="Product Images">
-                                        <img class="hover-img" src="assets/images/product/fashion/product-6.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-2.png" alt="Product Images">
+                                        <img class="hover-img" src="/web/assets/images/product/fashion/product-6.png" alt="Product Images">
                                     </a>
                                     <div class="product-hover-action">
                                         <ul class="cart-action">
@@ -183,7 +287,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-3.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-3.png" alt="Product Images">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">15% OFF</div>
@@ -212,7 +316,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">30% OFF</div>
@@ -241,7 +345,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-5.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-5.png" alt="Product Images">
                                     </a>
                                     <div class="product-hover-action">
                                         <ul class="cart-action">
@@ -267,7 +371,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-3.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-3.png" alt="Product Images">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">15% OFF</div>
@@ -296,7 +400,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                     </a>
                                     <div class="label-block label-right">
                                         <div class="product-badget">30% OFF</div>
@@ -325,7 +429,7 @@
                             <div class="axil-product product-style-four">
                                 <div class="thumbnail">
                                     <a href="single-product.html">
-                                        <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-5.png" alt="Product Images">
+                                        <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-5.png" alt="Product Images">
                                     </a>
                                     <div class="product-hover-action">
                                         <ul class="cart-action">
@@ -389,7 +493,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-16.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-16.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -422,7 +526,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-17.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-17.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -455,7 +559,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-18.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-18.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -488,7 +592,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product//fashion/product-19.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product//fashion/product-19.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -521,7 +625,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-20.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-20.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -554,7 +658,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-21.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-21.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -587,7 +691,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product/fashion/product-22.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product/fashion/product-22.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -620,7 +724,7 @@
                             </div>
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="assets/images/product//fashion/product-23.png" alt="Product Images">
+                                    <img data-sal="zoom-out" data-sal-delay="100" data-sal-duration="800" loading="lazy" src="/web/assets/images/product//fashion/product-23.png" alt="Product Images">
                                 </a>
                             </div>
                         </div>
@@ -647,7 +751,7 @@
                         </div>
                         <div class="col-xl-7 col-lg-6">
                             <div class="poster-countdown-thumbnail">
-                                <img src="./assets/images/product/poster/poster-05.png" alt="Poster Product">
+                                <img src="/web/assets/images/product/poster/poster-05.png" alt="Poster Product">
                             </div>
                         </div>
                     </div>
@@ -670,7 +774,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-8.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-8.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -699,7 +803,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-7.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-7.png" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -735,7 +839,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-6.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-6.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -774,7 +878,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-5.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-5.png" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -800,7 +904,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -839,7 +943,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-3.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-3.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -878,7 +982,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-2.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-2.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -917,7 +1021,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-1.png" alt="Product Images">
+                                            <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-1.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -962,7 +1066,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-8.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-8.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -991,7 +1095,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-7.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-7.png" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -1027,7 +1131,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-6.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-6.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -1066,7 +1170,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-5.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-5.png" alt="Product Images">
                                         </a>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
@@ -1092,7 +1196,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -1131,7 +1235,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-3.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-3.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -1170,7 +1274,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-2.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-2.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -1209,7 +1313,7 @@
                                 <div class="axil-product product-style-one">
                                     <div class="thumbnail">
                                         <a href="single-product.html">
-                                            <img src="assets/images/product/fashion/product-1.png" alt="Product Images">
+                                            <img src="/web/assets/images/product/fashion/product-1.png" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                             <div class="product-badget">20% Off</div>
@@ -1278,7 +1382,7 @@
                         </div>
                         <div class="media">
                             <div class="thumbnail">
-                                <img src="./assets/images/testimonial/image-1.png" alt="testimonial image">
+                                <img src="/web/assets/images/testimonial/image-1.png" alt="testimonial image">
                             </div>
                             <div class="media-body">
                                 <span class="designation">Head Of Idea</span>
@@ -1298,7 +1402,7 @@
                         </div>
                         <div class="media">
                             <div class="thumbnail">
-                                <img src="./assets/images/testimonial/image-2.png" alt="testimonial image">
+                                <img src="/web/assets/images/testimonial/image-2.png" alt="testimonial image">
                             </div>
                             <div class="media-body">
                                 <span class="designation">Head Of Idea</span>
@@ -1318,7 +1422,7 @@
                         </div>
                         <div class="media">
                             <div class="thumbnail">
-                                <img src="./assets/images/testimonial/image-3.png" alt="testimonial image">
+                                <img src="/web/assets/images/testimonial/image-3.png" alt="testimonial image">
                             </div>
                             <div class="media-body">
                                 <span class="designation">Head Of Idea</span>
@@ -1338,7 +1442,7 @@
                         </div>
                         <div class="media">
                             <div class="thumbnail">
-                                <img src="./assets/images/testimonial/image-2.png" alt="testimonial image">
+                                <img src="/web/assets/images/testimonial/image-2.png" alt="testimonial image">
                             </div>
                             <div class="media-body">
                                 <span class="designation">Head Of Idea</span>
@@ -1366,7 +1470,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-14.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-14.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">50% OFF</div>
@@ -1405,7 +1509,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-15.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-15.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">15% OFF</div>
@@ -1444,7 +1548,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-4.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-4.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">30% OFF</div>
@@ -1483,7 +1587,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-5.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-5.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">50% OFF</div>
@@ -1522,7 +1626,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="assets/images/product/fashion/product-10.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-10.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">10% OFF</div>
@@ -1561,7 +1665,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="assets/images/product/fashion/product-11.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="200" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-11.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">25% OFF</div>
@@ -1600,7 +1704,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="assets/images/product/fashion/product-12.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="300" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-12.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">15% OFF</div>
@@ -1639,7 +1743,7 @@
                         <div class="axil-product product-style-two has-color-pick">
                             <div class="thumbnail">
                                 <a href="single-product.html">
-                                    <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="assets/images/product/fashion/product-13.png" alt="Product Images">
+                                    <img data-sal="fade" data-sal-delay="400" data-sal-duration="1500" src="/web/assets/images/product/fashion/product-13.png" alt="Product Images">
                                 </a>
                                 <div class="label-block label-right">
                                     <div class="product-badget">30% OFF</div>

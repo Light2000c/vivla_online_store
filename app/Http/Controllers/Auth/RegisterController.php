@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -23,37 +25,64 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-   
+
     protected $redirectTo = '/home';
 
 
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
 
-    public function index(){
+    public function index()
+    {
         return view("auth.register");
     }
 
-    protected function validator(array $data)
+    // protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
+    //     ]);
+    // }
+
+
+    // protected function create(array $data)
+    // {
+    //     return User::create([
+    //         'name' => $data['name'],
+    //         'email' => $data['email'],
+    //         'password' => Hash::make($data['password']),
+    //     ]);
+    // }
+
+    public function store(Request $request)
     {
-        return Validator::make($data, [
+        $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-    }
 
- 
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+
+        $user =  User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
-    }
 
+        if (!$user) {
+            return back()->with("error", "Something went wrong, please try again.");
+        }
+
+        if (!Auth::attempt($request->only("email", "password", true))) {
+            return back()->with("error", "User was not able to login.");
+        }
+
+        return redirect()->route("home");
+        
+    }
 }

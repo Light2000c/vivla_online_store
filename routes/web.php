@@ -45,19 +45,23 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 
 
 //Auth Routes
 Route::get("login", [LoginController::class, "index"])->name("login");
+Route::post("login", [LoginController::class, "login"]);
+// Route::post("logout", [LoginController::class, "logout"]);
 
 Route::get("register", [RegisterController::class, "index"])->name("register");
+Route::post("register", [RegisterController::class, "store"]);
 
 Route::get("admin/login", [AdminLoginController::class, "index"])->name("admin-login");
+Route::post("admin/login", [AdminLoginController::class, "login"]);
 
 
 //Pages Routes
-Route::get("/", Home::class)->name("home");
+Route::get("/", Home::class);
 
 Route::get("/home", Home::class)->name("home");
 

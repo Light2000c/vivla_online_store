@@ -37,7 +37,6 @@ class AddProducts extends Component
             "name" => "required|unique:products,name",
             "price" => "required|numeric|min:0",
             "quantity" => "required|numeric|min:0",
-            "brand" => "required",
             "category" => "required",
             "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
             "description" => "required",

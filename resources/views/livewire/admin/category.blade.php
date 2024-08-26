@@ -28,8 +28,8 @@
                     </div>
 
                     <div class="align-self-end m-3">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"> Add Category</button>
+                        <button class="btn btn-primary" type="button" wire:click="openCreateModal"> Add
+                            Category</button>
                     </div>
                     <div class="form-group search-form m-2">
                         <input type="text" placeholder="Search here...">
@@ -38,6 +38,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="border-bottom-primary">
+                                    <th scope="col"></th>
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Created_at</th>
@@ -46,23 +47,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-bottom-secondary">
-                                    <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
-                                            value=""></th>
-                                    <th scope="row">1</th>
-                                    <td>RamJacob@twitter</td>
-                                    <td>Developer</td>
-                                    <td>
-                                        <div>
-                                            <div class="">
-                                                <button class="btn btn-primary btn-sm" type="submit"><i
-                                                        class="bi bi-pencil-square"></i></button>
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
-                                                        class="bi bi-trash3-fill"></i></button>
+                                @foreach ($categories as $category)
+                                    <tr class="border-bottom-secondary">
+                                        <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
+                                                value=""></th>
+                                        <th scope="row">{{ $category->id }}</th>
+                                        <td>{{ $category->name }}</td>
+                                        <td>{{ $category->created_at }}</td>
+                                        <td>{{ $category->updated_at }}</td>
+                                        <td>
+                                            <div>
+                                                <div class="">
+                                                    <button wire:click="openUpdateModal({{ $category->id }})"
+                                                        class="btn btn-primary btn-sm" type="submit"><i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <button class="btn btn-danger btn-sm" type="submit"><i
+                                                            class="bi bi-trash3-fill"></i></button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -70,32 +75,121 @@
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- Create Modal -->
+        <div wire:ignore.self class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Category</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="validationCustom01">Name</label>
-                            <input class="form-control" id="validationCustom01" type="text" placeholder="Name"
-                                required="">
-                            <small class="text-danger">error text</small>
+                <form wire:submit="store">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Category</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="validationCustom01">Name</label>
+                                <input wire:model="title" class="form-control" id="validationCustom01" type="text"
+                                    placeholder="Category Name">
+                                @error('title')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">
+                                <span wire:loading.remove wire:target="store">Add category</span>
+                                <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add category</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Create  Modal -->
+
+        <!-- Update Modal -->
+        <div wire:ignore.self class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form wire:submit="update">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Category > {{ $activeCategory->name ?? ""  }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="validationCustom01">Name</label>
+                                <input wire:model="title" class="form-control" id="validationCustom01"
+                                    type="text" placeholder="Category Name">
+                                @error('title')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">
+                                <span wire:loading.remove wire:target="update">Save changes</span>
+                                <span wire:loading wire:target="update" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Update  Modal -->
 
     </div>
     <!-- Container-fluid Ends-->
+
+    <script>
+        window.addEventListener("openCreateModal", function(e) {
+
+            $("#createModal").modal("show");
+        });
+
+        window.addEventListener("closeCreateModal", function(e) {
+
+            $("#createModal").modal("hide");
+        });
+
+        window.addEventListener("openUpdateModal", function(e) {
+
+            $("#updateModal").modal("show");
+        });
+
+        window.addEventListener("closeUpdateModal", function(e) {
+
+            $("#updateModal").modal("hide");
+        });
+
+
+        window.addEventListener('message', function(e) {
+
+            let data = e.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: data.icon,
+                title: data.title
+            });
+
+        });
+    </script>
 </div>

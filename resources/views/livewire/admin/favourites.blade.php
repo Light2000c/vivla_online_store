@@ -26,7 +26,7 @@
                     <div class="card-header">
                         <h3>Wishlist Table</h3>
                     </div>
-                    
+
                     <div class="align-self-end search-form m-3">
                         <input type="text" placeholder="Search here...">
                     </div>
@@ -34,6 +34,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="border-bottom-primary">
+                                    <th scope="col"></th>
                                     <th scope="col">Id</th>
                                     <th scope="col">Customer Name</th>
                                     <th scope="col">Product Name</th>
@@ -45,32 +46,75 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-bottom-secondary">
-                                    <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
-                                            value=""></th>
-                                    <th scope="row">1</th>
-                                    <td>Wolfe</td>
-                                    <td>Wolfe</td>
-                                    <td> <img class="img-30 me-2" src="/web1/assets/images/user/1.jpg"
-                                            alt="profile"></td>
-                                    <td>IND</td>
-                                    <td>Apple Inc.</td>
-                                    <td>
-                                        <div>
-                                            <div class="">
-                                                <button class="btn btn-danger btn-sm" type="submit"><i class="bi bi-trash3-fill"></i></button>
+                                @foreach ($wishlists as $wishlist)
+                                    <tr class="border-bottom-secondary">
+                                        <th>
+                                            <input class="form-check-input" wire:model="selectedItems" type="checkbox"
+                                                id="checkbox-{{ $wishlist->id }}" value="{{ $wishlist->id }}">
+                                        </th>
+                                        <th scope="row">{{ $wishlist->id }}</th>
+                                        <td>{{ $wishlist->user->name }}</td>
+                                        <td>{{ $wishlist->product->name }}</td>
+                                        <td> <img class="img-30 me-2"
+                                                src="/storage/products/{{ $wishlist->product->image }}" alt="profile">
+                                        </td>
+                                        <td>{{ $wishlist->product->price }}</td>
+                                        <td>{{ $wishlist->created_at }}</td>
+                                        <td>{{ $wishlist->updated_at }}</td>
+                                        <td>
+                                            <div>
+                                                <div class="">
+                                                    <button wire:click="delete({{ $wishlist->id }})"
+                                                        class="btn btn-danger btn-sm" type="submit">
+                                                        <i wire:loading.remove
+                                                            wire:target="delete({{ $wishlist->id }})"
+                                                            class="bi bi-trash3-fill"></i>
+                                                        <span wire:loading wire:target="delete({{ $wishlist->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="align-self-start m-3">
+                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
+                            <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
+                            <span wire:loading wire:target="deleteSelected" class="spinner-border spinner-border-sm"
+                                aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
             </div>
 
-
         </div>
     </div>
     <!-- Container-fluid Ends-->
+    <script>
+        window.addEventListener('message', function(e) {
+
+            let data = e.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: data.icon,
+                title: data.title
+            });
+
+        });
+    </script>
 </div>

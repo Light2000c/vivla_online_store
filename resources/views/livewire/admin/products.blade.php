@@ -77,8 +77,8 @@
                                             <td>
                                                 <div>
                                                     <div class="">
-                                                        <button class="btn btn-primary btn-sm" type="submit"><i
-                                                                class="bi bi-pencil-square"></i></button>
+                                                        <a href="{{ route("edit-product", $product->id) }}" class="btn btn-primary btn-sm" type="submit"><i
+                                                                class="bi bi-pencil-square"></i></a>
                                                         <button wire:click="deleteProduct({{ $product->id }})"
                                                             class="btn btn-danger btn-sm" type="submit">
                                                             <i wire:loading.remove

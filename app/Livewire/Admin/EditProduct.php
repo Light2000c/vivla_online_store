@@ -43,7 +43,8 @@ class EditProduct extends Component
         ])->layout("layouts.admin.app");
     }
 
-    public function reload() {
+    public function reload()
+    {
         $product = Product::find($this->id);
 
         $this->product = $product;
@@ -78,7 +79,6 @@ class EditProduct extends Component
                 "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
                 "price" => "required|numeric|min:0",
                 "quantity" => "required|numeric|min:0",
-                "brand" => "required",
                 "category" => "required",
                 "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
                 "description" => "required",
@@ -115,7 +115,6 @@ class EditProduct extends Component
                 "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
                 "price" => "required|numeric|min:0",
                 "quantity" => "required|numeric|min:0",
-                "brand" => "required",
                 "category" => "required",
                 "description" => "required",
             ]);

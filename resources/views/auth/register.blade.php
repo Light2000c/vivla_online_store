@@ -59,19 +59,41 @@
                     <div class="axil-signin-form">
                         <h3 class="title">I'm New Here</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
-                        <form class="singin-form">
+                        @if (session('error'))
+                            <div class="alert alert-danger mb-4" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        <form action="{{ route('register') }}" class="singin-form" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label>User Name</label>
-                                <input type="text" class="form-control" name="username" value="anniemario">
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}"
+                                    placeholder="Full Name">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" name="email" value="annie@example.com">
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}"
+                                    placeholder="name@example.com">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                      
+
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="password" class="form-control" name="password" value="123456789">
+                                <input type="password" class="form-control" name="password">
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" class="form-control" name="password_confirmation">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">Create

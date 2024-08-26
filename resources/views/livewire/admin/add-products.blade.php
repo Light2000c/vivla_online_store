@@ -72,7 +72,7 @@
                                          @enderror
                                      </div>
                                      <div class="col-12 col-lg-4 mb-3">
-                                         <label for="validationCustom01">Brand</label>
+                                         <label for="validationCustom01">Brand (Optional)</label>
                                          <input wire:model="brand" class="form-control" id="validationCustom01"
                                              type="text" placeholder="Product Name">
                                          @error('price')
@@ -86,6 +86,7 @@
                                              </option>
                                              <option value="shirt">Shirt</option>
                                              <option value="bag">Bag</option>
+                                             <option value="shoe">Shoe</option>
                                          </select>
                                          @error('category')
                                              <small class="text-danger">{{ $message }}</small>

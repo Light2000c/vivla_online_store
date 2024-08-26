@@ -441,6 +441,11 @@
                                         href="{{ route('admin-product') }}"><span>
                                             Products</span></a>
                                 </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-categories') }}"><span>
+                                            Categories</span></a>
+                                </li>
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"

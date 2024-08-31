@@ -28,8 +28,8 @@
                     </div>
 
                     <div class="align-self-end m-3">
-                        <button class="btn btn-primary" type="button" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"> Add Team Members</button>
+                        <button class="btn btn-primary" type="button" wire:click="openCreateModal"> Add Team
+                            Members</button>
                     </div>
                     <div class="form-group search-form m-2">
                         <input type="text" placeholder="Search here...">
@@ -41,8 +41,6 @@
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Password</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">Created_at</th>
                                     <th scope="col">Updated_at</th>
@@ -50,87 +48,214 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-bottom-secondary">
-                                    <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
-                                            value=""></th>
-                                    <th scope="row">1</th>
-                                    <td>Wolfe</td>
-                                    <td>RamJacob@twitter</td>
-                                    <td>Developer</td>
-                                    <td>Apple Inc.</td>
-                                    <td>Php</td>
-                                    <td>IND</td>
-                                    <td>
-                                        <div>
-                                            <div class="">
-                                                <button class="btn btn-primary btn-sm" type="submit"><i
-                                                        class="bi bi-pencil-square"></i></button>
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
-                                                        class="bi bi-trash3-fill"></i></button>
+                                @foreach ($teamMembers as $member)
+                                    <tr class="border-bottom-secondary">
+                                        <th> <input class="form-check-input" wire:model="selectedItems" type="checkbox"
+                                                id="checkbox-{{ $member->id }}" value="{{ $member->id }}"></th>
+                                        <th scope="row">{{ $member->id }}</th>
+                                        <td>{{ $member->name }}</td>
+                                        <td>{{ $member->email }}</td>
+                                        <td>{{ $member->created_at }}</td>
+                                        <td>{{ $member->updated_at }}</td>
+                                        <td>
+                                            <div>
+                                                <div class="">
+                                                    <button wire:click="openUpdateModal({{ $member->id }})"
+                                                        class="btn btn-primary btn-sm" type="submit"><i
+                                                            class="bi bi-pencil-square"></i></button>
+                                                    <button wire:click="delete({{ $member->id }})"
+                                                        class="btn btn-danger btn-sm" type="submit">
+                                                        <i wire:loading.remove wire:target="delete({{ $member->id }})"
+                                                            class="bi bi-trash3-fill"></i>
+                                                        <span wire:loading wire:target="delete({{ $member->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+                    <div class="align-self-start m-3">
+                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
+                            <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
+                            <span wire:loading wire:target="deleteSelected" class="spinner-border spinner-border-sm"
+                                aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+        <!-- Create Modal -->
+        <div wire:ignore.self class="modal fade" id="createModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Team Member</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="validationCustom01">Name</label>
-                            <input class="form-control" id="validationCustom01" type="text"
-                                placeholder="Name" required="">
-                            <small class="text-danger">error text</small>
+                <form wire:submit="store">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Team Member</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="validationCustom01">Name</label>
+                                <input wire:model="name" class="form-control" id="validationCustom01" type="text"
+                                    placeholder="Full Name">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="validationCustom01">Email</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="name@example.com" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
+                            <div class="mb-3">
+                                <label for="validationCustom01">Email</label>
+                                <input wire:model="email" class="form-control" id="validationCustom01" type="email"
+                                    placeholder="name@example.com">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="validationCustom01">Phone</label>
-                            <input class="form-control" id="validationCustom01" type="number"
-                                placeholder="Phone Number" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="validationCustom01">Password</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="Password" required="">
-                            <small class="text-danger">error text</small>
+                            <div class="mb-3">
+                                <label for="validationCustom01">Password</label>
+                                <input wire:model="password" class="form-control" id="validationCustom01"
+                                    type="password" placeholder="Password">
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="validationCustom01">Confirm Password</label>
+                                <input wire:model="password_confirmation" class="form-control"
+                                    id="validationCustom01" type="password" placeholder="Confirm Password">
+                            </div>
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="validationCustom01">Confirm Password</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="Confirm Password" required="">
-                            <small class="text-danger">error text</small>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">
+                                <span wire:loading.remove wire:target="store">Add Member</span>
+                                <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add Member</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Create  Modal -->
+
+
+        <!-- Update Modal -->
+        <div wire:ignore.self class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form wire:submit="update">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Team Member</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="validationCustom01">Name</label>
+                                <input wire:model="name" class="form-control" id="validationCustom01" type="text"
+                                    placeholder="Full Name">
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="validationCustom01">Email</label>
+                                <input wire:model="email" class="form-control" id="validationCustom01"
+                                    type="email" placeholder="name@example.com">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="validationCustom01">Password</label>
+                                <input wire:model="password_confirmation" class="form-control"
+                                    id="validationCustom01" type="email" placeholder="Password">
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="validationCustom01">Confirm Password</label>
+                                <input wire:model="comfirm_password" class="form-control" id="validationCustom01"
+                                    type="email" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">
+                                <span wire:loading.remove wire:target="store">Save changes</span>
+                                <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Update  Modal -->
 
     </div>
     <!-- Container-fluid Ends-->
+
+    <script>
+        window.addEventListener("openCreateModal", function(e) {
+
+            $("#createModal").modal("show");
+        });
+
+        window.addEventListener("closeCreateModal", function(e) {
+
+            $("#createModal").modal("hide");
+        });
+
+        window.addEventListener("openUpdateModal", function(e) {
+
+            $("#updateModal").modal("show");
+        });
+
+        window.addEventListener("closeUpdateModal", function(e) {
+
+            $("#updateModal").modal("hide");
+        });
+
+
+        window.addEventListener('message', function(e) {
+
+            let data = e.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: data.icon,
+                title: data.title
+            });
+
+        });
+    </script>
 </div>

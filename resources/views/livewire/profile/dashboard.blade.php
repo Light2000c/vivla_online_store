@@ -125,90 +125,13 @@
                                 <div class="tab-pane fade" id="nav-address" role="tabpanel">
                                     <div class="axil-dashboard-address">
                                         <p class="notice-text">The following addresses will be used on the checkout page by default.</p>
-                                        <div class="row row--30">
-                                            <div class="col-lg-6">
-                                                <div class="address-info mb--40">
-                                                    <div class="addrss-header d-flex align-items-center justify-content-between">
-                                                        <h4 class="title mb-0">Shipping Address</h4>
-                                                        <a href="#" class="address-edit"><i class="far fa-edit"></i></a>
-                                                    </div>
-                                                    <ul class="address-details">
-                                                        <li>Name: Annie Mario</li>
-                                                        <li>Email: annie@example.com</li>
-                                                        <li>Phone: 1234 567890</li>
-                                                        <li class="mt--30">7398 Smoke Ranch Road <br>
-                                                        Las Vegas, Nevada 89128</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="address-info">
-                                                    <div class="addrss-header d-flex align-items-center justify-content-between">
-                                                        <h4 class="title mb-0">Billing Address</h4>
-                                                        <a href="#" class="address-edit"><i class="far fa-edit"></i></a>
-                                                    </div>
-                                                    <ul class="address-details">
-                                                        <li>Name: Annie Mario</li>
-                                                        <li>Email: annie@example.com</li>
-                                                        <li>Phone: 1234 567890</li>
-                                                        <li class="mt--30">7398 Smoke Ranch Road <br>
-                                                        Las Vegas, Nevada 89128</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                                         <livewire:components.address />
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-account" role="tabpanel">
                                     <div class="col-lg-9">
-                                        <div class="axil-dashboard-account">
-                                            <form class="account-details-form">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>First Name</label>
-                                                            <input type="text" class="form-control" value="Annie">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Last Name</label>
-                                                            <input type="text" class="form-control" value="Mario">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-group mb--40">
-                                                            <label>Country/ Region</label>
-                                                            <select class="select2">
-                                                                <option value="1">United Kindom (UK)</option>
-                                                                <option value="1">United States (USA)</option>
-                                                                <option value="1">United Arab Emirates (UAE)</option>
-                                                                <option value="1">Australia</option>
-                                                            </select>
-                                                            <p class="b3 mt--10">This will be how your name will be displayed in the account section and in reviews</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <h5 class="title">Password Change</h5>
-                                                        <div class="form-group">
-                                                            <label>Password</label>
-                                                            <input type="password" class="form-control" value="123456789101112131415">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>New Password</label>
-                                                            <input type="password" class="form-control">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Confirm New Password</label>
-                                                            <input type="password" class="form-control">
-                                                        </div>
-                                                        <div class="form-group mb--0">
-                                                            <input type="submit" class="axil-btn" value="Save Changes">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
+                                        <p class="notice-text">The following info.</p>
+                                        <livewire:components.account-details />
                                     </div>
                                 </div>
                             </div>

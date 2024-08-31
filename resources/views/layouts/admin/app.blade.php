@@ -484,6 +484,10 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-address') }}"><span>Address</span></a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('users') }}"><span>Users</span></a>
                                 </li>
                                 <li class="sidebar-list">

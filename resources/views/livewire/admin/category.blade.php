@@ -49,8 +49,8 @@
                             <tbody>
                                 @foreach ($categories as $category)
                                     <tr class="border-bottom-secondary">
-                                        <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
-                                                value=""></th>
+                                        <th> <input class="form-check-input" wire:model="selectedItems" type="checkbox"
+                                                id="checkbox-{{ $category->id }}" value="{{ $category->id }}"></th>
                                         <th scope="row">{{ $category->id }}</th>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->created_at }}</td>
@@ -61,8 +61,14 @@
                                                     <button wire:click="openUpdateModal({{ $category->id }})"
                                                         class="btn btn-primary btn-sm" type="submit"><i
                                                             class="bi bi-pencil-square"></i></button>
-                                                    <button class="btn btn-danger btn-sm" type="submit"><i
-                                                            class="bi bi-trash3-fill"></i></button>
+                                                    <button wire:click="delete({{ $category->id }})"
+                                                        class="btn btn-danger btn-sm" type="submit">
+                                                        <i wire:loading.remove wire:target="delete({{ $category->id }})"
+                                                            class="bi bi-trash3-fill"></i>
+                                                        <span wire:loading wire:target="delete({{ $category->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -70,6 +76,13 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="align-self-start m-3">
+                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
+                            <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
+                            <span wire:loading wire:target="deleteSelected" class="spinner-border spinner-border-sm"
+                                aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -117,7 +130,8 @@
                 <form wire:submit="update">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Category > {{ $activeCategory->name ?? ""  }}</h1>
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Category >
+                                {{ $activeCategory->name ?? '' }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
@@ -132,10 +146,10 @@
                             </div>
 
                         </div>
-                        <div class="modal-footer">
+                      <div class="modal-footer">
                             <button type="submit" class="btn btn-secondary">
-                                <span wire:loading.remove wire:target="update">Save changes</span>
-                                <span wire:loading wire:target="update" class="spinner-border spinner-border-sm"
+                                <span wire:loading.remove wire:target="store">Add category</span>
+                                <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>
                             </button>
                         </div>

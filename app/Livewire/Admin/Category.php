@@ -10,6 +10,8 @@ class Category extends Component
     public $title;
     private $categories;
     public $activeCategory;
+    public $groupSelect;
+    public $selectedItems = [];
 
     public function render()
     {
@@ -52,6 +54,11 @@ class Category extends Component
     {
         $this->title = "";
         $this->activeCategory = "";
+    }
+
+    public function resetSelectItem()
+    {
+        $this->selectedItems = [];
     }
 
     public function store()
@@ -100,6 +107,42 @@ class Category extends Component
         $this->dispatch("closeUpdateModal");
         $this->resetValues();
         return $this->showToast("success", "Category updated.");
+    }
+
+    public function delete($id)
+    {
+
+        $cart = ModelCategory::find($id);
+
+        if (!$cart) {
+            return $this->showToast("error", "category was not successfully deleted");
+        }
+
+        $deleted = $cart->delete();
+
+        if (!$deleted) {
+            return $this->showToast("error", "category was not successfully deleted");
+        }
+
+        $this->load();
+        return $this->showToast("success", "category has been deleted");
+    }
+
+    public function deleteSelected()
+    {
+        if (empty($this->selectedItems)) {
+            return $this->showToast("info", "you haven't selected any item yet!");
+        }
+
+        $delete = ModelCategory::whereIn("id", $this->selectedItems)->delete();
+
+        if (!$delete) {
+            return $this->showToast("error", "category was not successfully deleted");
+        }
+
+        $this->load();
+        $this->resetSelectItem();
+        return $this->showToast("success", "category has been deleted");
     }
 
     public function showToast($icon, $title)

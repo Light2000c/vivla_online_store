@@ -16,8 +16,10 @@ class Address extends Model
         "lastname",
         "email",
         "phone",
+        "city",
         "country",
         "street",
+        "active",
     ];
 
     public function user(){

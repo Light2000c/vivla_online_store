@@ -84,9 +84,11 @@
                                          <select wire:model="category" class="form-select">
                                              <option selected="" disabled="" value="">Select Category
                                              </option>
-                                             <option value="shirt">Shirt</option>
-                                             <option value="bag">Bag</option>
-                                             <option value="shoe">Shoe</option>
+                                             @foreach($categories as $category)
+                                             <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                             @endforeach
+                                             {{-- <option value="bag">Bag</option>
+                                             <option value="shoe">Shoe</option> --}}
                                          </select>
                                          @error('category')
                                              <small class="text-danger">{{ $message }}</small>

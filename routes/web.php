@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Livewire\Admin\AddProducts;
+use App\Livewire\Admin\Address;
 use App\Livewire\Admin\Carts;
 use App\Livewire\Admin\Category;
 use App\Livewire\Admin\Dashboard;
@@ -67,7 +68,7 @@ Route::get("/home", Home::class)->name("home");
 
 Route::get("shop", PagesProducts::class)->name("products");
 
-Route::get("shop/1", ProductDetails::class)->name("peoduct-detail");
+Route::get("shop/{id}", ProductDetails::class)->name("peoduct-detail");
 
 Route::get("cart", Cart::class)->name("cart");
 
@@ -108,6 +109,8 @@ Route::get("admin/orders", Orders::class)->name("admin-order");
 Route::get("admin/team-members", TeamMembers::class)->name("team-member");
 
 Route::get("admin/users", Users::class)->name("users");
+
+Route::get("admin/address", Address::class)->name("admin-address");
 
 Route::get("admin/account", EditAccount::class)->name("edit-account");
 

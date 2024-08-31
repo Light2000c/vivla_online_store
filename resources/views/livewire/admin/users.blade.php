@@ -37,98 +37,186 @@
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Password</th>
                                     <th scope="col">Role</th>
-                                    <th scope="col">Verified_at</th>
                                     <th scope="col">Created_at</th>
                                     <th scope="col">Updated_at</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-bottom-secondary">
-                                    <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
-                                            value=""></th>
-                                    <th scope="row">1</th>
-                                    <td>Wolfe</td>
-                                    <td>RamJacob@twitter</td>
-                                    <td>Developer</td>
-                                    <td>Developer</td>
-                                    <td>Apple Inc.</td>
-                                    <td>Php</td>
-                                    <td>IND</td>
-                                    <td>
-                                        <div>
-                                            <div class="">
-                                                <button class="btn btn-primary btn-sm" type="submit"><i
-                                                        class="bi bi-pencil-square"></i></button>
-                                                <button class="btn btn-danger btn-sm" type="submit"><i
-                                                        class="bi bi-trash3-fill"></i></button>
+                                @foreach ($users as $user)
+                                    <tr class="border-bottom-secondary">
+                                        <th> <input class="form-check-input" wire:model="selectedItems" type="checkbox"
+                                                id="checkbox-{{ $user->id }}" value="{{ $user->id }}"></th>
+                                        <th scope="row">{{ $user->id }}</th>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->created_at }}</td>
+                                        <td>{{ $user->updated_at }}</td>
+                                        <td>
+                                            <div>
+                                                <div class="">
+                                                    <button wire:click="viewUser({{ $user->id }})"
+                                                        class="btn btn-primary btn-sm" type="submit">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                    <button wire:click="delete({{ $user->id }})"
+                                                        class="btn btn-danger btn-sm" type="submit">
+                                                        <i wire:loading.remove wire:target="delete({{ $user->id }})"
+                                                            class="bi bi-trash3-fill"></i>
+                                                        <span wire:loading wire:target="delete({{ $user->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="align-self-start m-3">
+                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
+                            <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
+                            <span wire:loading wire:target="deleteSelected" class="spinner-border spinner-border-sm"
+                                aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        <div class="modal modal-lg fade" id="viewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Team Member</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">User</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="validationCustom01">Name</label>
-                            <input class="form-control" id="validationCustom01" type="text"
-                                placeholder="Name" required="">
-                            <small class="text-danger">error text</small>
+                        {{-- user carts --}}
+                        <div class="m-2 mb-4">
+                            <p>Carts</p>
+                            @if ($activeCart)
+                                <div class="table-responsive custom-scrollbar mt-2">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="border-bottom-primary">
+                                                <th scope="col">Id</th>
+                                                <th scope="col">Customer Name</th>
+                                                <th scope="col">Product Name</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Created_at</th>
+                                                <th scope="col">Updated_at</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($activeCart as $cart)
+                                                <tr class="border-bottom-secondary">
+                                                    <th scope="row">{{ $cart->id }}</th>
+                                                    <td>{{ $cart->user->name }}</td>
+                                                    <td>{{ $cart->product->name }}</td>
+                                                    <td>{{ $cart->quantity }}</td>
+                                                    <td> <img class="img-30 me-2"
+                                                            src="/storage/products/{{ $cart->product->image }}"
+                                                            alt="profile"></td>
+                                                    <td>{{ $cart->product->price }}</td>
+                                                    <td>{{ $cart->product->price * $cart->quantity }}</td>
+                                                    <td>{{ $cart->created_at }}</td>
+                                                    <td>{{ $cart->updated_at }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
                         </div>
+                            {{-- user carts --}}
 
-                        <div class="mb-3">
-                            <label for="validationCustom01">Email</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="name@example.com" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
+                            {{-- user wishlist --}}
+                            @if($activeWishes)
+                            <div class="mb-4">
+                                <p>Wishes</p>
 
-                        <div class="mb-3">
-                            <label for="validationCustom01">Phone</label>
-                            <input class="form-control" id="validationCustom01" type="number"
-                                placeholder="Phone Number" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="validationCustom01">Password</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="Password" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="validationCustom01">Confirm Password</label>
-                            <input class="form-control" id="validationCustom01" type="email"
-                                placeholder="Confirm Password" required="">
-                            <small class="text-danger">error text</small>
-                        </div>
+                                <div>
+                                    <div class="table-responsive custom-scrollbar mt-2">
+                                        <table class="table">
+                                            <thead>
+                                                <tr class="border-bottom-primary">
+                                                    <th scope="col">Id</th>
+                                                    <th scope="col">Customer Name</th>
+                                                    <th scope="col">Product Name</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Created_at</th>
+                                                    <th scope="col">Updated_at</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($activeWishes as $wishlist)
+                                                    <tr class="border-bottom-secondary">
+                                                        <th scope="row">{{ $wishlist->id }}</th>
+                                                        <td>{{ $wishlist->user->name }}</td>
+                                                        <td>{{ $wishlist->product->name }}</td>
+                                                        <td> <img class="img-30 me-2"
+                                                                src="/storage/products/{{ $wishlist->product->image }}" alt="profile">
+                                                        </td>
+                                                        <td>{{ $wishlist->product->price }}</td>
+                                                        <td>{{ $wishlist->created_at }}</td>
+                                                        <td>{{ $wishlist->updated_at }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                            {{-- user wishlist --}}
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add Member</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Add user</button>
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-
     </div>
-    <!-- Container-fluid Ends-->
+    <!-- Modal -->
+
+</div>
+
+<script>
+    window.addEventListener("openViewModal", function(e) {
+        $("#viewModal").modal("show");
+    });
+
+
+    window.addEventListener('message', function(e) {
+
+        let data = e.detail;
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: data.icon,
+            title: data.title
+        });
+
+    });
+</script>
 </div>

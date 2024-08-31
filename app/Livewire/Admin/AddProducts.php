@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -21,11 +22,21 @@ class AddProducts extends Component
     public $description;
     public $busy = false;
     public $message = "";
+    public $categories;
 
 
     public function render()
     {
-        return view('livewire.admin.add-products')->layout("layouts.admin.app");
+        $this->load();
+
+        return view('livewire.admin.add-products', [
+            "categories" => $this->categories,
+        ])->layout("layouts.admin.app");
+    }
+
+    public function load()
+    {
+        $this->categories = Category::get();
     }
 
     public function send()

@@ -1,4 +1,32 @@
 <main class="main-wrapper">
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="inner">
+                        <ul class="axil-breadcrumb">
+                            <li class="axil-breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item" aria-current="{{ route('products') }}">Shop</li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active">{{ $product->name }}</li>
+                        </ul>
+                        {{-- <h1 class="title">{{ $product->name }}</h1> --}}
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4">
+                    <div class="inner">
+                        {{-- <div class="bradcrumb-thumb">
+                                    <img src="assets/images/product/product-45.png" alt="Image">
+                                </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area  -->
+
     <!-- Start Shop Area  -->
     <div class="axil-single-product-area axil-section-gap pb--0 bg-color-white">
         <div class="single-product-thumb mb--40">
@@ -10,7 +38,7 @@
                                 <div class="single-product-thumbnail-wrap zoom-gallery">
                                     <div class="single-product-thumbnail product-large-thumbnail-3 axil-product">
                                         <div class="thumbnail border">
-                                            <a href="" class="popup-zoom">
+                                            <a href="/storage/products/{{ $product->image }}" class="popup-zoom">
                                                 <img src="/storage/products/{{ $product->image }}" alt="Product Images">
                                             </a>
                                         </div>
@@ -27,52 +55,36 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="col-lg-2 order-lg-1">
-                                    <div class="product-small-thumb-3 small-thumb-wrapper">
-                                        <div class="small-thumb-img">
-                                            <img src="/web/assets/images/product/product-thumb/thumb-08.png" alt="thumb image">
-                                        </div>
-                                        <div class="small-thumb-img">
-                                            <img src="/web/assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
-                                        </div>
-                                        <div class="small-thumb-img">
-                                            <img src="/web/assets/images/product/product-thumb/thumb-09.png" alt="thumb image">
-                                        </div>
-                                        <div class="small-thumb-img">
-                                            <img src="/web/assets/images/product/product-thumb/thumb-07.png" alt="thumb image">
-                                        </div>
-                                    </div>
-                                </div> --}}
                         </div>
                     </div>
                     <div class="col-lg-6 mb--40">
                         <div class="single-product-content">
                             <div class="inner">
                                 <h2 class="product-title">{{ $product->name }}</h2>
-                                <span class="price-amount">$
-                                    @if ($product->discount)
-                                        {{ number_format($product->price - ($product->price * $product->discount) / 100) }}
-                                    @else
-                                        {{ number_format($product->price) }}
-                                    @endif
-                                </span>
+                                @if ($product->discount)
+                                    <div class="price-amount price-offer-amount">
+                                        <span
+                                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
+                                        <span class="price old-price">${{ number_format($product->price) }}</span>
+                                        <span class="offer-badge">20% OFF</span>
+                                    </div>
+                                @else
+                                    <div class="price-amount price-offer-amount">
+                                        <span class="price current-price">${{ number_format($product->price) }}</span>
+                                    </div>
+                                @endif
                                 <div class="product-rating">
-                                    <div class="star-rating">
+                                    {{-- <div class="star-rating">
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                         <i class="far fa-star"></i>
-                                    </div>
+                                    </div> --}}
                                     <div class="review-link">
                                         <a href="#">(<span>2</span> customer reviews)</a>
                                     </div>
                                 </div>
-                                {{-- <ul class="product-meta">
-                                        <li><i class="fal fa-check"></i>In stock</li>
-                                        <li><i class="fal fa-check"></i>Free delivery available</li>
-                                        <li><i class="fal fa-check"></i>Sales 30% Off Use Code: MOTIVE30</li>
-                                    </ul> --}}
                                 <p class="description">
                                     {{ Str::words($product->description, 22) }}
                                 </p>
@@ -94,18 +106,60 @@
                                 <!-- Start Product Action Wrapper  -->
                                 @if (Auth::guest())
                                     <div class="product-action-wrapper d-flex-center">
-                                        <!-- Start Quentity Action  -->
-                                        <div class="pro-qty">
-                                            <span class="dec qtybtn">-</span>
-                                            <input type="text" value="1">
-                                            <span class="dec qtybtn">+</span>
-                                        </div>
+                                        @if ($this->isInCart($product->id))
+                                            <div class="pro-qty">
+                                                <span wire:click="decSessionCart({{ $product->id }})"
+                                                    class="dec qtybtn">
+                                                    <span wire:loading.remove
+                                                        wire:target="decSessionCart({{ $product->id }})">-</span>
+                                                    <span wire:loading
+                                                        wire:target="decSessionCart({{ $product->id }})"
+                                                        class="spinner-grow spinner-grow" role="status"
+                                                        aria-hidden="true"></span>
+                                                </span>
+                                                <input type="text" value="1" disabled>
+                                                <span wire:click="incSessionCart({{ $product->id }})"
+                                                    class="dec qtybtn">
+                                                    <span wire:loading.remove
+                                                        wire:target="incSessionCart({{ $product->id }})">+</span>
+                                                    <span wire:loading
+                                                        wire:target="incSessionCart({{ $product->id }})"
+                                                        class="spinner-grow spinner-grow" role="status"
+                                                        aria-hidden="true"></span>
+                                                </span>
+                                            </div>
+                                        @endif
                                         <!-- End Quentity Action  -->
 
                                         <!-- Start Product Action  -->
                                         <ul class="product-action d-flex-center mb--0">
-                                            <li class="add-to-cart"><a href="cart.html"
-                                                    class="axil-btn btn-bg-primary">Add to Cart</a></li>
+                                            @if ($this->isInCart($product->id))
+                                                <li class="add-to-cart">
+                                                    <a wire:click="removeFromSessionCart({{ $product->id }})"
+                                                        class="btn axil-btn btn-bg-primary">
+                                                        <span wire:loading.remove
+                                                            wire:target="removeFromSessionCart({{ $product->id }})">Remove
+                                                            from Cart</span>
+                                                        <span wire:loading
+                                                            wire:target="removeFromSessionCart({{ $product->id }})"
+                                                            class="spinner-border" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                </li>
+                                            @else
+                                                <li class="add-to-cart">
+                                                    <a wire:click="addToSessionCart({{ $product->id }})"
+                                                        class="btn axil-btn btn-bg-primary">
+                                                        <span wire:loading.remove
+                                                            wire:target="addToSessionCart({{ $product->id }})">Add to
+                                                            Cart</span>
+                                                        <span wire:loading
+                                                            wire:target="addToSessionCart({{ $product->id }})"
+                                                            class="spinner-border" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                </li>
+                                            @endif
                                             <li class="wishlist"><a href="wishlist.html"
                                                     class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                         </ul>
@@ -117,25 +171,24 @@
 
 
                                 @if (Auth::user())
-                                    <!-- Start Product Action Wrapper  -->
                                     <div class="product-action-wrapper d-flex-center">
-                                        <!-- Start Quentity Action  -->
                                         @if ($product->hasCart(Auth::user()))
                                             <div class="pro-qty">
                                                 <span wire:click="dec({{ $product->id }})" class="dec qtybtn">
                                                     <span wire:loading.remove
                                                         wire:target="dec({{ $product->id }})">-</span>
-                                                    <span wire:loading
-                                                        wire:target="dec({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status" aria-hidden="true"></span>
+                                                    <span wire:loading wire:target="dec({{ $product->id }})"
+                                                        class="spinner-grow spinner-grow" role="status"
+                                                        aria-hidden="true"></span>
                                                 </span>
-                                                <input type="text" value="{{ $this->getCartQuantity($product->id) }}">
+                                                <input type="text"
+                                                    value="{{ $this->getCartQuantity($product->id) }}">
                                                 <span wire:click="inc({{ $product->id }})" class="dec qtybtn">
                                                     <span wire:loading.remove
                                                         wire:target="inc({{ $product->id }})">+</span>
-                                                    <span wire:loading
-                                                        wire:target="inc({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status" aria-hidden="true"></span>
+                                                    <span wire:loading wire:target="inc({{ $product->id }})"
+                                                        class="spinner-grow spinner-grow" role="status"
+                                                        aria-hidden="true"></span>
                                                 </span>
                                             </div>
                                         @endif
@@ -163,7 +216,8 @@
                                                         <span wire:loading.remove
                                                             wire:target="addToCart({{ $product->id }})">Add to
                                                             Cart</span>
-                                                        <span wire:loading wire:target="addToCart({{ $product->id }})"
+                                                        <span wire:loading
+                                                            wire:target="addToCart({{ $product->id }})"
                                                             class="spinner-border" role="status"
                                                             aria-hidden="true"></span>
                                                     </a>
@@ -217,10 +271,6 @@
                         <a class="active" id="description-tab" data-bs-toggle="tab" href="#description"
                             role="tab" aria-controls="description" aria-selected="true">Description</a>
                     </li>
-                    <li class="nav-item " role="presentation">
-                        <a id="additional-info-tab" data-bs-toggle="tab" href="#additional-info" role="tab"
-                            aria-controls="additional-info" aria-selected="false">Additional Information</a>
-                    </li>
                     <li class="nav-item" role="presentation">
                         <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab"
                             aria-controls="reviews" aria-selected="false">Reviews</a>
@@ -231,21 +281,10 @@
                         aria-labelledby="description-tab">
                         <div class="product-desc-wrapper">
                             <div class="row">
-                                <div class="col-lg-6 mb--30">
+                                <div class="col-lg-12 mb--30">
                                     <div class="single-desc">
-                                        <h5 class="title">Specifications:</h5>
-                                        <p>We’ve created a full-stack structure for our working workflow processes, were
-                                            from the funny the century initial all the made, have spare to negatives.
-                                            But the structure was from the funny the century rather,
-                                            initial all the made, have spare to negatives.</p>
-                                    </div>
-                                </div>
-                                <!-- End .col-lg-6 -->
-                                <div class="col-lg-6 mb--30">
-                                    <div class="single-desc">
-                                        <h5 class="title">Care & Maintenance:</h5>
-                                        <p>Use warm water to describe us as a product team that creates amazing UI/UX
-                                            experiences, by crafting top-notch user experience.</p>
+                                        <h5 class="title">Description</h5>
+                                        <p>{{ $product->description }}</p>
                                     </div>
                                 </div>
                                 <!-- End .col-lg-6 -->
@@ -282,61 +321,6 @@
                             <!-- End .row -->
                         </div>
                         <!-- End .product-desc-wrapper -->
-                    </div>
-                    <div class="tab-pane fade" id="additional-info" role="tabpanel"
-                        aria-labelledby="additional-info-tab">
-                        <div class="product-additional-info">
-                            <div class="table-responsive">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <th>Stand Up</th>
-                                            <td>35″L x 24″W x 37-45″H(front to back wheel)</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Folded (w/o wheels) </th>
-                                            <td>32.5″L x 18.5″W x 16.5″H</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Folded (w/ wheels) </th>
-                                            <td>32.5″L x 24″W x 18.5″H</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Door Pass Through </th>
-                                            <td>24</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Frame </th>
-                                            <td>Aluminum</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Weight (w/o wheels) </th>
-                                            <td>20 LBS</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Weight Capacity </th>
-                                            <td>60 LBS</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Width</th>
-                                            <td>24″</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Handle height (ground to handle) </th>
-                                            <td>37-45″</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Wheels</th>
-                                            <td>Aluminum</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Size</th>
-                                            <td>S, M, X, XL</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                     <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                         <div class="reviews-wrapper">
@@ -525,340 +509,120 @@
                 <h2 class="title">Viewed Items</h2>
             </div>
             <div class="recent-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-01.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">20% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">3D™ wireless headset</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$30</span>
-                                    <span class="price current-price">$30</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-02.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">40% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">Media remote</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$80</span>
-                                    <span class="price current-price">$50</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-03.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">30% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">HD camera</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$60</span>
-                                    <span class="price current-price">$45</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-04.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">50% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">PS Remote Control</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$70</span>
-                                    <span class="price current-price">$35</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-05.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">25% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">PS Remote Control</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$50</span>
-                                    <span class="price current-price">$38</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-03.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">30% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">HD camera</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$60</span>
-                                    <span class="price current-price">$45</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-04.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">50% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">PS Remote Control</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$70</span>
-                                    <span class="price current-price">$35</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
-                <div class="slick-single-layout">
-                    <div class="axil-product">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-05.png" alt="Product Images">
-                            </a>
-                            <div class="label-block label-right">
-                                <div class="product-badget">25% OFF</div>
-                            </div>
-                            <div class="product-hover-action">
-                                <ul class="cart-action">
-                                    <li class="wishlist"><a href="wishlist.html"><i class="far fa-heart"></i></a>
-                                    </li>
-                                    <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                    <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                            data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="inner">
-                                <h5 class="title"><a href="single-product.html">PS5 Remote Control</a></h5>
-                                <div class="product-price-variant">
-                                    <span class="price old-price">$50</span>
-                                    <span class="price current-price">$38</span>
-                                </div>
-                                <div class="color-variant-wrapper">
-                                    <ul class="color-variant">
-                                        <li class="color-extra-01 active"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-02"><span><span class="color"></span></span>
-                                        </li>
-                                        <li class="color-extra-03"><span><span class="color"></span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End .slick-single-layout -->
+                <!-- Beginning of .slick-single-layout -->
+                @foreach ($related_products as $related)
+                    <div class="slick-single-layout">
+                        <div class="axil-product product-style-one mb--30 border p-3">
+                            <div class="thumbnail">
+                                <a href="single-product.html">
+                                    <img src="/storage/products/{{ $related->image }}" alt="Product Images">
+                                </a>
+                                @if ($related->discount)
+                                    <div class="label-block label-right">
+                                        <div class="product-badget">{{ $product->discount }}% OFF</div>
+                                    </div>
+                                @endif
+                                <div class="product-hover-action">
 
+                                    @if (!Auth::user())
+                                        <ul class="cart-action">
+                                            <li class="wishlist"><a href="wishlist.html"><i
+                                                        class="far fa-heart"></i></a></li>
+                                            <li class="select-option"><a href="cart.html">Add to Cart</a></li>
+                                            <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a>
+                                            </li>
+                                        </ul>
+                                    @else
+                                        <ul class="cart-action">
+                                            <li class="wishlist">
+                                                @if ($related->hasWish(Auth::user()))
+                                                    <a wire:click="removeFromWishlist({{ $related->id }})"
+                                                        class="btn">
+                                                        <i wire:loading.remove
+                                                            wire:target="removeFromWishlist({{ $related->id }})"
+                                                            class="far fa-heart text-danger"></i>
+                                                        <span wire:loading
+                                                            wire:target="removeFromWishlist({{ $related->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                @else
+                                                    <a wire:click="addToWishlist({{ $related->id }})"
+                                                        class="btn">
+                                                        <i wire:loading.remove
+                                                            wire:target="addToWishlist({{ $related->id }})"
+                                                            class="far fa-heart"></i>
+                                                        <span wire:loading
+                                                            wire:target="addToWishlist({{ $related->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                @endif
+                                            </li>
+                                            <li class="select-option">
+                                                @if ($product->hasCart(Auth::user()))
+                                                    <a class="btn"
+                                                        wire:click="removeFromCart({{ $related->id }})">
+                                                        <span wire:loading.remove
+                                                            wire:target="removeFromCart({{ $related->id }})">Remove
+                                                            from Cart</span>
+                                                        <span wire:loading
+                                                            wire:target="removeFromCart({{ $related->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                @else
+                                                    <a class="btn" wire:click="addToCart({{ $related->id }})">
+                                                        <span wire:loading.remove
+                                                            wire:target="addToCart({{ $related->id }})">Add
+                                                            to
+                                                            Cart</span>
+                                                        <span wire:loading
+                                                            wire:target="addToCart({{ $related->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </a>
+                                                @endif
+                                            </li>
+                                            <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a>
+                                            </li>
+                                        </ul>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                @if ($product->discount)
+                                    <div class="inner">
+                                        <h5 class="title"><a href="single-product.html">{{ $related->name }}</a>
+                                        </h5>
+                                        <div class="product-price-variant">
+                                            <span
+                                                class="price current-price">${{ number_format($related->price - ($related->price * $product->discount) / 100) }}</span>
+                                            <span class="price old-price">${{ number_format($related->price) }}</span>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="inner">
+                                        <h5 class="title"><a href="single-product.html">{{ $related->name }}</a>
+                                        </h5>
+                                        <div class="product-price-variant">
+                                            <span
+                                                class="price current-price">${{ number_format($related->price) }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+                <!-- End .slick-single-layout -->
             </div>
         </div>
     </div>
     <!-- End Recently Viewed Product Area  -->
+
     <!-- Start Axil Newsletter Area  -->
     <div class="axil-newsletter-area axil-section-gap pt--0">
         <div class="container">

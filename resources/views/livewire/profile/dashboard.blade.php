@@ -10,14 +10,14 @@
                                 <li class="separator"></li>
                                 <li class="axil-breadcrumb-item active" aria-current="page">My Account</li>
                             </ul>
-                            <h1 class="title">Explore All Products</h1>
+                            <h1 class="title">Manage Your Account</h1>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-4">
                         <div class="inner">
-                            <div class="bradcrumb-thumb">
+                            {{-- <div class="bradcrumb-thumb">
                                 <img src="assets/images/product/product-45.png" alt="Image">
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
                                 <img src="./assets/images/product/author1.png" alt="Hello Annie">
                             </div>
                             <div class="media-body">
-                                <h5 class="title mb-0">Hello Annie</h5>
-                                <span class="joining-date">eTrade Member Since Sep 2020</span>
+                                <h5 class="title mb-0">{{ Auth::user()->name }}</h5>
+                                <span class="joining-date">{{ Auth::user()->email }}</span>
                             </div>
                         </div>
                     </div>
@@ -46,10 +46,9 @@
                                 <nav class="axil-dashboard-nav">
                                     <div class="nav nav-tabs" role="tablist">
                                         <a class="nav-item nav-link active" data-bs-toggle="tab" href="#nav-dashboard" role="tab" aria-selected="true"><i class="fas fa-th-large"></i>Dashboard</a>
-                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-orders" role="tab" aria-selected="false"><i class="fas fa-shopping-basket"></i>Orders</a>
-                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-downloads" role="tab" aria-selected="false"><i class="fas fa-file-download"></i>Downloads</a>
-                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false"><i class="fas fa-home"></i>Addresses</a>
                                         <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-account" role="tab" aria-selected="false"><i class="fas fa-user"></i>Account Details</a>
+                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-orders" role="tab" aria-selected="false"><i class="fas fa-shopping-basket"></i>Orders</a>
+                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false"><i class="fas fa-home"></i>Addresses</a>
                                         <a class="nav-item nav-link" href="sign-in.html"><i class="fal fa-sign-out"></i>Logout</a>
                                     </div>
                                 </nav>
@@ -60,7 +59,7 @@
                                 <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel">
                                     <div class="axil-dashboard-overview">
                                         <div class="welcome-text">Hello Annie (not <span>Annie?</span> <a href="sign-in.html">Log Out</a>)</div>
-                                        <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+                                        <p>From your account dashboard you can view your recent orders, manage your  billing addresses, and edit your password and account details.</p>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-orders" role="tabpanel">

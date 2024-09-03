@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="/web/assets/css/vendor/base.css">
     <link rel="stylesheet" href="/web/assets/css/style.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/personal/personal.css">
 
     @livewireStyles
 
@@ -62,13 +63,18 @@
                             <ul class="quick-link">
                                 <li><a href="#">Help</a></li>
                                 @if (Auth::guest())
-                                    <li><a href="sign-up.html">Join Us</a></li>
-                                    <li><a href="sign-in.html">Sign In</a></li>
+                                    <li><a href="{{ route('register') }}">Join Us</a></li>
+                                    <li><a href="{{ route('login') }}">Sign In</a></li>
                                 @endif
                                 @if (Auth::user())
                                     <li><a href="sign-in.html"><i class="bi bi-person-fill"></i>
                                             {{ Auth::user()->name }}</a></li>
-                                    <li><a href="sign-in.html">Logout</a></li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button class="btn btn-outline-light" type="submit">Logout</button>
+                                        </form>
+                                    </li>
                                 @endif
 
                             </ul>
@@ -84,10 +90,11 @@
                 <div class="header-navbar">
                     <div class="header-brand">
                         <a href="index.html" class="logo logo-dark">
-                            <img src="/web/assets/images/logo/logo.png" alt="Site Logo">
+                            {{-- <img src="/web/assets/images/logo/logo.png" alt="Site Logo"> --}}
+                            <img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="Site Logo" width="40" height="157">
                         </a>
                         <a href="index.html" class="logo logo-light">
-                            <img src="/web/assets/images/logo/logo-light.png" alt="Site Logo">
+                            {{-- <img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="Site Logo" > --}}
                         </a>
                     </div>
                     <div class="header-main-nav">
@@ -100,15 +107,19 @@
                                 </a>
                             </div>
                             <ul class="mainmenu">
-                                <li><a href="">Home</a></li>
-                                <li class="menu-item-has-children">
-                                    <a href="">Shop</a>
-                                    <ul class="axil-submenu">
+                                <li><a href="{{ route('home') }}">Home</a></li>
+                                {{-- <li class="menu-item-has-children">
+                                    <a href="{{ route("shop") }}">Shop</a>
+                                       <ul class="axil-submenu">
                                         <li><a href="">Shop With Sidebar</a></li>
                                     </ul>
+                                    </li> --}}
+
+                                <li class="">
+                                    <a href="{{ route('products') }}">Shop</a>
                                 </li>
-                                <li><a href="">About</a></li>
-                                <li><a href="">Contact</a></li>
+                                <li><a href="{{ route('about') }}">About</a></li>
+                                <li><a href="{{ route('contact') }}">Contact</a></li>
                             </ul>
                         </nav>
                         <!-- End Mainmanu Nav -->
@@ -129,13 +140,13 @@
                                 </a>
                             </li>
                             <li class="wishlist">
-                                <a href="wishlist.html">
+                                <a href="{{ route('wishlist') }}">
                                     <i class="bi bi-heart"></i>
                                 </a>
                             </li>
                             <li class="shopping-cart">
                                 @if (Auth::user())
-                                    <a href="" class="cart-dropdown-btn">
+                                    <a class="cart-dropdown-btn">
                                         <span class="cart-count">
                                             <livewire:components.cart-count :display="'count'" />
                                         </span>
@@ -143,40 +154,17 @@
                                     </a>
                                 @endif
                                 @if (Auth::guest())
-                                    <a href="" class="cart-dropdown-btn">
-                                        <span class="cart-count">0</span>
+                                    <a href="{{ route("cart") }}" class="cart-dropdown-new-btn">
+                                        <span class="cart-count">
+                                            <livewire:components.cart-count :display="'count'" />
+                                        </span>
                                         <i class="bi bi-cart"></i>
                                     </a>
                                 @endif
                             </li>
-                            <li class="my-account">
-                                <a href="javascript:void(0)">
-                                    <i class="flaticon-person"></i>
-                                </a>
-                                <div class="my-account-dropdown">
-                                    <span class="title">QUICKLINKS</span>
-                                    <ul>
-                                        <li>
-                                            <a href="my-account.html">My Account</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Initiate return</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Support</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Language</a>
-                                        </li>
-                                    </ul>
-                                    <a href="sign-in.html" class="axil-btn btn-bg-primary">Login</a>
-                                    <div class="reg-footer text-center">No account yet? <a href="sign-up.html"
-                                            class="btn-link">REGISTER HERE.</a></div>
-                                </div>
-                            </li>
                             <li class="axil-mobile-toggle">
                                 <button class="menu-btn mobile-nav-toggler">
-                                    <i class="flaticon-menu-2"></i>
+                                    <i class="bi bi-list"></i>
                                 </button>
                             </li>
                         </ul>
@@ -213,7 +201,7 @@
     {{ $slot }}
 
 
-    <div class="service-area">
+    <div class="service-area mt-5">
         <div class="container">
             <div class="row row-cols-xl-4 row-cols-sm-2 row-cols-1 row--20">
                 <div class="col">
@@ -655,7 +643,7 @@
             <div class="cart-footer">
                 <h3 class="cart-subtotal">
                     <span class="subtotal-title">Subtotal:</span>
-                        <livewire:components.cart-count :display="'total'" />
+                    <livewire:components.cart-count :display="'total'" />
                 </h3>
                 <div class="group-btn">
                     <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
@@ -665,7 +653,9 @@
         </div>
     </div>
 
+    @stack('scripts')
 
+    @livewireScripts
 
     <script>
         document.addEventListener('livewire:load', function() {
@@ -675,8 +665,7 @@
             });
         });
     </script>
-    @stack('scripts')
-    @livewireScripts
+
 
     <!-- JS
 ============================================ -->

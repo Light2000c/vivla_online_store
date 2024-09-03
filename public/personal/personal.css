@@ -1,16 +1,43 @@
-    /* Custom CSS for integrating intl-tel-input with Bootstrap */
-    .intl-tel-input {
-        display: table-cell;
-    }
-    .intl-tel-input .selected-flag {
-        z-index: 4;
-    }
-    .intl-tel-input .country-list {
-        z-index: 5;
-    }
-    .input-group .intl-tel-input .form-control {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 0;
-    }
+.css-prp
+{
+  color: #17CBF2;
+  font-family: arial;
+}
+
+
+.con1 {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.con1 input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: lightgrey;
+  border-radius: 10%;
+}
+
+/* When the radio button is checked, add a blue background */
+.con1 input:checked ~ .checkmark {
+  background-color: #17CBF2;
+}
+

@@ -57,7 +57,7 @@
                                                 </span>
                                                 <input wire:change="update({{ $cart->id }}, $event.target.value)"
                                                     type="number" class="quantity-input"
-                                                    value="{{ $cart->quantity }}">
+                                                    value="{{ $cart->quantity }}" disabled>
                                                 <span wire:click="inc({{ $cart->id }})" class="inc qtybtn">
                                                     <span wire:loading.remove
                                                         wire:target="inc({{ $cart->id }})">+</span>
@@ -77,6 +77,45 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                            @endif
+
+                            @if(Auth::guest())
+                            @foreach($carts as $cart)
+                            <tr>
+                                <td class="product-remove">
+                                    <a wire:click="removeFromSessionCart({{ $cart->id }})" class="remove-wishlist">
+                                        <i wire:loading.remove wire:target="removeFromSessionCart({{ $cart->id }})"
+                                            class="fal fa-times"></i>
+                                        <span wire:loading wire:target="removeFromSessionCart({{ $cart->id }})"
+                                            class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                                <td class="product-thumbnail"><a href="single-product.html"><img src="/storage/products/{{ $this->getProductImage($cart->id) }}" alt="Digital Product"></a></td>
+                                <td class="product-title"><a href="single-product.html">{{ $this->getProductName($cart->id) }}</a></td>
+                                <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>{{ number_format($cart->product->price) }}</td>
+                                <td class="product-quantity" data-title="Qty">
+                                    <div class="pro-qty">
+                                        <span wire:click="decSessionCart({{ $cart->id }})" class="dec qtybtn">
+                                            <span wire:loading.remove
+                                                wire:target="decSessionCart({{ $cart->id }})">-</span>
+                                            <span wire:loading wire:target="decSessionCart({{ $cart->id }})"
+                                                class="spinner-grow spinner-grow" role="status"
+                                                aria-hidden="true"></span>
+                                        </span>
+                                        <input type="number" class="quantity-input" value="{{ $cart->quantity  }}" disabled>
+                                        <span wire:click="incSessionCart({{ $cart->id }})" class="inc qtybtn">
+                                            <span wire:loading.remove
+                                                wire:target="incSessionCart({{ $cart->id }})">+</span>
+                                            <span wire:loading wire:target="incSessionCart({{ $cart->id }})"
+                                                class="spinner-grow spinner-grow" role="status"
+                                                aria-hidden="true"></span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity)) }}</td>
+                            </tr>
+                            @endforeach
                             @endif
                         </tbody>
                     </table>
@@ -117,7 +156,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="checkout.html" class="axil-btn btn-bg-primary checkout-btn">Process to
+                            <a href="{{ route("checkout") }}" class="axil-btn btn-bg-primary checkout-btn">Process to
                                 Checkout</a>
                         </div>
                     </div>

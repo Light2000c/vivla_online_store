@@ -4,13 +4,20 @@ namespace App\Livewire\Admin;
 
 use App\Models\Wishlist;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Favourites extends Component
 {
 
-    public $wishlists;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    private $wishlists;
     public $groupSelect;
     public $selectedItems = [];
+
+    public $search = "";
 
     public function render()
     {
@@ -24,8 +31,20 @@ class Favourites extends Component
 
     public function load()
     {
-        $wishlist = Wishlist::orderBy("created_at", "DESC")->get();
-        $this->wishlists = $wishlist;
+        $searchTerm = '%' . $this->search . '%';
+
+        if (!$this->search) {
+            $this->wishlists = Wishlist::orderBy('created_at', 'DESC')->paginate(3);
+        } else {
+            $this->wishlists = Wishlist::whereHas('product', function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', $searchTerm);
+            })
+                ->whereHas('user', function ($query) use ($searchTerm) {
+                    $query->where('name', 'LIKE', $searchTerm);
+                })
+                ->orderBy('created_at', 'DESC')
+                ->paginate(3);
+        }
     }
 
     public function delete($id)

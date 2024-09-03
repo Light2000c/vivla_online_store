@@ -31,7 +31,7 @@
                         <button class="btn btn-primary" type="submit">New Product </button>
                     </div>
                     <div class="form-group search-form m-2">
-                        <input type="text" placeholder="Search here...">
+                        <input wire:model.live.debounce.150ms="search" type="text" placeholder="Search here...">
                     </div>
                     <div class="table-responsive custom-scrollbar mt-2">
                         <table class="table">
@@ -103,6 +103,9 @@
                                 @endif
                             </tbody>
                         </table>
+                    </div>
+                    <div class="m-2">
+                        {{ $products->withQueryString()->links() }}
                     </div>
                     <div class="align-self-start m-3">
                         <button wire:click="deleteSelected" class="btn btn-primary" type="submit">

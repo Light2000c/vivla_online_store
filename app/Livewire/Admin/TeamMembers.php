@@ -5,9 +5,14 @@ namespace App\Livewire\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TeamMembers extends Component
 {
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
 
     public $name;
     public $email;
@@ -17,6 +22,8 @@ class TeamMembers extends Component
     public $activeTeamMember;
     public $groupSelect;
     public $selectedItems = [];
+
+    public $search = "";
 
     public function render()
     {
@@ -29,7 +36,17 @@ class TeamMembers extends Component
 
     public function load()
     {
-        $this->teamMembers = User::where("role", "1")->orderBy("created_at", "DESC")->get();
+        if (!$this->search) {
+            $this->teamMembers = User::where("role", 1)->orderBy("created_at", "DESC")->paginate(10);
+        } else {
+            $this->teamMembers = User::orderBy("created_at", "DESC")
+                ->where("role", 1)
+                ->where(function ($query) {
+                    $query->where("name", "LIKE", '%' . $this->search . '%')
+                        ->orWhere("email", "LIKE", '%' . $this->search . '%');
+                })
+                ->paginate(10);
+        }
     }
 
     public function openCreateModal()

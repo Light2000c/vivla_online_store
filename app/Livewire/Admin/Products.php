@@ -4,13 +4,19 @@ namespace App\Livewire\Admin;
 
 use App\Models\Product;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Products extends Component
 {
 
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     private $products;
     public $groupSelect;
     public $selectedItems = [];
+    public $search = "";
 
     public function render()
     {
@@ -23,8 +29,13 @@ class Products extends Component
 
     public function load()
     {
-        $product = Product::orderBy("created_at", "DESC")->get();
-        $this->products = $product;
+        if (!$this->search) {
+            $product = Product::orderBy("created_at", "DESC")->paginate(10);
+            $this->products = $product;
+        } else {
+            $product = Product::orderBy("created_at", "DESC")->where("name", "LIKE", '%' . $this->search . '%')->orWhere("category", "LIKE", '%' . $this->search . '%')->paginate(10);
+            $this->products = $product;
+        }
     }
 
     public function updateselectedItems() {}

@@ -32,6 +32,7 @@ class viewServiceProvider extends ServiceProvider
                 $carts = Auth::user()->cart()->get();
                 View::share('globalUserCart', $carts);
             } else {
+
                 View::share('globalUserCart', "");
             }
         });

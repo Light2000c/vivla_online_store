@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Pages;
 
-use App\Models\Cart as ModelCart;
-use App\Services\CartService;
+use App\Models\Product;
 use Livewire\Component;
+use App\Services\CartService;
+use App\Models\Cart as ModelCart;
 use Illuminate\Support\Facades\Auth;
 
 class Cart extends Component
@@ -26,16 +27,31 @@ class Cart extends Component
 
     public function load()
     {
-        $this->carts = Auth::user()->cart()->get();
 
-        $carts = Auth::user()->cart()->get();
+        if (Auth::check()) {
+            $this->carts = Auth::user()->cart()->get();
 
-        $this->subTotal = $carts->sum(function ($cart) {
-            if ($cart->product->discount) {
-                return $cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount / 100));
-            }
-            return $cart->quantity * $cart->product->price;
-        });
+            $carts = Auth::user()->cart()->get();
+
+            $this->subTotal = $carts->sum(function ($cart) {
+                if ($cart->product->discount) {
+                    return $cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount / 100));
+                }
+                return $cart->quantity * $cart->product->price;
+            });
+        } else {
+            $sessionCarts = session()->get('cart', []);
+            $this->carts = collect($sessionCarts)->map(function ($item, $id) {
+                return (object) [
+                    'id' => $id,
+                    'product' => (object) [
+                        'price' => $item['price'],
+                        'discount' => 0,
+                    ],
+                    'quantity' => $item['quantity'],
+                ];
+            });
+        }
     }
 
     public function update($id, $value)
@@ -99,5 +115,98 @@ class Cart extends Component
             icon: $icon,
             title: $title,
         );
+    }
+
+
+    // other functions
+
+    public function getProductName($id)
+    {
+
+        $product = Product::find($id);
+
+        return !empty($product) ? $product->name : "";
+    }
+
+    public function getCartTotal($id, $quantity)
+    {
+        $product = Product::find($id);
+
+        if (empty($product)) {
+            return 0;
+        }
+
+        if ($product->discount) {
+            return $quantity * ($product->price - ($product->price * $product->discount / 100));
+        } else {
+            return $quantity * $product->price;
+        }
+    }
+
+    public function getProductImage($id)
+    {
+
+        $product = Product::find($id);
+
+        return !empty($product) ? $product->image : "";
+    }
+
+
+    public function incSessionCart($id)
+    {
+
+        $cart = session()->get('cart', []);
+
+
+        if (array_key_exists($id, $cart)) {
+
+            $cart[$id]['quantity'] += 1;
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function decSessionCart($id)
+    {
+
+        $cart = session()->get('cart', []);
+
+
+        if (array_key_exists($id, $cart)) {
+
+            if ($cart[$id]['quantity'] > 1) {
+                $cart[$id]['quantity'] -= 1;
+            } else {
+                // unset($cart[$id]);
+            }
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function removeFromSessionCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+
+            unset($cart[$id]);
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+        }
     }
 }

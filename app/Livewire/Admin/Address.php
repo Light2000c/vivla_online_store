@@ -4,13 +4,19 @@ namespace App\Livewire\Admin;
 
 use App\Models\Address as ModelsAddress;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Address extends Component
 {
 
-    public $addresses;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    private $addresses;
     public $groupSelect;
     public $selectedItems = [];
+    public $search = "";
 
     public function render()
     {
@@ -23,8 +29,24 @@ class Address extends Component
 
     public function load()
     {
-        $address = ModelsAddress::orderBy("created_at", "DESC")->get();
-        $this->addresses = $address;
+
+
+        // $this->addresses = ModelsAddress::orderBy("created_at", "DESC")->paginate(10); 
+
+        if (!$this->search) {
+            $address = ModelsAddress::orderBy("created_at", "DESC")->paginate(10);
+            $this->addresses = $address;
+        } else {
+            $address = ModelsAddress::orderBy("created_at", "DESC")
+                ->where("firstname", "LIKE", '%' . $this->search . '%')
+                ->orWhere("firstname", "LIKE", '%' . $this->search . '%')
+                ->orWhere("street", "LIKE", '%' . $this->search . '%')
+                ->orWhere("city", "LIKE", '%' . $this->search . '%')
+                ->orWhere("country", "LIKE", '%' . $this->search . '%')
+                ->orWhere("phone", "LIKE", '%' . $this->search . '%')
+                ->paginate(10);
+            $this->addresses = $address;
+        }
     }
 
     public function delete($id)
@@ -80,4 +102,3 @@ class Address extends Component
         );
     }
 }
-

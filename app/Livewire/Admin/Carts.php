@@ -4,12 +4,19 @@ namespace App\Livewire\Admin;
 
 use App\Models\Cart;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Carts extends Component
 {
-    public $carts;
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    private $carts;
     public $groupSelect;
     public $selectedItems = [];
+    public $search = "";
 
     public function mount() {}
 
@@ -25,8 +32,24 @@ class Carts extends Component
 
     public function load()
     {
-        $this->carts = Cart::orderBy("created_at", "DESC")->get();
+        $searchTerm = '%' . $this->search . '%'; // Define the search term
+
+        if (!$this->search) {
+            // If no search term is provided, get all carts ordered by creation date
+            $this->carts = Cart::orderBy('created_at', 'DESC')->paginate(6);
+        } else {
+            // If a search term is provided, filter carts by product and user names
+            $this->carts = Cart::whereHas('product', function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', $searchTerm);
+            })
+            ->whereHas('user', function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', $searchTerm);
+            })
+            ->orderBy('created_at', 'DESC') // Ensure the results are ordered
+            ->paginate(6); // Paginate the results
+        }
     }
+
 
     public function delete($id)
     {
@@ -77,5 +100,4 @@ class Carts extends Component
             title: $title,
         );
     }
-    
 }

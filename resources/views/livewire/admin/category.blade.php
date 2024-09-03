@@ -32,7 +32,7 @@
                             Category</button>
                     </div>
                     <div class="form-group search-form m-2">
-                        <input type="text" placeholder="Search here...">
+                        <input wire:model.live.debounce.150ms="search" type="text" placeholder="Search here...">
                     </div>
                     <div class="table-responsive custom-scrollbar mt-2">
                         <table class="table">
@@ -77,6 +77,10 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="m-2">
+                        {{ $categories->withQueryString()->links() }}
+                    </div>
+
                     <div class="align-self-start m-3">
                         <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
                             <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
@@ -146,9 +150,9 @@
                             </div>
 
                         </div>
-                      <div class="modal-footer">
+                        <div class="modal-footer">
                             <button type="submit" class="btn btn-secondary">
-                                <span wire:loading.remove wire:target="store">Add category</span>
+                                <span wire:loading.remove wire:target="store">Save Changes</span>
                                 <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>
                             </button>

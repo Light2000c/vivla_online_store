@@ -34,7 +34,7 @@
                              </div>
                          @enderror
 
-                         <form class="row" wire:submit="send">
+                         <form class="row" wire:submit.prevent="send">
                              <div class="col-sm-12">
                                  <div class="row mt-3">
                                      <div class="col-12 col-lg-6 mb-3">
@@ -84,8 +84,8 @@
                                          <select wire:model="category" class="form-select">
                                              <option selected="" disabled="" value="">Select Category
                                              </option>
-                                             @foreach($categories as $category)
-                                             <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                             @foreach ($categories as $category)
+                                                 <option value="{{ $category->name }}">{{ $category->name }}</option>
                                              @endforeach
                                              {{-- <option value="bag">Bag</option>
                                              <option value="shoe">Shoe</option> --}}
@@ -115,16 +115,24 @@
                                      </div>
                                      <div class="col-12 mb-3">
                                          <label class="form-label" for="exampleFormControlTextarea1">Description</label>
-                                         <textarea wire:model="description" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                                         <textarea wire:model="description" class="form-control" id="" rows="4"></textarea>
                                          @error('description')
                                              <small class="text-danger">{{ $message }}</small>
                                          @enderror
                                      </div>
+                                     {{-- ck editor --}}
+                                     {{-- <div class="col-12 mb-3">
+                                         <label class="form-label" for="exampleFormControlTextarea1">Description</label>
+                                         <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
+                                         @error('description')
+                                             <small class="text-danger">{{ $message }}</small>
+                                         @enderror
+                                     </div> --}}
                                  </div>
                              </div>
                              <div class="btn-showcase text-end">
                                  <button type="submit" class="btn btn-primary" type="submit">
-                                     <span wire:loading.remove >Save Product</span>
+                                     <span wire:loading.remove>Save Product</span>
                                      <div wire:loading wire:target="send">
                                          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                          <span role="status">Loading...</span>

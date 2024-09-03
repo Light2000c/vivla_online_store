@@ -12,10 +12,12 @@ use Illuminate\Support\Facades\Auth;
 class ProductDetails extends Component
 {
     public $product;
+    public $related_products;
 
     public function mount($id)
     {
         $this->product = Product::find($id);
+        $this->related_products = Product::where("category", $this->product->category)->take(5)->get();
     }
 
     public function render()
@@ -26,6 +28,7 @@ class ProductDetails extends Component
     public function load()
     {
         $this->product = Product::find($this->product->id);
+        $this->related_products = Product::where("category", $this->product->category)->take(5)->get();
     }
 
     public function addToCart($id)
@@ -42,6 +45,7 @@ class ProductDetails extends Component
         $cart = $user->cart()->create([
             'product_id' => $product->id,
         ]);
+
 
         if ($cart) {
             return $this->dispatch('cartUpdated');
@@ -177,7 +181,8 @@ class ProductDetails extends Component
         }
     }
 
-    public function getCartQuantity($id){
+    public function getCartQuantity($id)
+    {
         $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
 
         if (!$cart) {
@@ -196,5 +201,98 @@ class ProductDetails extends Component
             title: $title,
         );
     }
-    
+
+
+    public function addToSessionCart($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $cart = session()->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+            return;
+        }
+
+
+        $cart[$id] = [
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'price' => $product->price,
+        ];
+
+
+        session()->put('cart', $cart);
+
+        return $this->dispatch('cartUpdated');
+    }
+
+
+    public function removeFromSessionCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+
+            unset($cart[$id]);
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+        }
+    }
+
+    public function incSessionCart($id)
+    {
+
+        $cart = session()->get('cart', []);
+
+
+        if (array_key_exists($id, $cart)) {
+
+            $cart[$id]['quantity'] += 1;
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function decSessionCart($id)
+    {
+
+        $cart = session()->get('cart', []);
+
+
+        if (array_key_exists($id, $cart)) {
+
+            if ($cart[$id]['quantity'] > 1) {
+                $cart[$id]['quantity'] -= 1;
+            } else {
+                // unset($cart[$id]);
+            }
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public function isInCart($productId)
+    {
+        $sessionCart = session()->get('cart', []);
+        return array_key_exists($productId, $sessionCart);
+    }
 }

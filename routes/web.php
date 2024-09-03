@@ -52,6 +52,7 @@ Auth::routes();
 //Auth Routes
 Route::get("login", [LoginController::class, "index"])->name("login");
 Route::post("login", [LoginController::class, "login"]);
+Route::post("logout", [LoginController::class, "logout"])->name("logout");
 // Route::post("logout", [LoginController::class, "logout"]);
 
 Route::get("register", [RegisterController::class, "index"])->name("register");
@@ -68,27 +69,37 @@ Route::get("/home", Home::class)->name("home");
 
 Route::get("shop", PagesProducts::class)->name("products");
 
-Route::get("shop/{id}", ProductDetails::class)->name("peoduct-detail");
+Route::get("shop/{id}", ProductDetails::class)->name("product-detail");
 
 Route::get("cart", Cart::class)->name("cart");
 
-Route::get("wishlist", Wishlist::class)->name("wishlist");
 
-Route::get("about", About::class)->name("about");
+Route::group(["middleware" => "auth"], function () {
 
-Route::get("contact-us", Contact::class)->name("contact");
+    Route::get("wishlist", Wishlist::class)->name("wishlist");
 
-Route::get("checkout", Checkout::class)->name("checkout");
+    Route::get("about", About::class)->name("about");
+
+    Route::get("contact-us", Contact::class)->name("contact");
+
+    Route::get("checkout", Checkout::class)->name("checkout");
+
+    //Profile
+    Route::get("account", ProfileDashboard::class)->name("dashboard");
+});
 
 
 
-//Profile
-Route::get("account", ProfileDashboard::class)->name("dashboard");
+
+
+
 
 
 
 
 //admin routes
+
+Route::group(["middleware" => ["auth", "is_admin"]], function () {
 
 Route::get("admin/dashboard", Dashboard::class)->name("admin-dashboard");
 
@@ -117,3 +128,5 @@ Route::get("admin/account", EditAccount::class)->name("edit-account");
 Route::get("admin/transactions", Transactions::class)->name("admin-transaction");
 
 Route::get("admin/payments", Payments::class)->name("admin-payment");
+
+});

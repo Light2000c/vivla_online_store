@@ -4,14 +4,22 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\Category as ModelCategory;
+use Livewire\WithPagination;
 
 class Category extends Component
 {
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     public $title;
     private $categories;
     public $activeCategory;
     public $groupSelect;
     public $selectedItems = [];
+
+    public $search = "";
 
     public function render()
     {
@@ -24,7 +32,11 @@ class Category extends Component
 
     public function load()
     {
-        $this->categories = ModelCategory::orderBy("created_at", "DESC")->get();
+        if (!$this->search) {
+            $this->categories = ModelCategory::orderBy("created_at", "DESC")->paginate(10);
+        } else {
+            $this->categories = ModelCategory::orderBy("created_at", "DESC")->where("name", "LIKE", '%' . $this->search . '%')->paginate(10);
+        }
     }
 
     public function openCreateModal()

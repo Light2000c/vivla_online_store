@@ -3,34 +3,69 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Products extends Component
 {
 
-    private $products;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+
+    private $products = [];
+    public $categories;
+    public $previousSelected;
+    public $selectedCategory = null;
+    public $range;
 
     public function mount() {}
 
     public function render()
     {
-
         $this->load();
 
         return view('livewire.pages.products', [
-            "products" => $this->products,
+            "products" => $this->products
         ]);
     }
 
     public function load()
     {
-        $products = Product::orderBy("created_at", "DESC")->get();
 
-        $this->products = $products;
+        if ($this->selectedCategory) {
+            $this->products = Product::where("category", $this->selectedCategory)->orderBy("created_at", "DESC")->paginate(10);
+            $this->categories = Category::orderBy("created_at", "DESC")->get();
+        } else {
+            $this->products = Product::orderBy("created_at", "DESC")->paginate(10);
+            $this->categories = Category::orderBy("created_at", "DESC")->get();
+        }
     }
+
+
+
+
+    public  function filterProduct()
+    {
+        // dd($this->selectedCategory);
+        // dd($this->range);
+
+        // return redirect()->route('products', ['category' => $this->selectedCategory]);
+
+        if ($this->selectedCategory == $this->previousSelected) {
+            return;
+        }
+
+        $this->load();
+        $this->previousSelected = $this->selectedCategory;
+        $this->resetPage();
+    }
+
 
     public function addToCart($id)
     {
@@ -110,5 +145,56 @@ class Products extends Component
                 return $this->dispatch('cartUpdated');
             }
         }
+    }
+
+
+
+    public function addToSessionCart($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $cart = session()->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+            return;
+        }
+
+
+        $cart[$id] = [
+            'product_id' => $product->id,
+            'quantity' => 1,
+            'price' => $product->price,
+        ];
+
+
+        session()->put('cart', $cart);
+
+        return $this->dispatch('cartUpdated');
+    }
+
+
+    public function removeFromSessionCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (array_key_exists($id, $cart)) {
+
+            unset($cart[$id]);
+
+            session()->put('cart', $cart);
+
+            $this->dispatch('cartUpdated');
+        }
+    }
+
+
+    public function isInCart($productId)
+    {
+        $sessionCart = session()->get('cart', []);
+        return array_key_exists($productId, $sessionCart);
     }
 }

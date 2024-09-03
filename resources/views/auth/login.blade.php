@@ -41,7 +41,7 @@
                 <div class="col-sm-8">
                     <div class="singin-header-btn">
                         <p>Not a member?</p>
-                        <a href="sign-up.html" class="axil-btn btn-bg-secondary sign-up-btn">Sign Up Now</a>
+                        <a href="{{ route("register") }}" class="axil-btn btn-bg-secondary sign-up-btn">Sign Up Now</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
             <div class="col-lg-6 offset-xl-2">
                 <div class="axil-signin-form-wrap">
                     <div class="axil-signin-form">
-                        <h3 class="title">Sign in to eTrade.</h3>
+                        <h3 class="title">Sign in to Vivla Closeet.</h3>
                         <p class="b2 mb--55">Enter your detail below</p>
                         @if (session('error'))
                         <div class="alert alert-danger mb-4" role="alert">

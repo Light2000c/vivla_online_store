@@ -34,7 +34,14 @@ class CartCount extends Component
 
     public function load()
     {
-        $this->cartCount = Auth::check() ? Auth::user()->cart()->get() : null;
+        // $this->cartCount = Auth::check() ? Auth::user()->cart()->get() : null;
+        if (Auth::check()) {
+            $this->cartCount = Auth::user()->cart()->get();
+        } else {
+            $sessionCart = session()->get('cart', []);
+            // $this->cartCount = count($sessionCart);
+            $this->cartCount = collect($sessionCart)->sum('quantity');
+        }
     }
 
     public function update($id, $value)

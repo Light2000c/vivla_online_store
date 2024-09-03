@@ -26,6 +26,21 @@
     <link rel="stylesheet" href="/web/assets/css/vendor/base.css">
     <link rel="stylesheet" href="/web/assets/css/style.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/css/intlTelInput.css">
+
+    {{-- <style>
+        input {
+            width: 250px;
+            padding: 10px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+        }
+
+        input::placeholder {
+            color: #BBB;
+        }
+    </style> --}}
+
 </head>
 
 
@@ -41,7 +56,7 @@
                 <div class="col-md-6">
                     <div class="singin-header-btn">
                         <p>Already a member?</p>
-                        <a href="sign-in.html" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
+                        <a href="{{ route('login') }}" class="axil-btn btn-bg-secondary sign-up-btn">Sign In</a>
                     </div>
                 </div>
             </div>
@@ -83,6 +98,12 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group mt-2">
+                                <input type="tel" id="phone" class="form-control tel-input" name="phone" required>
+                                <input type="hidden" id="full_phone" name="full_phone"> 
+                                <div class="invalid-feedback"></div>
+                              </div>
+
                             <div class="form-group">
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password">
@@ -90,6 +111,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
 
                             <div class="form-group">
                                 <label>Confirm Password</label>
@@ -130,6 +152,36 @@
 
     <!-- Main JS -->
     <script src="/web/assets/js/main.js"></script>
+
+    <!-- intlTelInput JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var input = document.querySelector("#phone");
+          var hiddenInput = document.querySelector("#full_phone"); // Select the hidden input
+        
+          // Initialize intlTelInput
+          var iti = window.intlTelInput(input, {
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+            separateDialCode: true,
+          });
+        
+          // Store the instance globally to access it from the console if needed
+          window.iti = iti;
+        
+          // Listen for form submission to update the hidden input
+          $('form').on('submit', function() {
+            // Get the full phone number (country code + user's input)
+            var fullPhoneNumber = iti.getNumber();
+            
+            // Set the value of the hidden input to the full phone number
+            hiddenInput.value = fullPhoneNumber;
+          });
+        });
+        </script>
+        
+        
 
 </body>
 

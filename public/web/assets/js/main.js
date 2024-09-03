@@ -30,6 +30,7 @@
             axilInit.countdownInit('.poster-countdown', '2023/06/01');
             axilInit.countdownInit('.sale-countdown', '2023/10/31');
             axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
+            // axilInit.sideOffcanvasToggle('.cart-dropdown-new-btn', '#cart-dropdown');
             axilInit.sideOffcanvasToggle('.mobile-nav-toggler', '.header-main-nav');
             axilInit.sideOffcanvasToggle('.department-side-menu', '.department-nav-menu');
             axilInit.sideOffcanvasToggle('.filter-toggle', '.axil-shop-sidebar');

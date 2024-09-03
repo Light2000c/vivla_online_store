@@ -83,6 +83,21 @@ class AddProducts extends Component
         return $this->showAlert("Success", "Product has been successfully created", "success");
     }
 
+
+    // public function updated($propertyName)
+    // {
+        
+    //     logger("Updated property: $propertyName");
+
+
+       
+    //     if ($this->hasError($propertyName)) {
+    //         logger("Validation error detected for: $propertyName");
+    //         // Emit a custom event or perform actions if validation error exists
+    //         $this->emit('formErrorsOccurred');
+    //     }
+    // }
+
     public function resetValues()
     {
         $this->reset();

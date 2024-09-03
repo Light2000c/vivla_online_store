@@ -4,15 +4,23 @@ namespace App\Livewire\Admin;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Users extends Component
 {
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
     private $users;
     public $groupSelect;
     public $selectedItems = [];
     public $activeUser;
     public $activeCart;
     public $activeWishes;
+
+    public $search = "";
 
     public function render()
     {
@@ -26,7 +34,17 @@ class Users extends Component
 
     public function load()
     {
-        $this->users = User::where("role", "!=", 1)->orderBy("created_at", "DESC")->get();
+        if (!$this->search) {
+            $this->users = User::where("role", "!=", 1)->orderBy("created_at", "DESC")->paginate(10);
+        } else {
+            $this->users = User::orderBy("created_at", "DESC")
+                ->where("role", "!=", 1)
+                ->where(function ($query) {
+                    $query->where("name", "LIKE", '%' . $this->search . '%')
+                        ->orWhere("email", "LIKE", '%' . $this->search . '%');
+                })
+                ->paginate(10);
+        }
     }
 
     public function resetSelectItem()
@@ -80,13 +98,14 @@ class Users extends Component
         );
     }
 
-    public function viewUser($id){
+    public function viewUser($id)
+    {
 
         $this->resetValues();
 
         $user = User::find($id);
 
-        if(!$user){
+        if (!$user) {
             return;
         }
 
@@ -98,7 +117,8 @@ class Users extends Component
         $this->dispatch("openViewModal");
     }
 
-    public function resetValues(){
+    public function resetValues()
+    {
         $this->activeUser = "";
         $this->activeCart = "";
         $this->activeWishes = "";

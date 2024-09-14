@@ -119,7 +119,7 @@
                                         account.</p>
                                 </div>
                             </div>
-                            <button type="submit" class="axil-btn btn-bg-primary checkout-btn">Process to
+                            <button wire:click="pay"  class="axil-btn btn-bg-primary checkout-btn">Process to
                                 Checkout</button>
                         </div>
                     </div>

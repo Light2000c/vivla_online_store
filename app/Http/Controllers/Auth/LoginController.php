@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -51,13 +52,43 @@ class LoginController extends Controller
             return back()->with("error", "User was not able to login.");
         }
 
+        $this->moveCartToDb();
 
         return redirect()->route("home");
     }
+
 
     public function logout()
     {
         Auth::logout();
         return redirect()->route("home");
+    }
+
+    public function moveCartToDb()
+    {
+
+        $carts = session()->get('cart', []);
+
+        if (!empty($carts)) {
+            foreach ($carts as $id => $item) {
+
+                $product = Product::find($id);
+
+                if (!$product) {
+                    continue;
+                }
+
+                if ($product->hasCart(Auth::user())) {
+                    continue;
+                }
+
+                Auth::user()->cart()->create([
+                    'product_id' => $id,
+                    'quantity' => $item['quantity']
+                ]);
+            }
+
+            session()->forget('cart');
+        }
     }
 }

@@ -58,8 +58,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="col-12 col-lg-12 mb-3">
                                     <label for="validationCustom01">Name</label>
-                                    <input wire:model="name" class="form-control" id="validationCustom01"
-                                        type="text" placeholder="Product Name">
+                                    <input wire:model="name" class="form-control" id="validationCustom01" type="text"
+                                        placeholder="Product Name">
                                     @error('name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -96,31 +96,7 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-                                <div class="col-12 col-lg-12 mb-3">
-                                    <label for="validationCustom01">Category</label>
-                                    <select wire:model="category" class="form-select">
-                                        <option selected="" disabled="" value="">Select Category
-                                        </option>
-                                        <option value="shirt">Shirt</option>
-                                        <option value="bag">Bag</option>
-                                        <option value="shoe">Shoe</option>
-                                    </select>
-                                    @error('category')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="col-12 col-lg-12 mb-3">
-                                    <label for="validationCustom01">Category</label>
-                                    <select wire:model="category" class="form-select">
-                                        <option selected="" disabled="" value="">Select Category
-                                        </option>
-                                        <option value="shirt">Shirt</option>
-                                        <option value="bag">Bag</option>
-                                    </select>
-                                    @error('category')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
+
                                 <div class="col-12 col-lg-12 mb-3">
                                     <label for="validationCustom01">Tag (Optional)</label>
                                     <select wire:model="tag" class="form-select" id="validationTooltip04">
@@ -132,13 +108,31 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+                                <div class="col-12 col-lg-12 mb-3">
+                                    <p>Select Product Category</p>
+                                    <hr>
+
+                                    @error('category_error')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+
+
+                                    @foreach ($categories as $category)
+                                        <div class="form-group">
+                                            <input class="form-check-input me-2" wire:model="selectedItems"
+                                                type="checkbox" id="checkbox-{{ $category->id }}"
+                                                value="{{ $category->name }}">
+                                            <label for="">{{ $category->name }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
 
-                            
-                      
+
+
                             <div class="btn-showcase text-end">
                                 <button type="submit" class="btn btn-primary" type="submit">
-                                    <span wire:loading.remove  wire:target="update">Save Changes</span>
+                                    <span wire:loading.remove wire:target="update">Save Changes</span>
                                     <div wire:loading wire:target="update">
                                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                         <span role="status">Loading...</span>
@@ -166,11 +160,11 @@
 
             console.log(data);
 
-             Swal.fire({
-                 title: data.title,
-                 text: data.text,
-                 icon: data.icon,
-             });
+            Swal.fire({
+                title: data.title,
+                text: data.text,
+                icon: data.icon,
+            });
 
 
         });

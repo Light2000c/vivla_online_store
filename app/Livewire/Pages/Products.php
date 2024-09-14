@@ -22,7 +22,8 @@ class Products extends Component
     public $categories;
     public $previousSelected;
     public $selectedCategory = null;
-    public $range;
+    public $price_range;
+    public $hiddenRange;
 
     public function mount() {}
 
@@ -39,21 +40,26 @@ class Products extends Component
     {
 
         if ($this->selectedCategory) {
-            $this->products = Product::where("category", $this->selectedCategory)->orderBy("created_at", "DESC")->paginate(10);
+            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')->orderBy("created_at", "DESC")->paginate(16);
             $this->categories = Category::orderBy("created_at", "DESC")->get();
         } else {
-            $this->products = Product::orderBy("created_at", "DESC")->paginate(10);
+            $this->products = Product::orderBy("created_at", "DESC")->paginate(16);
             $this->categories = Category::orderBy("created_at", "DESC")->get();
         }
     }
 
 
 
+    public function updatedHiddenRange()
+    {
+        // dd($this->hiddenRange);
+    }
 
-    public  function filterProduct()
+
+    public function filterProduct()
     {
         // dd($this->selectedCategory);
-        // dd($this->range);
+        dd($this->hiddenRange);
 
         // return redirect()->route('products', ['category' => $this->selectedCategory]);
 
@@ -63,7 +69,7 @@ class Products extends Component
 
         $this->load();
         $this->previousSelected = $this->selectedCategory;
-        $this->resetPage();
+        // $this->resetPage();
     }
 
 
@@ -109,6 +115,10 @@ class Products extends Component
 
     public function addToWishlist($id)
     {
+
+        if (!Auth::check()) {
+            return redirect()->route("login");
+        }
 
         $product = Product::find($id);
 

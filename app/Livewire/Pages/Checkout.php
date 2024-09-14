@@ -33,4 +33,25 @@ class Checkout extends Component
             return $cart->quantity * $cart->product->price;
         });
     }
+
+    public function pay()
+    {
+
+        $carts = request()->user()->cart()->get();
+
+        if (!$carts) {
+            return $this->showToast("info", "You don't have any product on your cart yet!");
+        }
+
+        return redirect()->route("pay");
+    }
+
+    public function showToast($icon, $title)
+    {
+        $this->dispatch(
+            'message',
+            icon: $icon,
+            title: $title,
+        );
+    }
 }

@@ -23,6 +23,8 @@ class AddProducts extends Component
     public $busy = false;
     public $message = "";
     public $categories;
+    public $selectedItems = [];
+    public $category_error;
 
 
     public function render()
@@ -42,17 +44,28 @@ class AddProducts extends Component
     public function send()
     {
 
+        dd($this->description);
+        $category_error = "";
+
         $this->message = null;
 
         $this->validate([
             "name" => "required|unique:products,name",
             "price" => "required|numeric|min:0",
             "quantity" => "required|numeric|min:0",
-            "category" => "required",
             "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
             "description" => "required",
         ]);
 
+        if (empty($this->selectedItems)) {
+            return $this->addError("category_error", "Please select product categories");
+        }
+
+        // dd($this->selectedItems);
+
+        $this->category = $this->getSelectedCategories();
+
+        // dd($this->category);
 
 
         $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
@@ -84,23 +97,26 @@ class AddProducts extends Component
     }
 
 
-    // public function updated($propertyName)
-    // {
-        
-    //     logger("Updated property: $propertyName");
 
-
-       
-    //     if ($this->hasError($propertyName)) {
-    //         logger("Validation error detected for: $propertyName");
-    //         // Emit a custom event or perform actions if validation error exists
-    //         $this->emit('formErrorsOccurred');
-    //     }
-    // }
 
     public function resetValues()
     {
         $this->reset();
+    }
+
+    public function getSelectedCategories()
+    {
+        $category = "";
+
+        foreach ($this->selectedItems as $index => $item) {
+            if ($category === "") {
+                $category = $item;
+            } else {
+                $category = $category . ',' . $item;
+            }
+        }
+
+        return $category;
     }
 
     public function showAlert($title, $text, $icon)
@@ -114,4 +130,12 @@ class AddProducts extends Component
             redirectUrl: url('/admin/products')
         );
     }
+
+
+    public function setDescription($value)
+    {
+        $this->description = $value;
+    }
+
+ 
 }

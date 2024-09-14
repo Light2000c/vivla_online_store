@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Payment\StripeController;
 use App\Livewire\Admin\AddProducts;
 use App\Livewire\Admin\Address;
 use App\Livewire\Admin\Carts;
@@ -61,6 +62,10 @@ Route::post("register", [RegisterController::class, "store"]);
 Route::get("admin/login", [AdminLoginController::class, "index"])->name("admin-login");
 Route::post("admin/login", [AdminLoginController::class, "login"]);
 
+Route::get("about", About::class)->name("about");
+
+Route::get("contact-us", Contact::class)->name("contact");
+
 
 //Pages Routes
 Route::get("/", Home::class);
@@ -78,21 +83,11 @@ Route::group(["middleware" => "auth"], function () {
 
     Route::get("wishlist", Wishlist::class)->name("wishlist");
 
-    Route::get("about", About::class)->name("about");
-
-    Route::get("contact-us", Contact::class)->name("contact");
-
     Route::get("checkout", Checkout::class)->name("checkout");
 
     //Profile
     Route::get("account", ProfileDashboard::class)->name("dashboard");
 });
-
-
-
-
-
-
 
 
 
@@ -130,3 +125,8 @@ Route::get("admin/transactions", Transactions::class)->name("admin-transaction")
 Route::get("admin/payments", Payments::class)->name("admin-payment");
 
 });
+
+
+//Payment controller
+Route::get('/pay', [StripeController::class, 'index'])->name('pay');
+Route::post('pay-checkout', [StripeController::class, 'checkout']);

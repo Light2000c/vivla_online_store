@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Wishlist;
+use App\Models\Transaction;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,5 +51,9 @@ class User extends Authenticatable
 
     public function address(){
         return $this->hasMany(Address::class);
+    }
+
+    public function transaction(){
+        return $this->hasMany(Transaction::class);
     }
 }

@@ -13,7 +13,10 @@
     <link rel="icon" href="/web1/assets/images/favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="/web1/assets/images/favicon.png" type="image/x-icon">
 
-    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+    {{-- Ck editor script --}}
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+
 
     <title>Dunzo - Premium Admin Template</title>
     <!-- Google font-->
@@ -49,6 +52,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     @livewireStyles
+
+    @stack('scripts')
 </head>
 
 <body>
@@ -106,7 +111,7 @@
                         </li>
                         <li>
                             <div class="form-group w-100">
-                              {{--   <div class="Typeahead Typeahead--twitterUsers">
+                                {{--   <div class="Typeahead Typeahead--twitterUsers">
                                     <div class="u-posRelative d-flex">
                                         <svg class="search-bg svg-color me-2">
                                             <use href="/web1/assets/svg/icon-sprite.svg#fill-search"></use>
@@ -115,7 +120,7 @@
                                             type="text" placeholder="Search Dunzo .." name="q"
                                             title="">
                                     </div> 
-                                </div>--}}
+                                </div> --}}
                             </div>
                         </li>
                         <li class="profile-nav onhover-dropdown p-0">
@@ -129,8 +134,7 @@
                             <ul class="profile-dropdown onhover-show-div">
                                 <li><a href=""><i data-feather="user"></i><span>Account </span></a>
                                 </li>
-                                <li><a href=""><i
-                                            data-feather="settings"></i><span>Settings</span></a></li>
+                                <li><a href=""><i data-feather="settings"></i><span>Settings</span></a></li>
                                 <li><a href=""><i data-feather="log-in"> </i><span>Log in</span></a></li>
                             </ul>
                         </li>
@@ -294,6 +298,9 @@
     </div>
 
     @livewireScripts
+
+    @stack('scripts')
+
     <!-- latest jquery-->
     <script src="/web1/assets/js/jquery.min.js"></script>
     <!-- Bootstrap js-->
@@ -341,48 +348,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {{-- <script>
-        CKEDITOR.replace('editor');
-    </script> --}}
-
-
-    <script defer>
-        function initializeCKEditor() {
-            console.log('Initializing CKEditor...'); // Debugging log
-
-            const editorElement = document.getElementById('editor');
-            if (editorElement) {
-                console.log('Textarea with ID "editor" found.'); // Debugging log
-
-                // Destroy existing CKEditor instance if it exists
-                if (CKEDITOR.instances['editor']) {
-                    console.log('Destroying existing CKEditor instance.'); // Debugging log
-                    CKEDITOR.instances['editor'].destroy(true);
-                }
-
-                // Initialize CKEditor on the textarea
-                CKEDITOR.replace('editor');
-            } else {
-                console.log('Textarea with ID "editor" not found.'); // Debugging log
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeCKEditor(); // Initialize CKEditor on initial page load
-
-            Livewire.hook('message.processed', (message, component) => {
-                console.log('Livewire DOM updated. Checking for textarea...'); // Debugging log
-                setTimeout(() => {
-                    initializeCKEditor(); // Re-initialize CKEditor after Livewire DOM updates
-                }, 100); // 100 milliseconds delay to ensure DOM is fully updated
-            });
-
-            Livewire.on('formErrorsOccurred', () => {
-                console.log('Form errors occurred. Handling in JavaScript.'); // Debugging log
-                // Handle specific actions or reinitialize CKEditor here
-                initializeCKEditor();
-            });
-        });
+    <script>
+        CKEDITOR.replace('editor', {versionCheck: false});
     </script>
 
 

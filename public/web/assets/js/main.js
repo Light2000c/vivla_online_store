@@ -55,6 +55,7 @@
             this._window.on('load', axilInit.l).on('scroll', axilInit.res)
         },
 
+
         contactForm: function () {
             $('.axil-contact-form').on('submit', function (e) {
                 e.preventDefault();
@@ -210,12 +211,36 @@
                 values: [0, 3000],
                 slide: function (event, ui) {
                     $('#amount').val('$' + ui.values[0] + '  $' + ui.values[1]);
+                    $('#hidden-price-range').val(ui.values[0] + ',' + ui.values[1]);
+
+                    document.getElementById('hidden-price-range').dispatchEvent(new Event('input'));
                 }
             });
-            $('#amount').val('$' + $('#slider-range').slider('values', 0) +
-                '  $' + $('#slider-range').slider('values', 1));
 
+
+            $('#amount').val('$' + $('#slider-range').slider('values', 0) + '  $' + $('#slider-range').slider('values', 1));
+            $('#hidden-price-range').val($('#slider-range').slider('values', 0) + ',' + $('#slider-range').slider('values', 1));
+
+            // document.getElementById('hidden-price-range').dispatchEvent(new Event('input'));
         },
+
+        // priceRangeSlider: function (e) {
+        //     $('#slider-range').slider({
+        //         range: true,
+        //         min: 0,
+        //         max: 5000,
+        //         values: [0, 3000],
+        //         slide: function (event, ui) {
+        //             $('#amount').val('$' + ui.values[0] + '  $' + ui.values[1]);
+        //         }
+        //     });
+        //     $('#amount').val('$' + $('#slider-range').slider('values', 0) +
+        //         '  $' + $('#slider-range').slider('values', 1));
+
+        //     // $('#hidden-price-range').val($('#slider-range').slider('values', 0) + ',' + $('#slider-range').slider('values', 1));
+        //     $('#hidden-price-range').attr('value', 'good');
+        // },
+
 
         // quantityRanger: function() {
         //     $('.pro-qty').prepend('<span class="dec qtybtn">-</span>');
@@ -259,7 +284,7 @@
         //     });
         // },
 
-        
+
 
 
 

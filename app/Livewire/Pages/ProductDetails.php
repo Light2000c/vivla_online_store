@@ -48,6 +48,7 @@ class ProductDetails extends Component
 
 
         if ($cart) {
+            // $this->emit('triggerShowActive');
             return $this->dispatch('cartUpdated');
         }
     }
@@ -295,4 +296,6 @@ class ProductDetails extends Component
         $sessionCart = session()->get('cart', []);
         return array_key_exists($productId, $sessionCart);
     }
+
+    
 }

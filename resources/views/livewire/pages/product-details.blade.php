@@ -1,6 +1,6 @@
 <main class="main-wrapper">
     <!-- Start Breadcrumb Area  -->
-    <div class="axil-breadcrumb-area">
+    <div class="axil-breadcrumb-area dark-bg">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-8">
@@ -12,13 +12,13 @@
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active">{{ $product->name }}</li>
                         </ul>
-                        {{-- <h1 class="title">{{ $product->name }}</h1> --}}
+                        <h1 class="title">{{ $product->name }}</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-4">
                     <div class="inner">
                         {{-- <div class="bradcrumb-thumb">
-                                    <img src="assets/images/product/product-45.png" alt="Image">
+                                    <img src="/web/assets/images/product/product-45.png" alt="Image">
                                 </div> --}}
                     </div>
                 </div>
@@ -28,7 +28,7 @@
     <!-- End Breadcrumb Area  -->
 
     <!-- Start Shop Area  -->
-    <div class="axil-single-product-area axil-section-gap pb--0 bg-color-white">
+    <div wire:ignore.self class="axil-single-product-area axil-section-gap pb--0 bg-color-white">
         <div class="single-product-thumb mb--40">
             <div class="container">
                 <div class="row">
@@ -66,7 +66,7 @@
                                         <span
                                             class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
                                         <span class="price old-price">${{ number_format($product->price) }}</span>
-                                        <span class="offer-badge">20% OFF</span>
+                                        {{-- <span class="offer-badge">20% OFF</span> --}}
                                     </div>
                                 @else
                                     <div class="price-amount price-offer-amount">
@@ -508,8 +508,8 @@
                     Recently</span>
                 <h2 class="title">Viewed Items</h2>
             </div>
-            <div class="recent-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
-                <!-- Beginning of .slick-single-layout -->
+            <div wire:ignore class="recent-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
+
                 @foreach ($related_products as $related)
                     <div class="slick-single-layout">
                         <div class="axil-product product-style-one mb--30 border p-3">
@@ -617,11 +617,12 @@
                         </div>
                     </div>
                 @endforeach
-                <!-- End .slick-single-layout -->
+    
             </div>
         </div>
     </div>
     <!-- End Recently Viewed Product Area  -->
+
 
     <!-- Start Axil Newsletter Area  -->
     <div class="axil-newsletter-area axil-section-gap pt--0">
@@ -642,6 +643,8 @@
         </div>
         <!-- End .container -->
     </div>
+
+   
     <script>
         window.addEventListener('message', function(e) {
 
@@ -665,4 +668,11 @@
 
         });
     </script>
+
+    @push('scripts')
+
+    <script src="/personal/personal.js"></script>
+    @endpush
+    {{-- @stack('scripts') --}}
 </main>
+

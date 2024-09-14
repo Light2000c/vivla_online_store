@@ -1,7 +1,7 @@
 <div>
     <div class="row d-flex justify-content-end  mb-5">
         <div class="col-3">
-            <button wire:click="openCreateModal" class="btn btn-outline-primary">
+            <button wire:click="openCreateModal" class="btn btn-lg" style="background-color: #d6b446;">
                 <i class="bi bi-plus"></i> New
             </button>
         </div>
@@ -13,7 +13,7 @@
                     <div class="addrss-header d-flex align-items-center justify-content-between m-3">
                         {{-- <h5 class="title mb-0">Address {{ $loop->index + 1 }}</h5> --}}
                         <div class="col-3">
-                            <button wire:click="setAsDefault({{ $address->id }})" class="btn btn-outline-primary"
+                            <button wire:click="setAsDefault({{ $address->id }})" class="btn btn-outline-primary btn-lg"
                                 @disabled($address->active === 1)>
                                 <span wire:loading.remove wire:target="setAsDefault({{ $address->id }})">Set as
                                     Default</span>
@@ -74,7 +74,7 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Address</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body m-3">
+                <div class="modal-body m-3" style="padding-top: 30px; padding-bottom: 30px;">
                     <div class="axil-dashboard-account">
                         <form wire:submit="send" class="account-details-form">
                             <div class="row">
@@ -153,7 +153,7 @@
 
                                 <div class="col-12">
                                     <div class="form-group mb--0">
-                                        <button type="submit" class="btn btn-primary" value="">
+                                        <button type="submit" class="btn btn-lg" value="" style="background-color: #d6b446;">
                                             <span wire:loading.remove wire:target="send">Save</span>
                                             <span wire:loading wire:target="send"
                                                 class="spinner-border spinner-border-sm" role="status"

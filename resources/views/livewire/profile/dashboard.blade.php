@@ -123,13 +123,13 @@
                                 </div>
                                 <div class="tab-pane fade" id="nav-address" role="tabpanel">
                                     <div class="axil-dashboard-address">
-                                        <p class="notice-text">The following addresses will be used on the checkout page by default.</p>
+                                        <p class="notice-text">The following addresses will be used on the checkout page by default. You can select different billing or shipping addresses during checkout or update them in your account settings if needed.</p>
                                          <livewire:components.address />
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-account" role="tabpanel">
                                     <div class="col-lg-9">
-                                        <p class="notice-text">The following info.</p>
+                                        <p class="notice-text">Update your personal information, including your name, email, and other details. Keep your profile up-to-date to ensure accurate communication and seamless service.</p>
                                         <livewire:components.account-details />
                                     </div>
                                 </div>

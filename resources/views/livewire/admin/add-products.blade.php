@@ -36,98 +36,126 @@
 
                          <form class="row" wire:submit.prevent="send">
                              <div class="col-sm-12">
-                                 <div class="row mt-3">
-                                     <div class="col-12 col-lg-6 mb-3">
-                                         <label for="validationCustom01">Name</label>
-                                         <input wire:model="name" class="form-control" id="validationCustom01"
-                                             type="text" placeholder="Product Name">
-                                         @error('name')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
+                                 <div class="row">
+                                     <div class="col-sm-12 col-lg-8">
+                                         <div class="row mt-3">
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Name</label>
+                                                 <input wire:model="name" class="form-control" id="validationCustom01"
+                                                     type="text" placeholder="Product Name">
+                                                 @error('name')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Price</label>
+                                                 <input wire:model="price" class="form-control" id="validationCustom01"
+                                                     type="number" placeholder="Product Price">
+                                                 @error('price')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                         </div>
+                                         <div class="row mt-3">
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Quantity</label>
+                                                 <input wire:model="quantity" class="form-control"
+                                                     id="validationCustom01" type="number" placeholder="Quantity">
+                                                 @error('quantity')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Discount(Optional)</label>
+                                                 <input wire:model="discount" class="form-control"
+                                                     id="validationCustom01" type="number" placeholder="Discount">
+                                                 @error('discount')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Brand (Optional)</label>
+                                                 <input wire:model="brand" class="form-control" id="validationCustom01"
+                                                     type="text" placeholder="Product Brand">
+                                                 @error('brand')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             {{-- <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Category</label>
+                                                 <select wire:model="category" class="form-select">
+                                                     <option selected="" disabled="" value="">Select
+                                                         Category
+                                                     </option>
+                                                     @foreach ($categories as $category)
+                                                         <option value="{{ $category->name }}">{{ $category->name }}
+                                                         </option>
+                                                     @endforeach
+                                                 </select>
+                                                 @error('category')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div> --}}
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Tag (Optional)</label>
+                                                 <select wire:model="tag" class="form-select" id="validationTooltip04">
+                                                     <option selected="" value="">Select Product Tag</option>
+                                                     <option value="new">New</option>
+                                                     <option value="fresh">Fresh</option>
+                                                 </select>
+                                                 @error('tag')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             <div class="col-12 col-lg-6 mb-3">
+                                                 <label for="validationCustom01">Image</label>
+                                                 <input wire:model="image" class="form-control" type="file"
+                                                     placeholder="Product Name">
+                                                 @error('image')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                             {{-- <div class="col-12 mb-3">
+                                                 <label class="form-label"
+                                                     for="exampleFormControlTextarea1">Description</label>
+                                                 <textarea wire:model="description" class="form-control" id="" rows="4"></textarea>
+                                                 @error('description')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div> --}}
+                                             {{-- ck editor --}}
+                                             <div class="col-12 mb-3">
+                                                 <div wire:ignore>
+                                                     <label class="form-label"
+                                                         for="exampleFormControlTextarea1">Description</label>
+                                                     <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
+                                                 </div>
+                                                 @error('description')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div>
+                                         </div>
                                      </div>
-                                     <div class="col-12 col-lg-6 mb-3">
-                                         <label for="validationCustom01">Price</label>
-                                         <input wire:model="price" class="form-control" id="validationCustom01"
-                                             type="number" placeholder="Product Price">
-                                         @error('price')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                 </div>
-                                 <div class="row mt-3">
-                                     <div class="col-12 col-lg-4 mb-3">
-                                         <label for="validationCustom01">Quantity</label>
-                                         <input wire:model="quantity" class="form-control" id="validationCustom01"
-                                             type="number" placeholder="Quantity">
-                                         @error('quantity')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     <div class="col-12 col-lg-4 mb-3">
-                                         <label for="validationCustom01">Discount(Optional)</label>
-                                         <input wire:model="discount" class="form-control" id="validationCustom01"
-                                             type="number" placeholder="Discount">
-                                         @error('discount')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     <div class="col-12 col-lg-4 mb-3">
-                                         <label for="validationCustom01">Brand (Optional)</label>
-                                         <input wire:model="brand" class="form-control" id="validationCustom01"
-                                             type="text" placeholder="Product Name">
-                                         @error('price')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     <div class="col-12 col-lg-6 mb-3">
-                                         <label for="validationCustom01">Category</label>
-                                         <select wire:model="category" class="form-select">
-                                             <option selected="" disabled="" value="">Select Category
-                                             </option>
+                                     <div class="col-sm-12 col-lg-4">
+                                         <div>
+                                             <p>Select Product Category</p>
+                                             <hr>
+
+                                             @error('category_error')
+                                                 <small class="text-danger">{{ $message }}</small>
+                                             @enderror
+
+
                                              @foreach ($categories as $category)
-                                                 <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                                 <div class="form-group">
+                                                     <input class="form-check-input me-2" wire:model="selectedItems"
+                                                         type="checkbox" id="checkbox-{{ $category->id }}"
+                                                         value="{{ $category->name }}">
+                                                     <label for="">{{ $category->name }}</label>
+                                                 </div>
                                              @endforeach
-                                             {{-- <option value="bag">Bag</option>
-                                             <option value="shoe">Shoe</option> --}}
-                                         </select>
-                                         @error('category')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
+                                         </div>
                                      </div>
-                                     <div class="col-12 col-lg-6 mb-3">
-                                         <label for="validationCustom01">Tag (Optional)</label>
-                                         <select wire:model="tag" class="form-select" id="validationTooltip04">
-                                             <option selected="" value="">Select Product Tag</option>
-                                             <option value="new">New</option>
-                                             <option value="fresh">Fresh</option>
-                                         </select>
-                                         @error('tag')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     <div class="col-12 col-lg-6 mb-3">
-                                         <label for="validationCustom01">Image</label>
-                                         <input wire:model="image" class="form-control" type="file"
-                                             placeholder="Product Name">
-                                         @error('image')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     <div class="col-12 mb-3">
-                                         <label class="form-label" for="exampleFormControlTextarea1">Description</label>
-                                         <textarea wire:model="description" class="form-control" id="" rows="4"></textarea>
-                                         @error('description')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div>
-                                     {{-- ck editor --}}
-                                     {{-- <div class="col-12 mb-3">
-                                         <label class="form-label" for="exampleFormControlTextarea1">Description</label>
-                                         <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
-                                         @error('description')
-                                             <small class="text-danger">{{ $message }}</small>
-                                         @enderror
-                                     </div> --}}
                                  </div>
                              </div>
                              <div class="btn-showcase text-end">
@@ -182,4 +210,35 @@
 
          });
      </script>
+
+     @push('scripts')
+         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+         <script>
+             document.addEventListener('livewire:load', function() {
+                 var editor = CKEDITOR.replace('editor', {
+                     versionCheck: false
+                 });
+
+                 // Ensure Livewire gets the correct data when CKEditor is ready and when content changes
+                 editor.on('instanceReady', function() {
+                     console.log('CKEditor instance ready!'); // Debugging log
+                     editor.setData(@this.get('description')); // Set initial Livewire content to CKEditor
+                 });
+
+                 // Update Livewire property on content change
+                 editor.on('change', function() {
+                     console.log('CKEditor content changed!'); // Debugging log
+                     @this.set('description', editor.getData()); // Sync CKEditor content with Livewire
+                 });
+
+                 // Handle other events (e.g., blur, key events)
+                 editor.on('blur', function() {
+                     console.log('CKEditor blur event!'); // Debugging log
+                     @this.set('description', editor.getData()); // Sync on blur as well for better experience
+                 });
+             });
+         </script>
+     @endpush
+
+      @stack('scripts')
  </div>

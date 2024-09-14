@@ -63,7 +63,7 @@
                                                     value="{{ $product->id }}">
                                             </th>
                                             <th scope="row">{{ $product->id }}</th>
-                                            <td>{{ Str::words($product->name, 8) }}</td>
+                                            <td>{{ Str::words($product->name, 6) }}</td>
                                             <td>{{ number_format($product->price) }}</td>
                                             <td>{{ $product->discount }}</td>
                                             <td>{{ $product->brand }}</td>
@@ -71,7 +71,7 @@
                                             <td>{{ $product->tag }}</td>
                                             <td> <img class="img-30 me-2" src="/storage/products/{{$product->image}}"
                                                     alt="No Image"></td>
-                                            <td>{{ Str::words($product->description, 8) }}</td>
+                                            <td>{{ Str::words($product->description, 6) }}</td>
                                             <td>{{ $product->created_at }}</td>
                                             <td>{{ $product->updated_at }}</td>
                                             <td>

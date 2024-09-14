@@ -1,12 +1,12 @@
 <main class="main-wrapper">
     <!-- Start Breadcrumb Area  -->
-    <div class="axil-breadcrumb-area">
+    <div class="axil-breadcrumb-area dark-bg">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="axil-breadcrumb-item"><a href="index.html" class="text-dark">Home</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active" aria-current="page">Shop</li>
                         </ul>
@@ -15,9 +15,9 @@
                 </div>
                 <div class="col-lg-6 col-md-4">
                     <div class="inner">
-                        <div class="bradcrumb-thumb">
+                        {{-- <div class="bradcrumb-thumb">
                             <img src="/web/assets/images/product/product-45.png" alt="Image">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -38,167 +38,198 @@
                             <h6 class="title">CATEGORIES</h6>
                             <div class="shop-submenu">
                                 <ul class="form-check">
-                                    @foreach ($categories as $index => $category)
-                                    <label class="con1"><span>{{ $category->name }}</span>
-                                        <input wire:model.defer="selectedCategory" type="radio" name="radio1" value="{{ $category->name }}" wire:key="category-{{ $index }}">
+                                    <label class="con1 text-capitalize"><span>All Product</span>
+                                        <input wire:model.defer="selectedCategory" type="radio" name="radio1"
+                                            value="" wire:key="category-">
                                         <span class="checkmark"></span>
-                                      </label>
+                                    </label>
+                                    @foreach ($categories as $index => $category)
+                                        <label class="con1 text-capitalize"><span>{{ $category->name }}</span>
+                                            <input wire:model.defer="selectedCategory" type="radio" name="radio1"
+                                                value="{{ $category->name }}" wire:key="category-{{ $index }}">
+                                            <span class="checkmark"></span>
+                                        </label>
                                     @endforeach
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="toggle-list product-price-range active">
+                        <div  class="toggle-list product-price-range active">
                             <h6 class="title">PRICE RANGE</h6>
-                            <div class="shop-submenu">
-                                {{-- <ul>
-                                    <li class="chosen"><a href="#">30</a></li>
-                                    <li><a href="#">5000</a></li>
-                                </ul> --}}
-                                <form  class="mt--25">
-                                    <div id="slider-range"></div>
-                                    <div class="flex-center mt--20">
-                                        <span class="input-range">Price: </span>
-                                        <input wire:model="range"  type="text" id="amount" class="amount-range" >
-                                    </div>
-                                </form>
+                            <div wire:ignore class="shop-submenu">
+                                <div  id="slider-range"></div>
+                                <div  class="flex-center mt--20">
+                                    <span  class="input-range">Price: </span>
+                                    <input wire:model.lazy="price_range" type="text" id="amount"
+                                        class="amount-range">
+                                    <input  type="hidden" wire:model.lazy="hiddenRange" id="hidden-price-range">
+                                </div>
                             </div>
                         </div>
-                        <button wire:click.prevent="filterProduct" class="axil-btn btn-bg-primary">Filter</button>
+                        {{-- <button wire:click.prevent="filterProduct" class="axil-btn btn-bg-primary">Filter</button> --}}
+                        <button wire:click.prevent="filterProduct" class="axil-btn"
+                            style="background-color: #DCC168;">Filter</button>
                     </div>
                     <!-- End .axil-shop-sidebar -->
                 </div>
                 <div class="col-lg-9">
                     <!-- End .row -->
-                    <div class="row row--15">
-                        @foreach ($products as $index => $product)
-                            <div class="col-xl-4 col-sm-6" wire:key="product-{{ $index }}">
-                                {{-- <livewire:components.product-item :product="$product"  /> --}}
-                                <div class="axil-product product-style-one mb--30 border p-3">
-                                    <div class="thumbnail">
-                                        <a>
-                                            {{-- <img src="/storage/products/{{ $product->image }}" alt="Product Images"> --}}
-                                            <img src="/web/assets/images/product/fashion/product-13.png" alt="Product Images">
-                                        </a>
-                                        @if ($product->discount)
-                                            <div class="label-block label-right">
-                                                <div class="product-badget">{{ $product->discount }}% OFF</div>
+                    @if ($products->count())
+                        <div class="row row--15">
+                            @foreach ($products as $index => $product)
+                                <div class="col-xl-3 col-sm-6" wire:key="product-{{ $index }}">
+                                    {{-- <livewire:components.product-item :product="$product"  /> --}}
+                                    <div class="axil-product  product-style-one mb--30">
+                                        {{-- <div class="axil-product  product-style-one mb--30 border p-3"> --}}
+                                        <div class="thumbnail border p-3">
+                                            <a>
+                                                <img class="shop-image" src="/storage/products/{{ $product->image }}"
+                                                    alt="Product Images">
+                                            </a>
+                                            @if ($product->discount)
+                                                <div class="label-block label-right">
+                                                    <div class="product-badget">{{ $product->discount }}% OFF</div>
+                                                </div>
+                                            @endif
+                                            <div class="product-hover-action">
+
+                                                @if (!Auth::user())
+                                                    <ul class="cart-action">
+                                                        <li class="wishlist"><a
+                                                                wire:click="addToWishlist({{ $product->id }})"><i
+                                                                    class="far fa-heart"></i></a></li>
+                                                        <li class="select-option">
+                                                            @if ($this->isInCart($product->id))
+                                                                <a class="btn"
+                                                                    wire:click="removeFromSessionCart({{ $product->id }})">
+                                                                    <span wire:loading.remove
+                                                                        wire:target="removeFromSessionCart({{ $product->id }})"><i
+                                                                            class="bi bi-cart"></i> Remove</span>
+                                                                    <span wire:loading
+                                                                        wire:target="removeFromSessionCart({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @else
+                                                                <a class="btn"
+                                                                    wire:click="addToSessionCart({{ $product->id }})">
+                                                                    <span wire:loading.remove
+                                                                        wire:target="addToSessionCart({{ $product->id }})"><i
+                                                                            class="bi bi-cart"></i> Add</span>
+                                                                    <span wire:loading
+                                                                        wire:target="addToSessionCart({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @endif
+                                                        </li>
+                                                        <li class="quickview"><a
+                                                                href="{{ route('product-detail', $product->id) }}">
+                                                                <i class="far fa-eye"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                @else
+                                                    <ul class="cart-action">
+                                                        <li class="wishlist">
+                                                            @if ($product->hasWish(Auth::user()))
+                                                                <a wire:click="removeFromWishlist({{ $product->id }})"
+                                                                    class="btn">
+                                                                    <i wire:loading.remove
+                                                                        wire:target="removeFromWishlist({{ $product->id }})"
+                                                                        class="far fa-heart text-danger"></i>
+                                                                    <span wire:loading
+                                                                        wire:target="removeFromWishlist({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @else
+                                                                <a wire:click="addToWishlist({{ $product->id }})"
+                                                                    class="btn">
+                                                                    <i wire:loading.remove
+                                                                        wire:target="addToWishlist({{ $product->id }})"
+                                                                        class="far fa-heart"></i>
+                                                                    <span wire:loading
+                                                                        wire:target="addToWishlist({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @endif
+                                                        </li>
+                                                        <li class="select-option">
+                                                            @if ($product->hasCart(Auth::user()))
+                                                                <a class="btn"
+                                                                    wire:click="removeFromCart({{ $product->id }})">
+                                                                    <span wire:loading.remove
+                                                                        wire:target="removeFromCart({{ $product->id }})">
+                                                                        <i class="bi bi-cart"></i> Remove</span>
+                                                                    <span wire:loading
+                                                                        wire:target="removeFromCart({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @else
+                                                                <a class="btn"
+                                                                    wire:click="addToCart({{ $product->id }})">
+                                                                    <span wire:loading.remove
+                                                                        wire:target="addToCart({{ $product->id }})">
+                                                                        <i class="bi bi-cart"></i> Add</span>
+                                                                    <span wire:loading
+                                                                        wire:target="addToCart({{ $product->id }})"
+                                                                        class="spinner-border spinner-border-sm"
+                                                                        aria-hidden="true"></span>
+                                                                </a>
+                                                            @endif
+                                                        </li>
+                                                        <li class="quickview"><a
+                                                                href="{{ route('product-detail', $product->id) }}"><i
+                                                                    class="far fa-eye"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                @endif
                                             </div>
-                                        @endif
-                                        <div class="product-hover-action">
-                            
-                                            @if (!Auth::user())
-                                                <ul class="cart-action">
-                                                    <li class="wishlist"><a href="wishlist.html"><i
-                                                                class="far fa-heart"></i></a></li>
-                                                    <li class="select-option">
-                                                        @if($this->isInCart($product->id))
-                                                        <a wire:click="removeFromSessionCart({{ $product->id }})">Remove from Cart</a>
-                                                        @else
-                                                        <a wire:click="addToSessionCart({{ $product->id }})">Add to Cart</a>
-                                                        @endif
-                                                    </li>
-                                                    <li class="quickview"><a href="{{ route("product-detail", $product->id) }}" data-bs-toggle="modal"
-                                                            data-bs-target="#quick-view-modal"><i
-                                                                class="far fa-eye"></i></a>
-                                                    </li>
-                                                </ul>
+                                        </div>
+                                        <div class="product-content">
+                                            @if ($product->discount)
+                                                <div class="inner">
+                                                    <h5 class="title"><a
+                                                            href="{{ route('product-detail', $product->id) }}">{{ $product->name }}</a>
+                                                    </h5>
+                                                    <div class="product-price-variant">
+                                                        <span
+                                                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
+                                                        <span
+                                                            class="price old-price">${{ number_format($product->price) }}</span>
+                                                    </div>
+                                                </div>
                                             @else
-                                                <ul class="cart-action">
-                                                    <li class="wishlist">
-                                                        @if ($product->hasWish(Auth::user()))
-                                                            <a wire:click="removeFromWishlist({{ $product->id }})"
-                                                                class="btn">
-                                                                <i wire:loading.remove
-                                                                    wire:target="removeFromWishlist({{ $product->id }})"
-                                                                    class="far fa-heart text-danger"></i>
-                                                                <span wire:loading
-                                                                    wire:target="removeFromWishlist({{ $product->id }})"
-                                                                    class="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"></span>
-                                                            </a>
-                                                        @else
-                                                            <a wire:click="addToWishlist({{ $product->id }})"
-                                                                class="btn">
-                                                                <i wire:loading.remove
-                                                                    wire:target="addToWishlist({{ $product->id }})"
-                                                                    class="far fa-heart"></i>
-                                                                <span wire:loading
-                                                                    wire:target="addToWishlist({{ $product->id }})"
-                                                                    class="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"></span>
-                                                            </a>
-                                                        @endif
-                                                    </li>
-                                                    <li class="select-option">
-                                                        @if ($product->hasCart(Auth::user()))
-                                                            <a class="btn"
-                                                                wire:click="removeFromCart({{ $product->id }})">
-                                                                <span wire:loading.remove
-                                                                    wire:target="removeFromCart({{ $product->id }})">Remove
-                                                                    from Cart</span>
-                                                                <span wire:loading
-                                                                    wire:target="removeFromCart({{ $product->id }})"
-                                                                    class="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"></span>
-                                                            </a>
-                                                        @else
-                                                            <a class="btn"
-                                                                wire:click="addToCart({{ $product->id }})">
-                                                                <span wire:loading.remove
-                                                                    wire:target="addToCart({{ $product->id }})">Add
-                                                                    to
-                                                                    Cart</span>
-                                                                <span wire:loading
-                                                                    wire:target="addToCart({{ $product->id }})"
-                                                                    class="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"></span>
-                                                            </a>
-                                                        @endif
-                                                    </li>
-                                                    <li class="quickview"><a href="{{ route("product-detail", $product->id) }}" ><i
-                                                                class="far fa-eye"></i></a>
-                                                    </li>
-                                                </ul>
+                                                <div class="inner">
+                                                    <h5 class="title"><a
+                                                            href="{{ route('product-detail', $product->id) }}">{{ $product->name }}</a>
+                                                    </h5>
+                                                    <div class="product-price-variant">
+                                                        <span
+                                                            class="price current-price">${{ number_format($product->price) }}</span>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="product-content">
-                                        @if ($product->discount)
-                                            <div class="inner">
-                                                <h5 class="title"><a
-                                                        href="{{ route("product-detail", $product->id) }}">{{ $product->name }}</a>
-                                                </h5>
-                                                <div class="product-price-variant">
-                                                    <span
-                                                        class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
-                                                    <span
-                                                        class="price old-price">${{ number_format($product->price) }}</span>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="inner">
-                                                <h5 class="title"><a
-                                                        href="{{ route("product-detail", $product->id) }}">{{ $product->name }}</a>
-                                                </h5>
-                                                <div class="product-price-variant">
-                                                    <span
-                                                        class="price current-price">${{ number_format($product->price) }}</span>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </div>
+
+
+
+
                                 </div>
-                            
-                            
-                            
-                            
-                            </div>
-                        @endforeach
-                        <!-- End Single Product  -->
-                    </div>
+                            @endforeach
+                            <!-- End Single Product  -->
+                        </div>
+                    @else
+                        <div class="alert alert-secondary" role="alert">
+                            No Product To Show Yet!
+                        </div>
+                    @endif
                     <div class="text-center pt--20">
-                         {{ $products->withQueryString()->links() }} 
+                        {{ $products->withQueryString()->links() }}
                     </div>
                 </div>
             </div>

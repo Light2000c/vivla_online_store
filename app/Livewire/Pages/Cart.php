@@ -42,6 +42,12 @@ class Cart extends Component
         } else {
             $sessionCarts = session()->get('cart', []);
             $this->carts = collect($sessionCarts)->map(function ($item, $id) {
+
+                $product = Product::find($id);
+
+                if(!$product){
+                  return null;  
+                }
                 return (object) [
                     'id' => $id,
                     'product' => (object) [
@@ -50,6 +56,23 @@ class Cart extends Component
                     ],
                     'quantity' => $item['quantity'],
                 ];
+            })->filter();
+
+            $this->subTotal = collect($sessionCarts)->sum(function ($item) {
+
+                $product = Product::find($item['product_id']); // Assume 'id' is part of the $item array
+            
+                if(!$product){
+                  return 0;  // Return 0 for invalid products
+                }
+            
+                // Calculate based on discount if available
+                if($product->discount){
+                    return $item['quantity'] * ($product->price - ($product->price * $product->discount / 100));
+                }else{
+                    return $item['quantity'] * $product->price;
+                }
+            
             });
         }
     }

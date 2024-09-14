@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -25,12 +26,16 @@ class EditProduct extends Component
     public $busy = false;
     public $message = "";
     public $display_image;
+    public $categories;
+    public $selectedItems = [];
+    public $category_error;
 
     public $rules = [];
 
     public function mount($id)
     {
         $this->id = $id;
+        $this->load();
         $this->product = Product::find($id);
         $this->setData();
     }
@@ -41,6 +46,11 @@ class EditProduct extends Component
         return view('livewire.admin.edit-product', [
             "product" => $this->product,
         ])->layout("layouts.admin.app");
+    }
+
+    public function load()
+    {
+        $this->categories = Category::get();
     }
 
     public function reload()
@@ -63,10 +73,14 @@ class EditProduct extends Component
         $this->category = $this->product->category;
         $this->description = $this->product->description;
         $this->display_image = $this->product->image;
+
+        $this->setSelectedItems($this->category);
     }
 
     public function update()
     {
+
+        $this->category_error = "";
 
         $product = Product::find($this->id);
 
@@ -83,6 +97,17 @@ class EditProduct extends Component
                 "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
                 "description" => "required",
             ]);
+
+            if (empty($this->selectedItems)) {
+                return $this->addError("category_error", "Please select product categories");
+            }
+
+            // dd($this->selectedItems);
+
+            $this->category = $this->getSelectedCategories();
+
+            // dd($this->category);
+
 
             $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
 
@@ -119,6 +144,17 @@ class EditProduct extends Component
                 "description" => "required",
             ]);
 
+            if (empty($this->selectedItems)) {
+                return $this->addError("category_error", "Please select product categories");
+            }
+
+            // dd($this->selectedItems);
+
+            $this->category = $this->getSelectedCategories();
+
+            // dd($this->category);
+
+
 
             $update = $product->update([
                 "name" => $this->name,
@@ -138,6 +174,32 @@ class EditProduct extends Component
             $this->reload();
             return $this->showAlert("Success", "Product has been successfully updated", "success");
         }
+    }
+
+    public function getSelectedCategories()
+    {
+        $category = "";
+
+        foreach ($this->selectedItems as $index => $item) {
+            if ($category === "") {
+                $category = $item;
+            } else {
+                $category = $category . ',' . $item;
+            }
+        }
+
+        return $category;
+    }
+
+    public function setSelectedItems($categories)
+    {
+
+        $storedCategories = $categories; // Example string from the database.
+
+        // Split the string into an array.
+        $this->selectedItems = explode(',', $storedCategories);
+
+        // dd($this->selectedItems);
     }
 
 

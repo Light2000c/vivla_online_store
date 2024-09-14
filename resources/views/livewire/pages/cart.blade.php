@@ -1,4 +1,29 @@
 <main class="main-wrapper">
+     <!-- Start Breadcrumb Area  -->
+     <div class="axil-breadcrumb-area dark-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="inner">
+                        <ul class="axil-breadcrumb">
+                            <li class="axil-breadcrumb-item"><a href="index.html" class="text-dark">Home</a></li>
+                            <li class="separator"></li>
+                            <li class="axil-breadcrumb-item active" aria-current="page">Wishlist</li>
+                        </ul>
+                        <h1 class="title">All Carts</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4">
+                    <div class="inner">
+                        {{-- <div class="bradcrumb-thumb">
+                            <img src="/web/assets/images/product/product-45.png" alt="Image">
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Area  -->
 
     <!-- Start Cart Area  -->
     <div class="axil-product-cart-area axil-section-gap">
@@ -8,6 +33,7 @@
                     <h4 class="title">Your Cart</h4>
                     <a href="#" class="cart-clear">Clear Shoping Cart</a>
                 </div>
+               
                 <div class="table-responsive">
                     <table class="table axil-product-table axil-cart-table mb--40">
                         <thead>
@@ -20,6 +46,7 @@
                                 <th scope="col" class="product-subtotal">Subtotal</th>
                             </tr>
                         </thead>
+                        @if($carts->count())
                         <tbody>
                             @if (Auth::user())
                                 @foreach ($carts as $index => $cart)
@@ -118,8 +145,14 @@
                             @endforeach
                             @endif
                         </tbody>
+                        @else
+                        <div class="alert alert-secondary" role="alert">
+                            No Cart To Show Yet! <a href="" class="ms-3 text-primary">Go to Shop >></a>
+                          </div>
+                        @endif
                     </table>
                 </div>
+          
  
                 <div class="row">
                     <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">

@@ -30,6 +30,9 @@
 
     @livewireStyles
 
+    @stack('scripts')
+
+
 </head>
 
 
@@ -39,7 +42,7 @@
 <![endif]-->
     <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
     <!-- Start Header -->
-    <header class="header axil-header header-style-5">
+    <header class="header axil-header header-style-7">
         <div class="axil-header-top">
             <div class="container">
                 <div class="row align-items-center">
@@ -107,19 +110,28 @@
                                 </a>
                             </div>
                             <ul class="mainmenu">
-                                <li><a href="{{ route('home') }}">Home</a></li>
-                                {{-- <li class="menu-item-has-children">
-                                    <a href="{{ route("shop") }}">Shop</a>
-                                       <ul class="axil-submenu">
-                                        <li><a href="">Shop With Sidebar</a></li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdown-header-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="far fa-th-large"></i> Categories
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-header-menu">
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Fashion</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Electronics</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Home Decor</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Medicine</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Furniture</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Crafts</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Accessories</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Handicraft</a></li>
                                     </ul>
-                                    </li> --}}
-
-                                <li class="">
-                                    <a href="{{ route('products') }}">Shop</a>
                                 </li>
-                                <li><a href="{{ route('about') }}">About</a></li>
-                                <li><a href="{{ route('contact') }}">Contact</a></li>
+                                <li><a class="active" href="{{ route('home') }}"><i class="bi bi-house-door"></i>
+                                        Home</a></li>
+                                <li>
+                                    <a href="{{ route('products') }}"><i class="bi bi-bag-dash"></i> Shop</a>
+                                </li>
+                                <li><a href="{{ route('about') }}"><i class="bi bi-info-circle"></i> About</a></li>
+                                <li><a href="{{ route('contact') }}"><i class="bi bi-telephone"></i> Contact</a></li>
                             </ul>
                         </nav>
                         <!-- End Mainmanu Nav -->
@@ -154,7 +166,7 @@
                                     </a>
                                 @endif
                                 @if (Auth::guest())
-                                    <a href="{{ route("cart") }}" class="cart-dropdown-new-btn">
+                                    <a href="{{ route('cart') }}" class="cart-dropdown-new-btn">
                                         <span class="cart-count">
                                             <livewire:components.cart-count :display="'count'" />
                                         </span>
@@ -545,83 +557,7 @@
     <!-- Header Search Modal End -->
     <div class="header-search-modal" id="header-search-modal">
         <button class="card-close sidebar-close"><i class="fas fa-times"></i></button>
-        <div class="header-search-wrap">
-            <div class="card-header">
-                <form action="#">
-                    <div class="input-group">
-                        <input type="search" class="form-control" name="prod-search" id="prod-search"
-                            placeholder="Write Something....">
-                        <button type="submit" class="axil-btn btn-bg-primary"><i class="far fa-search"></i></button>
-                    </div>
-                </form>
-            </div>
-            <div class="card-body">
-                <div class="search-result-header">
-                    <h6 class="title">24 Result Found</h6>
-                    <a href="shop.html" class="view-all">View All</a>
-                </div>
-                <div class="psearch-results">
-                    <div class="axil-product-list">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-09.png"
-                                    alt="Yantiti Leather Bags">
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <div class="product-rating">
-                                <span class="rating-icon">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                </span>
-                                <span class="rating-number"><span>100+</span> Reviews</span>
-                            </div>
-                            <h6 class="product-title"><a href="single-product.html">Media Remote</a></h6>
-                            <div class="product-price-variant">
-                                <span class="price current-price">$29.99</span>
-                                <span class="price old-price">$49.99</span>
-                            </div>
-                            <div class="product-cart">
-                                <a href="cart.html" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
-                                <a href="wishlist.html" class="cart-btn"><i class="fal fa-heart"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="axil-product-list">
-                        <div class="thumbnail">
-                            <a href="single-product.html">
-                                <img src="/web/assets/images/product/electric/product-09.png"
-                                    alt="Yantiti Leather Bags">
-                            </a>
-                        </div>
-                        <div class="product-content">
-                            <div class="product-rating">
-                                <span class="rating-icon">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                </span>
-                                <span class="rating-number"><span>100+</span> Reviews</span>
-                            </div>
-                            <h6 class="product-title"><a href="single-product.html">Media Remote</a></h6>
-                            <div class="product-price-variant">
-                                <span class="price current-price">$29.99</span>
-                                <span class="price old-price">$49.99</span>
-                            </div>
-                            <div class="product-cart">
-                                <a href="cart.html" class="cart-btn"><i class="fal fa-shopping-cart"></i></a>
-                                <a href="wishlist.html" class="cart-btn"><i class="fal fa-heart"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <livewire:components.search />
     </div>
     <!-- Header Search Modal End -->
 
@@ -653,9 +589,15 @@
         </div>
     </div>
 
+    @livewireScripts
+
     @stack('scripts')
 
-    @livewireScripts
+
+  
+
+
+    {{-- <script src="/personal/personal.js"></script> --}}
 
     <script>
         document.addEventListener('livewire:load', function() {
@@ -694,6 +636,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 
 
 </body>

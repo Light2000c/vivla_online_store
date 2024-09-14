@@ -119,7 +119,7 @@ a:focus,
 a:active {
     text-decoration: none;
     outline: none;
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 a:focus {
@@ -140,7 +140,7 @@ strong {
 }
 
 mark {
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff
 }
 
@@ -153,7 +153,7 @@ samp {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 kbd,
@@ -784,7 +784,7 @@ ul li a {
 }
 
 ul li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 ul li::marker {
@@ -813,7 +813,7 @@ ol li a {
 }
 
 ol li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 ol ul {
@@ -941,7 +941,7 @@ ol li a {
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 var(--color-gold)
+        box-shadow: 0 0 0 0 var(--color-primary)
     }
 
     70% {
@@ -1119,7 +1119,7 @@ ol li a {
 }
 
 .bg-color-primary {
-    background: var(--color-gold)
+    background: var(--color-primary)
 }
 
 .bg-color-secondary {
@@ -1885,7 +1885,7 @@ textarea:-ms-input-placeholder {
 }
 
 [data-overlay]:before {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 [data-black-overlay]:before {
@@ -2043,7 +2043,7 @@ textarea:-ms-input-placeholder {
     height: 0;
     border-style: solid;
     border-width: 0 5px 7px 5px;
-    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--color-gold) rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) var(--color-primary) rgba(0, 0, 0, 0);
     position: absolute;
     content: "";
     left: 50%;
@@ -2052,7 +2052,7 @@ textarea:-ms-input-placeholder {
 }
 
 #scrollUp:hover span.text {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .form-message {
@@ -2103,7 +2103,7 @@ textarea:-ms-input-placeholder {
 }
 
 .bg-primary {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .bg-tertiary {
@@ -2131,7 +2131,7 @@ textarea:-ms-input-placeholder {
 }
 
 .primary-color {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .secondary-color {
@@ -2186,7 +2186,7 @@ select:active,
 textarea:focus,
 textarea:active {
     outline: none;
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 button,
@@ -2285,7 +2285,7 @@ input[type=tel].p-holder__active,
 input[type=tel].input-active,
 textarea.p-holder__active,
 textarea.input-active {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 input[type=text].p-holder__active::placeholder,
@@ -2305,7 +2305,7 @@ input[type=tel].p-holder__active::placeholder,
 input[type=tel].input-active::placeholder,
 textarea.p-holder__active::placeholder,
 textarea.input-active::placeholder {
-    color: var(--color-gold);
+    color: var(--color-primary);
     opacity: 1
 }
 
@@ -2326,7 +2326,7 @@ input[type=tel].p-holder__active:-ms-input-placeholder,
 input[type=tel].input-active:-ms-input-placeholder,
 textarea.p-holder__active:-ms-input-placeholder,
 textarea.input-active:-ms-input-placeholder {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 input[type=text].p-holder__active::-ms-input-placeholder,
@@ -2346,7 +2346,7 @@ input[type=tel].p-holder__active::-ms-input-placeholder,
 input[type=tel].input-active::-ms-input-placeholder,
 textarea.p-holder__active::-ms-input-placeholder,
 textarea.input-active::-ms-input-placeholder {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 input[type=text].p-holder__error,
@@ -2456,7 +2456,7 @@ input[type=email]:focus,
 input[type=number]:focus,
 input[type=tel]:focus,
 textarea:focus {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 input[type=checkbox],
@@ -2509,8 +2509,8 @@ input[type=radio]~label::after {
 
 input[type=checkbox]:checked~label::before,
 input[type=radio]:checked~label::before {
-    background-color: var(--color-gold);
-    border: var(--border-width) solid var(--color-gold)
+    background-color: var(--color-primary);
+    border: var(--border-width) solid var(--color-primary)
 }
 
 input[type=checkbox]:checked~label::after,
@@ -2555,7 +2555,7 @@ input[type=radio]~label::after {
 }
 
 .form-group input:focus {
-    border-color: var(--color-gold);
+    border-color: var(--color-primary);
     box-shadow: none
 }
 
@@ -2574,7 +2574,7 @@ input[type=radio]~label::after {
 }
 
 .form-group textarea:focus {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 input[type=submit] {
@@ -2585,17 +2585,17 @@ input[type=submit] {
     font-weight: 500;
     transition: .3s;
     height: 60px;
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: var(--color-white);
     font-weight: var(--p-medium);
     font-size: var(--font-size-b2);
     line-height: var(--line-height-b3);
-    border: 2px solid var(--color-gold)
+    border: 2px solid var(--color-primary)
 }
 
 input[type=submit]:hover {
     background: rgba(0, 0, 0, 0);
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .error-msg p,
@@ -2715,7 +2715,7 @@ input[type=submit]:hover {
 }
 
 .axil-about-area.about-style-2 .about-content .axil-btn:hover {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .about-info-area {
@@ -2765,7 +2765,7 @@ input[type=submit]:hover {
 }
 
 .about-info-box:hover {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .about-style-3 {
@@ -2835,7 +2835,7 @@ input[type=submit]:hover {
     width: 45px;
     height: 45px;
     line-height: 46px;
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff;
     text-align: center;
     text-decoration: none;
@@ -2960,7 +2960,7 @@ input[type=submit]:hover {
 }
 
 .axil-breadcrumb li.axil-breadcrumb-item.active {
-    /* color: var(--color-gold) */
+    /* color: var(--color-primary) */
     color: var(--color-gold)
 }
 
@@ -3055,7 +3055,7 @@ button.axil-btn.btn-bg-lighter:before {
 
 a.axil-btn.btn-bg-primary,
 button.axil-btn.btn-bg-primary {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -3098,8 +3098,8 @@ button.axil-btn.btn-outline {
 
 a.axil-btn.btn-outline:hover,
 button.axil-btn.btn-outline:hover {
-    background-color: var(--color-gold);
-    border-color: var(--color-gold);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -3134,7 +3134,7 @@ button.axil-btn.wishlist-btn i {
 
 a.axil-btn.wishlist-btn:before,
 button.axil-btn.wishlist-btn:before {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     opacity: 0;
     visibility: hidden;
     transform: scale(0.8);
@@ -3143,7 +3143,7 @@ button.axil-btn.wishlist-btn:before {
 
 a.axil-btn.wishlist-btn:hover,
 button.axil-btn.wishlist-btn:hover {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 a.axil-btn.wishlist-btn:hover i,
@@ -3570,7 +3570,7 @@ button.axil-btn.btn-size-md i {
     box-shadow: 0 8px 16px 0 rgba(53, 119, 240, .3);
     height: 100px;
     width: 100px;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -3739,9 +3739,9 @@ button.axil-btn.btn-size-md i {
 }
 
 .post-pagination nav.pagination ul li span.current {
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff;
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .post-pagination nav.pagination ul li a {
@@ -3758,9 +3758,9 @@ button.axil-btn.btn-size-md i {
 }
 
 .post-pagination nav.pagination ul li a:hover {
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff;
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .single-poster {
@@ -4062,7 +4062,7 @@ button.axil-btn.btn-size-md i {
 
 .delivery-poster .content .title {
     font-weight: 700;
-    color: var(--color-gold);
+    color: var(--color-primary);
     margin-bottom: 8px
 }
 
@@ -4156,7 +4156,7 @@ button.axil-btn.btn-size-md i {
     content: "";
     height: 3px;
     width: 100%;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     position: absolute;
     bottom: 0;
     left: 0;
@@ -4170,7 +4170,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-privacy-policy a {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-privacy-policy ul {
@@ -4215,11 +4215,11 @@ button.axil-btn.btn-size-md i {
 }
 
 .title-highlighter.highlighter-primary2 {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .title-highlighter.highlighter-primary2 i {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -4269,7 +4269,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .section-title-border .view-btn a {
-    color: var(--color-gold);
+    color: var(--color-primary);
     text-decoration: underline;
     font-weight: 700;
     transition: .3s
@@ -4450,7 +4450,7 @@ button.axil-btn.btn-size-md i {
 
 .service-box.service-style-3 .icon i {
     font-size: 50px;
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .service-box.service-style-3 .content .title {
@@ -4611,7 +4611,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-slick-arrow.testimonial-style-two-wrapper .slide-arrow:hover {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .axil-slick-arrow.header-campaign-arrow .slide-arrow {
@@ -4972,7 +4972,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-slick-dots.testimonial-style-two-wrapper .slick-dots li.slick-active button {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .axil-slick-dots.slick-dots-bottom .slick-dots {
@@ -4989,11 +4989,11 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-slick-dots.slick-dots-bottom .slick-dots li.slick-active button {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .axil-slick-dots.slick-dots-bottom .slick-dots li.slick-active button:before {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .main-slider-content .subtitle {
@@ -5201,7 +5201,7 @@ button.axil-btn.btn-size-md i {
 .main-slider-large-thumb .single-slide .product-price span.price-amount {
     font-size: 18px;
     font-weight: 700;
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .main-slider-large-thumb .single-slide.slick-current .product-price {
@@ -5491,16 +5491,16 @@ button.axil-btn.btn-size-md i {
 }
 
 .main-slider-style-2 .main-slider-content .axil-btn:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .main-slider-style-2 .main-slider-content .axil-btn:hover i {
-    color: var(--color-gold);
+    color: var(--color-primary);
     margin: 0 0 0 10px
 }
 
 .main-slider-style-2 .main-slider-content .axil-btn:hover:after {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .main-slider-style-2 .main-slider-thumb {
@@ -5753,7 +5753,7 @@ button.axil-btn.btn-size-md i {
 
 .main-slider-style-3 .main-slider-large-thumb .axil-slick-dots .slick-dots li.slick-active button {
     transform: scale(2);
-    box-shadow: inset 0 0 0 1px var(--color-gold)
+    box-shadow: inset 0 0 0 1px var(--color-primary)
 }
 
 .main-slider-style-4 {
@@ -6518,7 +6518,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .testimonial-video-box .play-btn a:hover {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .testimonial-style-three-wrapper {
@@ -6687,7 +6687,7 @@ button.axil-btn.btn-size-md i {
     border-radius: 50%;
     display: inline-block;
     font-size: 24px;
-    color: var(--color-gold);
+    color: var(--color-primary);
     position: relative;
     z-index: 1
 }
@@ -6880,7 +6880,7 @@ button.axil-btn.btn-size-md i {
 .pv-banner-area .theme-brief .single-counter h2.title {
     font-size: 48px;
     line-height: 1;
-    color: var(--color-gold);
+    color: var(--color-primary);
     display: inline-block;
     position: relative;
     min-width: 100px
@@ -7093,7 +7093,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .pv-single-demo .title:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 @media only screen and (max-width: 767px) {
@@ -7177,7 +7177,7 @@ button.axil-btn.btn-size-md i {
     line-height: 48px;
     border-radius: 50%;
     z-index: 2;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     margin-bottom: 30px;
     display: block;
     margin-right: 20px
@@ -7386,7 +7386,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-top-campaign .remove-campaign:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 @media only screen and (max-width: 991px) {
@@ -7521,7 +7521,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-top-link .quick-link li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-1 .header-top-campaign {
@@ -7567,7 +7567,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-2 .axil-header-top .axil-search .icon:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-2 .axil-header-top .axil-search input {
@@ -7582,7 +7582,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-2 .axil-header-top .axil-search input:focus {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 @media only screen and (max-width: 575px) {
@@ -7631,20 +7631,20 @@ button.axil-btn.btn-size-md i {
     padding: 6px 0
 }
 
-/* .header-style-5 .header-top-dropdown .dropdown .dropdown-toggle {
+.header-style-5 .header-top-dropdown .dropdown .dropdown-toggle {
     color: #c2c2cc
 }
 
 .header-style-5 .header-top-dropdown .dropdown .dropdown-toggle:hover {
     color: var(--color-white)
-} */
+}
 
 .header-style-5 .header-top-link .quick-link li a {
     color: #c2c2cc
 }
 
 .header-style-5 .header-top-link .quick-link li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-5 .header-top-campaign {
@@ -7661,130 +7661,6 @@ button.axil-btn.btn-size-md i {
 .header-style-5 .header-top-campaign .campaign-content p a i {
     margin-left: 15px
 }
-
-/* start of 7 changed to 5 */
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-toggle {
-    border: 1px dashed var(--color-primary);
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    padding: 9px 14px;
-    border-radius: 8px
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-toggle i {
-    color: var(--color-primary)
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-toggle:after {
-    content: "";
-    font-family: var(--font-awesome);
-    border: none;
-    vertical-align: middle;
-    font-size: 12px;
-    margin-left: 8px;
-    transition: all .3s ease-in-out
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-toggle:hover {
-    color: var(--color-primary)
-}
-
- .header-style-5 .mainmenu>li.dropdown .dropdown-toggle:hover i {
-    color: var(--color-primary)
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-toggle:hover:after {
-    color: var(--color-primary)
-}
-
-@media(max-width: 991px) {
-    .header-style-5 .mainmenu>li.dropdown .dropdown-toggle {
-        border: none;
-        padding: 5px 0
-    }
-
-    .header-style-5 .mainmenu>li.dropdown .dropdown-toggle i {
-        color: var(--color-body)
-    }
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu {
-    list-style: none
-}
-
-@media(min-width: 992px) {
-    .header-style-5 .mainmenu>li.dropdown .dropdown-menu {
-        transform: translate(0px, 20px) !important;
-        inset: initial !important;
-        background: #fff;
-        min-width: 250px;
-        padding: 15px 10px;
-        border-radius: 4px;
-        display: block !important;
-        visibility: hidden;
-        opacity: 0;
-        box-shadow: var(--shadow-primary);
-        transition: all .3s ease-in-out
-    }
-}
-
-@media(max-width: 991px) {
-    .header-style-5 .mainmenu>li.dropdown .dropdown-menu {
-        position: initial !important;
-        border: none;
-        padding: 0 0 0 10px
-    }
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu li {
-    margin: 0
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu li a {
-    position: relative;
-    font-size: 15px;
-    text-transform: capitalize;
-    color: var(--color-heading);
-    font-weight: 500;
-    padding: 10px 15px;
-    display: block;
-    transition: all .3s ease-in-out;
-    z-index: 1;
-    overflow: hidden;
-    border-bottom: 1px solid #f3f3f3
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu li a:hover {
-    color: var(--color-secondary);
-    background: rgba(0, 0, 0, 0)
-}
-
-.header-style- .mainmenu>li.dropdown .dropdown-menu li a.active {
-    color: var(--color-secondary)
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu li a.active:hover {
-    color: var(--color-secondary)
-}
-
-@media(max-width: 991px) {
-    .header-style-5 .mainmenu>li.dropdown .dropdown-menu li a {
-        padding: 10px 0
-    }
-}
-
-.header-style-5 .mainmenu>li.dropdown .dropdown-menu li:last-child a {
-    border-bottom: none
-}
-
-.header-style- .mainmenu>li.dropdown .dropdown-menu.show {
-    visibility: visible;
-    opacity: 1;
-    transform: translate(0px, 10px) !important
-}
-/* end of 7 changed to 5 */
 
 @media only screen and (max-width: 479px) {
     .header-style-5 .header-top-campaign .campaign-content p {
@@ -8119,7 +7995,7 @@ button.axil-btn.btn-size-md i {
     border-radius: 8px;
     padding: 0 15px;
     padding-right: 35px;
-    width: 250px;
+    width: 448px;
     max-width: 448px
 }
 
@@ -8204,7 +8080,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle {
-    border: 1px dashed var(--color-gold);
+    border: 1px dashed var(--color-primary);
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -8213,7 +8089,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle i {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle:after {
@@ -8227,15 +8103,15 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle:hover i {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-style-7 .mainmenu>li.dropdown .dropdown-toggle:hover:after {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 @media(max-width: 991px) {
@@ -8507,7 +8383,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-action .my-account .my-account-dropdown li:hover>a {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .header-action .my-account .my-account-dropdown .login-btn {
@@ -8538,8 +8414,8 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-action .my-account .my-account-dropdown .reg-footer .btn-link:hover {
-    color: var(--color-gold);
-    border-color: var(--color-gold)
+    color: var(--color-primary);
+    border-color: var(--color-primary)
 }
 
 .header-action .my-account .my-account-dropdown.open {
@@ -8613,7 +8489,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-search-modal .card-close:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -8881,7 +8757,7 @@ button.axil-btn.btn-size-md i {
 
 .axil-mainmenu.aside-category-menu .header-department .header-department-text {
     font-size: 16px;
-    background: var(--color-gold);
+    background: var(--color-primary);
     margin-bottom: 0;
     display: flex;
     padding: 17px 30px;
@@ -8960,7 +8836,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-nav-menu .sidebar-close:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -9051,7 +8927,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-nav-menu .nav-link:hover:after {
-    color: var(--color-gold);
+    color: var(--color-primary);
     transform: translateY(-50%) rotate(-90deg)
 }
 
@@ -9181,7 +9057,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-megamenu .department-submenu ul li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-megamenu .featured-product {
@@ -9335,7 +9211,7 @@ button.axil-btn.btn-size-md i {
     }
 
     .header-main-nav .mainmenu-nav .mainmenu>li.menu-item-has-children .axil-submenu li a:hover {
-        /* color: var(--color-gold);
+        /* color: var(--color-primary);
         background-color: rgba(0, 0, 0, 0) */
     }
 }
@@ -9403,7 +9279,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .mobile-close-btn:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -9700,7 +9576,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .cart-dropdown .cart-content-wrap::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gold)
+    background: var(--color-primary)
 }
 
 .cart-dropdown .cart-header {
@@ -9732,7 +9608,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .cart-dropdown .cart-header .cart-close:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -9813,7 +9689,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .cart-dropdown .cart-item .item-img .close-btn:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -9913,8 +9789,8 @@ button.axil-btn.btn-size-md i {
 }
 
 .cart-dropdown .cart-item .item-quantity .qtybtn:hover {
-    /* background-color: var(--color-gold); */
-    background-color: var(--color-gold);
+    /* background-color: var(--color-primary); */
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -10441,9 +10317,9 @@ body.open .closeMask {
 }
 
 .axil-product.product-style-six .product-content .product-hover-action .cart-action li.select-option a:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white);
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .axil-product.product-style-six:hover {
@@ -10496,8 +10372,8 @@ body.open .closeMask {
 }
 
 .axil-product.product-style-seven .product-content .cart-btn a:hover {
-    background-color: var(--color-gold);
-    border-color: var(--color-gold);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white);
     box-shadow: 0 8px 16px 0 rgba(53, 119, 240, .3)
 }
@@ -10559,11 +10435,11 @@ body.open .closeMask {
 
 .axil-product.product-style-eight .label-block .product-badget.sale {
     background-color: var(--color-white);
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-product.product-style-eight .label-block .product-badget.sold-out {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .axil-product.product-style-eight .cart-action {
@@ -11050,8 +10926,8 @@ body.open .closeMask {
 }
 
 .axil-product-list .product-content .product-cart .cart-btn:hover {
-    background: var(--color-gold);
-    border-color: var(--color-gold);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -11247,7 +11123,7 @@ body.open .closeMask {
     content: "";
     height: 1px;
     width: 100%;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     position: absolute;
     bottom: 0;
     left: 0
@@ -11264,7 +11140,7 @@ body.open .closeMask {
 }
 
 .product-filter-mobile:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-shop-sidebar {
@@ -11371,8 +11247,8 @@ body.open .closeMask {
     font-size: 8px;
     font-weight: 700;
     color: var(--color-white);
-    background: var(--color-gold);
-    border-color: var(--color-gold)
+    background: var(--color-primary);
+    border-color: var(--color-primary)
 }
 
 .axil-shop-sidebar .product-color ul {
@@ -11467,8 +11343,8 @@ body.open .closeMask {
 }
 
 .axil-shop-sidebar .product-size li.chosen a {
-    border-color: var(--color-gold);
-    background-color: var(--color-gold);
+    border-color: var(--color-primary);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -11656,7 +11532,7 @@ body.open .closeMask {
 .isotope-button button.is-checked:after {
     transform: scale(1.035) perspective(1px);
     opacity: 1;
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .product-collection {
@@ -11725,8 +11601,8 @@ body.open .closeMask {
 }
 
 .product-collection .collection-content .plus-btn .plus-icon:hover {
-    color: var(--color-gold);
-    border-color: var(--color-gold)
+    color: var(--color-primary);
+    border-color: var(--color-primary)
 }
 
 .product-collection .label-block {
@@ -11795,7 +11671,7 @@ body.open .closeMask {
 }
 
 .product-collection.product-collection-two .collection-content .plus-btn .plus-icon:hover {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -11871,7 +11747,7 @@ body.open .closeMask {
 }
 
 .single-product-thumbnail.thumbnail-badge .thumbnail .label-block .product-badget {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     line-height: 1;
     padding: 6px 10px 5px;
     font-size: 12px;
@@ -11979,7 +11855,7 @@ body.open .closeMask {
 }
 
 .single-product-content .inner .product-meta li {
-    color: var(--color-gold);
+    color: var(--color-primary);
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
@@ -12280,7 +12156,7 @@ body.open .closeMask {
 }
 
 .pro-qty .qtybtn:hover {
-    /* border-color: var(--color-gold) */
+    /* border-color: var(--color-primary) */
     border-color: var(--color-gold)
 }
 
@@ -12307,7 +12183,7 @@ body.open .closeMask {
 }
 
 .product-quick-view a:hover {
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff
 }
 
@@ -12358,7 +12234,7 @@ body.open .closeMask {
 
 .small-thumb-wrapper .small-thumb-img:hover img,
 .small-thumb-wrapper .small-thumb-img.slick-current img {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .small-thumb-style-two .small-thumb-img img {
@@ -12457,7 +12333,7 @@ body.open .closeMask {
     content: "";
     height: 2px;
     width: 0;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     position: absolute;
     bottom: -5px;
     right: 0;
@@ -12467,7 +12343,7 @@ body.open .closeMask {
 
 .woocommerce-tabs ul.tabs li a.active,
 .woocommerce-tabs ul.tabs li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .woocommerce-tabs ul.tabs li a.active:after,
@@ -12698,7 +12574,7 @@ body.open .closeMask {
     position: relative;
     z-index: 1;
     text-align: center;
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .single-product-features .single-features .icon:before {
@@ -12964,7 +12840,7 @@ body.open .closeMask {
     content: "";
     height: 35px;
     width: 35px;
-    background: var(--color-gold);
+    background: var(--color-primary);
     border-radius: 50%;
     position: absolute;
     top: -9px;
@@ -12996,7 +12872,7 @@ body.open .closeMask {
 
 .single-product-modern .single-product-content .inner .price-amount {
     font-weight: 700;
-    color: var(--color-gold);
+    color: var(--color-primary);
     margin-bottom: 10px
 }
 
@@ -13054,7 +12930,7 @@ body.open .closeMask {
 .single-product-modern .single-product-content .inner .range-variant li:hover,
 .single-product-modern .single-product-content .inner .range-variant li.active {
     color: var(--color-white);
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 @media(max-width: 575px) {
@@ -13205,7 +13081,7 @@ body.open .closeMask {
 .product-table-heading .cart-clear {
     display: inline-block;
     font-size: 14px;
-    color: var(--color-gold);
+    color: var(--color-primary);
     transition: var(--transition)
 }
 
@@ -13368,7 +13244,7 @@ body.open .closeMask {
 }
 
 .axil-product-table tbody td.product-remove .remove-wishlist:hover {
-    /* border-color: var(--color-gold) */
+    /* border-color: var(--color-primary) */
     border-color: var(--color-gold)
 }
 
@@ -13442,7 +13318,7 @@ body.open .closeMask {
 }
 
 .axil-product-table tbody td.product-add-cart .btn-outline:hover {
-    /* border-color: var(--color-gold) */
+    /* border-color: var(--color-primary) */
     border-color: var(--color-gold);
     background-color: var(--color-gold);
 }
@@ -13561,7 +13437,7 @@ body.open .closeMask {
 }
 
 .axil-product-cart-wrap .product-cupon .axil-btn:hover {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .axil-product-cart-wrap .update-btn {
@@ -13581,7 +13457,7 @@ body.open .closeMask {
 }
 
 .axil-product-cart-wrap .update-btn .axil-btn:hover {
-    border-color: var(--color-gold);
+    border-color: var(--color-primary);
 }
 
 .axil-order-summery {
@@ -13645,14 +13521,14 @@ body.open .closeMask {
 }
 
 .axil-order-summery .summery-table .order-shipping .input-group label:after {
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     border: none
 }
 
 .axil-order-summery .summery-table .order-total-amount {
     font-size: 20px;
     font-weight: var(--s-bold);
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-order-summery.order-checkout-summery .summery-table-wrap {
@@ -13774,7 +13650,7 @@ body.open .closeMask {
 }
 
 .axil-order-summery.order-checkout-summery .order-payment-method .single-payment .input-group input[type=radio]:checked~label::before {
-    background-color: var(--color-gold)
+    background-color: var(--color-primary)
 }
 
 .axil-order-summery.order-checkout-summery .order-payment-method .single-payment p {
@@ -13944,7 +13820,7 @@ body.open .closeMask {
 }
 
 .axil-checkout-notice .axil-checkout-coupon .axil-btn:hover {
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .axil-checkout-notice .axil-checkout-login {
@@ -14059,8 +13935,8 @@ body.open .closeMask {
 }
 
 .signin-header .back-btn:hover {
-    background-color: var(--color-gold);
-    border-color: var(--color-gold);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -14148,7 +14024,7 @@ body.open .closeMask {
 
 .axil-signin-form .forgot-btn {
     font-size: 14px;
-    color: var(--color-gold);
+    color: var(--color-primary);
     transition: var(--transition)
 }
 
@@ -14245,7 +14121,7 @@ body.open .closeMask {
 .axil-dashboard-aside .nav-link.active,
 .axil-dashboard-aside .nav-link:hover {
     background-color: var(--color-lighter);
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-dashboard-overview .welcome-text {
@@ -14264,7 +14140,7 @@ body.open .closeMask {
 }
 
 .axil-dashboard-overview .welcome-text a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-dashboard-overview p {
@@ -14353,8 +14229,8 @@ body.open .closeMask {
 }
 
 .axil-dashboard-order .table tbody .view-btn:hover {
-    background-color: var(--color-gold);
-    border-color: var(--color-gold);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: var(--color-white)
 }
 
@@ -14387,7 +14263,7 @@ body.open .closeMask {
 }
 
 .axil-dashboard-address .address-edit:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .axil-dashboard-address ul li {
@@ -14744,7 +14620,7 @@ body.open .closeMask {
     content: "";
     height: 1px;
     width: 0;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     position: absolute;
     bottom: 0;
     right: 0;
@@ -14752,7 +14628,7 @@ body.open .closeMask {
 }
 
 .blog-grid .content .axil-btn:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .blog-grid .content .axil-btn:hover:after {
@@ -14761,7 +14637,7 @@ body.open .closeMask {
 }
 
 .blog-grid .content .axil-btn:hover i {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .blog-grid:hover .thumbnail img {
@@ -14976,7 +14852,7 @@ body.open .closeMask {
 }
 
 .comment-list .comment .commenter a .hover-flip-item span::after {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .comment-list .comment .comment-meta {
@@ -14996,7 +14872,7 @@ body.open .closeMask {
     font-size: 16px;
     line-height: 24px;
     display: flex;
-    color: var(--color-gold);
+    color: var(--color-primary);
     margin-left: 8px;
     padding-left: 8px;
     position: relative;
@@ -15009,11 +14885,11 @@ body.open .closeMask {
 }
 
 .comment-list .comment .reply-edit a.comment-reply-link .hover-flip-item span::after {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .comment-list .comment .reply-edit a.comment-reply-link:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .comment-list .comment .reply-edit a.comment-reply-link::before {
@@ -15086,9 +14962,9 @@ body.open .closeMask {
 }
 
 .tagcloud a:hover {
-    background: var(--color-gold);
+    background: var(--color-primary);
     color: #fff;
-    border-color: var(--color-gold)
+    border-color: var(--color-primary)
 }
 
 .blog-search,
@@ -15134,7 +15010,7 @@ body.open .closeMask {
 }
 
 .widget_rss ul li a:hover {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .widget_rss ul li span.rss-date {
@@ -15169,7 +15045,7 @@ body.open .closeMask {
 }
 
 .widget_archive ul li:hover::marker {
-    color: var(--color-gold)
+    color: var(--color-primary)
 }
 
 .widget_archive ul li:hover a {
@@ -15634,7 +15510,7 @@ body.open .closeMask {
     height: 40px;
     width: 40px;
     line-height: 40px;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     border-radius: 50%;
     display: block;
     text-align: center;
@@ -15730,7 +15606,7 @@ body.open .closeMask {
 
 .axil-footer-widget.footer-widget-newsletter .input-group button {
     width: auto;
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     font-size: 14px;
     font-weight: 700;
     border-radius: 0 8px 8px 0;
@@ -15804,7 +15680,7 @@ body.open .closeMask {
     width: 40px;
     font-size: 18px;
     color: var(--color-white);
-    background-color: var(--color-gold);
+    background-color: var(--color-primary);
     border-radius: 50%;
     position: absolute;
     top: -30px;

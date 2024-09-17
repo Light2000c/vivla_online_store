@@ -69,19 +69,19 @@
                                 </p>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b>Customer Name: </b> {{ Auth::user()->name }}
+                                    <b class="me-3">Customer Name: </b> {{ Auth::user()->name }}
                                 </li>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b>Item Count: </b> {{ $itemCount }}
+                                    <b class="me-3">Item Count: </b> {{ $itemCount }}
                                 </li>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b>Sub Total: </b> ${{ $amount }}
+                                    <b class="me-3">Sub Total: </b> ${{ number_format($amount) }}
                                 </li>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b>Total Amount: </b> ${{ $amount }}
+                                    <b class="me-3">Total Amount: </b> ${{  number_format($amount) }}
                                 </li>
                             </div>
                             <hr>

@@ -27,13 +27,21 @@
                         <h3>Order Table</h3>
                     </div>
 
-                    <div class="align-self-end search-form m-3">
-                        <input type="text" placeholder="Search here...">
+                    {{-- <div class="align-self-end search-form m-3">
+                        <input wire:model.live.debounce.150ms="search" type="text" placeholder="Search here...">
+                    </div> --}}
+                    <div class="m-4">
+                        <p class="text-dark"><span style="font-weight: bold">Reference:</span> <span class="ms-3">{{ $transaction->reference }}</span></p>
+                        <p class="text-dark"><span style="font-weight: bold">Date:</span> <span class="ms-3">{{ $transaction->created_at }}</span></p>
+                        <p class="text-dark"><span style="font-weight: bold">Number of Items:</span> <span class="ms-3">{{ $quantity }}</span></p>
+                        <p class="text-dark"><span style="font-weight: bold">Total Amount:</span> <span class="ms-3">${{ $total }}</span></p>
                     </div>
+
                     <div class="table-responsive custom-scrollbar mt-2">
                         <table class="table">
                             <thead>
                                 <tr class="border-bottom-primary">
+                                    <th scope="col"></th>
                                     <th scope="col">Id</th>
                                     <th scope="col">Customer Name</th>
                                     <th scope="col">Product Name</th>
@@ -42,23 +50,24 @@
                                     <th scope="col">Price</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Created_at</th>
-                                    <th scope="col">Updated_at</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @if($orders)
+                                @foreach($orders as $order)
                                 <tr class="border-bottom-secondary">
                                     <th> <input class="form-check-input" id="flexCheckDefault" type="checkbox"
                                             value=""></th>
-                                    <th scope="row">1</th>
-                                    <td>Wolfe</td>
-                                    <td>RamJacob@twitter</td>
-                                    <td> <img class="img-30 me-2" src="/web1/assets/images/user/1.jpg" alt="profile">
+                                    <th scope="row">{{ $order->id }}</th>
+                                    <td>{{ $order->user->name }}</td>
+                                    <td>{{ $order->product->name }}</td>
+                                    <td>{{ $order->quantity }}</td>
+                                    <td> <img class="img-30 me-2" src="/storage/products/{{ $order->product->image }}" alt="profile">
                                     </td>
-                                    <td>IND</td>
-                                    <td>Developer</td>
-                                    <td>Developer</td>
-                                    <td>Apple Inc.</td>
+                                    <td>{{ $order->product->price }}</td>
+                                    <td>{{ $total }}</td>
+                                    <td>{{ $order->created_at }}</td>
                                     <td>
                                         <div>
                                             <div class="">
@@ -68,6 +77,14 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endforeach
+                                @else
+                                <tr>
+                                <div class="alert alert-info" role="alert">
+                                    No Product to Show Yet!
+                                </div>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>

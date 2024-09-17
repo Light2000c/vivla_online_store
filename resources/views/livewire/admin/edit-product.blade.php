@@ -48,8 +48,12 @@
                                     @enderror
                                 </div>
                                 <div class="col-12 col-lg-12 mb-3">
-                                    <label class="form-label" for="exampleFormControlTextarea1">Description</label>
-                                    <textarea wire:model="description" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                                    <div wire:ignore>
+                                        <label class="form-label"
+                                            for="exampleFormControlTextarea1">Description</label>
+                                        <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
+                                    </div>
+
                                     @error('description')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -169,4 +173,33 @@
 
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  
+        if (CKEDITOR.instances['editor']) {
+            var editor = CKEDITOR.instances['editor'];
+        } else {
+          
+            var editor = CKEDITOR.replace('editor', {
+                versionCheck: false
+            });
+        }
+
+       
+        document.querySelector('form').addEventListener('submit', function(event) {
+          
+            var data = editor.getData();
+            console.log('CKEditor content on submit: ', data);
+
+            document.getElementById('editor').value = data;
+
+            @this.set('description', data);
+        });
+    });
+</script>
+
+
+
+ @stack('scripts')
 </div>

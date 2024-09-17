@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Pages;
 
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class Orders extends Component
+class Order extends Component
 {
     public $id;
-    private $orders;
+    public $orders;
     public $transaction;
     public $total;
     public $quantity;
@@ -23,9 +23,7 @@ class Orders extends Component
     {
         $this->load();
 
-        return view('livewire.admin.orders', [
-            "orders" => $this->orders,
-        ])->layout("layouts.admin.app");
+        return view('livewire.pages.order');
     }
 
     public function load()

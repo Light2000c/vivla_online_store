@@ -49,7 +49,7 @@ class LoginController extends Controller
 
 
         if (!Auth::attempt($request->only("email", "password", true))) {
-            return back()->with("error", "User was not able to login.");
+            return back()->with("error", "Authentication failed! please check details and try again.");
         }
 
         $this->moveCartToDb();

@@ -31,9 +31,9 @@
                 <div class="axil-dashboard-warp">
                     <div class="axil-dashboard-author">
                         <div class="media">
-                            <div class="thumbnail">
+                            {{-- <div class="thumbnail">
                                 <img src="./assets/images/product/author1.png" alt="Hello Annie">
-                            </div>
+                            </div> --}}
                             <div class="media-body">
                                 <h5 class="title mb-0">{{ Auth::user()->name }}</h5>
                                 <span class="joining-date">{{ Auth::user()->email }}</span>
@@ -58,63 +58,12 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel">
                                     <div class="axil-dashboard-overview">
-                                        <div class="welcome-text">Hello Annie (not <span>Annie?</span> <a href="sign-in.html">Log Out</a>)</div>
+                                        <div class="welcome-text">Hello {{ Auth::user()->name }} (not <span class="ms-2">{{ Auth::user()->name }}?</span> <a href="sign-in.html">Log Out</a>)</div>
                                         <p>From your account dashboard you can view your recent orders, manage your  billing addresses, and edit your password and account details.</p>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-orders" role="tabpanel">
-                                    <div class="axil-dashboard-order">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Order</th>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Total</th>
-                                                        <th scope="col">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>On Hold</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                  @livewire('components.order', )
                                 </div>
                                 <div class="tab-pane fade" id="nav-downloads" role="tabpanel">
                                     <div class="axil-dashboard-order">

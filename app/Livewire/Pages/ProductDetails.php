@@ -31,6 +31,22 @@ class ProductDetails extends Component
         $this->related_products = Product::where("category", $this->product->category)->take(5)->get();
     }
 
+    public function getCategory($category)
+    {
+        $categories = explode(",", $category);
+
+        $new_category = "";
+
+        foreach ($categories as $cat) {
+            if($new_category == ""){
+                $new_category = $new_category . ' ' . $cat;
+            }else{
+            $new_category = $new_category . ' | ' . $cat;
+            }
+        }
+        return $new_category;
+    }
+
     public function addToCart($id)
     {
 
@@ -77,6 +93,10 @@ class ProductDetails extends Component
     public function addToWishlist($id)
     {
 
+        if (!Auth::check()) {
+            return redirect()->route("login");
+        }
+
         $product = Product::find($id);
 
         $user = Auth::user();
@@ -96,6 +116,11 @@ class ProductDetails extends Component
 
     public function removeFromWishlist($id)
     {
+
+        if (!Auth::check()) {
+            return redirect()->route("login");
+        }
+        
         $product = Product::find($id);
 
         if (!$product) {
@@ -296,6 +321,4 @@ class ProductDetails extends Component
         $sessionCart = session()->get('cart', []);
         return array_key_exists($productId, $sessionCart);
     }
-
-    
 }

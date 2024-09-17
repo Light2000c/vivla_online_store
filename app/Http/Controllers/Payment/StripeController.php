@@ -11,94 +11,90 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\CardException;
 use Stripe\StripeClient;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class StripeController extends Controller
 {
     public $stripe;
+    public $reference;
 
     public function __construct()
     {
         $this->stripe = $this->stripe = new StripeClient(config('stripe.sk'));
     }
 
-    public function index()
-    {
-        $carts = Auth::user()->cart()->get();
-        $itemCount = $carts->sum("quantity");
-        $amount = (int) $carts->sum(function ($cart) {
-            if ($cart->product->discount) {
-                return $cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount / 100));
-            }
-            return $cart->quantity * $cart->product->price;
-        });
-
-        return view('payment.stripe', [
-            'itemCount' => $itemCount,
-            'amount' => $amount,
-        ]);
-    }
 
     public function checkout(Request $request)
     {
 
-
         $this->validate($request, [
             'fullName' => 'required',
-            'cardNumber' => 'required',
-            'month' => 'required',
-            'year' => 'required',
-            'cvv' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|numeric',
         ]);
 
 
-        $token = $this->createToken($request);
-
-        $charge = null;
         try {
-
-            $charge = $this->stripe->charges->create([
-                "amount" => $request->amount,
-                "currency" => "usd",
-                "source" => $token,
-                "description" => "Purchased items from vivla closet.",
-
+            $session = $this->stripe->checkout->sessions->create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Purchase from Vivla Closet',
+                        ],
+                        'unit_amount' => $request->amount * 100,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('checkout.cancel'),
             ]);
 
+            return redirect($session->url);
+        } catch (\Exception $e) {
 
-            if ($charge["status"] == "succeeded") {
-
-               return $this->saveTransaction();
-            }
-        } catch (Exception $e) {
-            // dd($e->getMessage());
-            return back()->with('error', $e->getMessage());
+            dd($e->getMessage());
+            return back()->with('error', 'Failed to create Stripe Checkout session: ' . $e->getMessage());
         }
     }
 
-
-
-    private function createToken($cardData)
+    public function success(Request $request)
     {
 
-        $token = null;
-        try {
-            $token = $this->stripe->tokens->create([
-                'card' => [
-                    'number' => $cardData['cardNumber'],
-                    'exp_month' => $cardData['month'],
-                    'exp_year' => $cardData['year'],
-                    'cvc' => $cardData['cvv']
-                ]
-            ]);
-        } catch (CardException $e) {
-            dd($e->getMessage());
-            return back()->with('error', $e->getMessage());
-            // dd($e->getMessage());
-        }
+        $sessionId = $request->query('session_id');
 
-        return $token;
+        try {
+
+            $session =  $this->stripe->checkout->sessions->retrieve($sessionId);
+
+            // dd($session);
+            if ($session->payment_status == 'paid') {
+
+                $this->saveTransaction();
+
+                $reference = $this->reference ? $this->reference : "";
+
+                return view('payment.paymentsuccess', ['session' => $session, 'reference' => $reference]);
+            } else {
+                dd('Payment not completed.');
+                // return redirect('/')->with('error', 'Payment not completed.');
+            }
+        } catch (\Exception $e) {
+            dd('Failed to retrieve payment details: ' . $e->getMessage());
+            // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
+        }
     }
+
+    public function cancel()
+    {
+        return redirect()->route("checkout");
+        // return view('checkout.cancel');
+    }
+
+
+
 
     public function saveTransaction()
     {
@@ -110,10 +106,11 @@ class StripeController extends Controller
         $cart = auth()->user()->cart()->get();
 
         if ($cart->isEmpty()) {
-            return response()->json([
-                "status" => "failed",
-                "message" => "User has not added any product to cart yet"
-            ]);
+            // return response()->json([
+            //     "status" => "failed",
+            //     "message" => "User has not added any product to cart yet"
+            // ]);
+            dd("User has not added any product to cart yet");
         }
 
 
@@ -121,9 +118,12 @@ class StripeController extends Controller
             "reference" => $random_number,
         ]);
 
+        $this->reference = $random_number;
+
 
         if (!$transaction) {
-            return back()->with('error', "Something went wrong, please try again.");
+            // return back()->with('error', "Something went wrong, please try again.");
+            dd("Something went wrong, please try again");
         }
 
         $transactionId = $transaction->id;
@@ -153,11 +153,9 @@ class StripeController extends Controller
                 });
             });
 
-         
-            // dd("good it entered");
-            return redirect()->route("dashboard");
+
+            // return redirect()->route("dashboard");
         } catch (\Exception $e) {
-            // Handle exceptions and rollback
             dd($e->getMessage());
             return back()->with('error', "Something went wrong, please try again.");
         }

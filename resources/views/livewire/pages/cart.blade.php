@@ -147,7 +147,7 @@
                         </tbody>
                         @else
                         <div class="alert alert-secondary" role="alert">
-                            No Cart To Show Yet! <a href="" class="ms-3 text-primary">Go to Shop >></a>
+                            No Cart To Show Yet! <a href="{{ route("products") }}" class="ms-3 text-primary">Go to Shop >></a>
                           </div>
                         @endif
                     </table>

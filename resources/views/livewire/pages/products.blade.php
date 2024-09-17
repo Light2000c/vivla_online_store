@@ -34,19 +34,21 @@
                         <div class="d-lg-none">
                             <button class="sidebar-close filter-close-btn"><i class="fas fa-times"></i></button>
                         </div>
-                        <div class="toggle-list product-categories active">
+                        <div wire:ignore class="toggle-list product-categories active">
                             <h6 class="title">CATEGORIES</h6>
                             <div class="shop-submenu">
                                 <ul class="form-check">
                                     <label class="con1 text-capitalize"><span>All Product</span>
-                                        <input wire:model.defer="selectedCategory" type="radio" name="radio1"
-                                            value="" wire:key="category-">
+                                        <input wire:ignore.self wire:model.defer="selectedCategory" type="radio"
+                                            name="radio1" value="" wire:key="category-"
+                                            {{ $selectedCategory == null ? 'checked' : '' }}>
                                         <span class="checkmark"></span>
                                     </label>
                                     @foreach ($categories as $index => $category)
                                         <label class="con1 text-capitalize"><span>{{ $category->name }}</span>
-                                            <input wire:model.defer="selectedCategory" type="radio" name="radio1"
-                                                value="{{ $category->name }}" wire:key="category-{{ $index }}">
+                                            <input wire:ignore.self wire:model.defer="selectedCategory" type="radio"
+                                                name="radio1" value="{{ $category->name }}"
+                                                wire:key="category-{{ $index }}">
                                             <span class="checkmark"></span>
                                         </label>
                                     @endforeach
@@ -54,21 +56,30 @@
                             </div>
                         </div>
 
-                        <div  class="toggle-list product-price-range active">
+                        <div class="toggle-list product-price-range active">
                             <h6 class="title">PRICE RANGE</h6>
                             <div wire:ignore class="shop-submenu">
-                                <div  id="slider-range"></div>
-                                <div  class="flex-center mt--20">
-                                    <span  class="input-range">Price: </span>
+                                <div id="slider-range"></div>
+                                <div class="flex-center mt--20">
+                                    <span class="input-range">Price: </span>
                                     <input wire:model.lazy="price_range" type="text" id="amount"
                                         class="amount-range">
-                                    <input  type="hidden" wire:model.lazy="hiddenRange" id="hidden-price-range">
+                                    <input type="hidden" wire:model.lazy="hiddenRange" id="hidden-price-range">
                                 </div>
                             </div>
                         </div>
                         {{-- <button wire:click.prevent="filterProduct" class="axil-btn btn-bg-primary">Filter</button> --}}
-                        <button wire:click.prevent="filterProduct" class="axil-btn"
-                            style="background-color: #DCC168;">Filter</button>
+                        <button wire:click.prevent="filterProduct" class="axil-btn mb-4" style="background-color: #DCC168;" wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="filterProduct">Filter</span>
+                            <span wire:loading wire:target="filterProduct" class="spinner-border" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                        <button wire:click.prevent="resetFilters" class="axil-btn mb-4"
+                            style="background-color: #DCC168;" wire:loading.attr="disabled">
+                            <span wire:loading.remove wire:target="resetFilters">Reset Filters</span>
+                            <span wire:loading wire:target="resetFilters" class="spinner-border" role="status"
+                                aria-hidden="true"></span>
+                        </button>
                     </div>
                     <!-- End .axil-shop-sidebar -->
                 </div>
@@ -101,7 +112,7 @@
                                                         <li class="select-option">
                                                             @if ($this->isInCart($product->id))
                                                                 <a class="btn"
-                                                                    wire:click="removeFromSessionCart({{ $product->id }})">
+                                                                    wire:click="removeFromSessionCart({{ $product->id }})" wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="removeFromSessionCart({{ $product->id }})"><i
                                                                             class="bi bi-cart"></i> Remove</span>
@@ -112,7 +123,7 @@
                                                                 </a>
                                                             @else
                                                                 <a class="btn"
-                                                                    wire:click="addToSessionCart({{ $product->id }})">
+                                                                    wire:click="addToSessionCart({{ $product->id }})" wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="addToSessionCart({{ $product->id }})"><i
                                                                             class="bi bi-cart"></i> Add</span>
@@ -134,7 +145,7 @@
                                                         <li class="wishlist">
                                                             @if ($product->hasWish(Auth::user()))
                                                                 <a wire:click="removeFromWishlist({{ $product->id }})"
-                                                                    class="btn">
+                                                                    class="btn" wire:loading.attr="disabled">
                                                                     <i wire:loading.remove
                                                                         wire:target="removeFromWishlist({{ $product->id }})"
                                                                         class="far fa-heart text-danger"></i>
@@ -145,7 +156,7 @@
                                                                 </a>
                                                             @else
                                                                 <a wire:click="addToWishlist({{ $product->id }})"
-                                                                    class="btn">
+                                                                    class="btn" wire:loading.attr="disabled">
                                                                     <i wire:loading.remove
                                                                         wire:target="addToWishlist({{ $product->id }})"
                                                                         class="far fa-heart"></i>
@@ -159,7 +170,7 @@
                                                         <li class="select-option">
                                                             @if ($product->hasCart(Auth::user()))
                                                                 <a class="btn"
-                                                                    wire:click="removeFromCart({{ $product->id }})">
+                                                                    wire:click="removeFromCart({{ $product->id }})" wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="removeFromCart({{ $product->id }})">
                                                                         <i class="bi bi-cart"></i> Remove</span>
@@ -170,7 +181,7 @@
                                                                 </a>
                                                             @else
                                                                 <a class="btn"
-                                                                    wire:click="addToCart({{ $product->id }})">
+                                                                    wire:click="addToCart({{ $product->id }})" wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="addToCart({{ $product->id }})">
                                                                         <i class="bi bi-cart"></i> Add</span>
@@ -225,7 +236,7 @@
                         </div>
                     @else
                         <div class="alert alert-secondary" role="alert">
-                            No Product To Show Yet!
+                            {{ $selectedCategory || $hiddenRange ? "Your filter didn't return any result" : 'No Product To Show Yet!' }}
                         </div>
                     @endif
                     <div class="text-center pt--20">

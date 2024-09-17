@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>eTrade || Home-05</title>
+    <title>Vivla Closet | Onlin Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -70,7 +70,7 @@
                                     <li><a href="{{ route('login') }}">Sign In</a></li>
                                 @endif
                                 @if (Auth::user())
-                                    <li><a href="sign-in.html"><i class="bi bi-person-fill"></i>
+                                    <li><a href="{{ route("dashboard") }}"><i class="bi bi-person-fill"></i>
                                             {{ Auth::user()->name }}</a></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
@@ -115,14 +115,16 @@
                                         <i class="far fa-th-large"></i> Categories
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-header-menu">
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Fashion</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Electronics</a></li>
+                                        @foreach($globalCategories as $category)
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">{{ $category->name }}</a></li>
+                                        @endforeach
+                                        {{-- <li><a class="dropdown-item" href="shop-sidebar.html">Electronics</a></li>
                                         <li><a class="dropdown-item" href="shop-sidebar.html">Home Decor</a></li>
                                         <li><a class="dropdown-item" href="shop-sidebar.html">Medicine</a></li>
                                         <li><a class="dropdown-item" href="shop-sidebar.html">Furniture</a></li>
                                         <li><a class="dropdown-item" href="shop-sidebar.html">Crafts</a></li>
                                         <li><a class="dropdown-item" href="shop-sidebar.html">Accessories</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Handicraft</a></li>
+                                        <li><a class="dropdown-item" href="shop-sidebar.html">Handicraft</a></li> --}}
                                     </ul>
                                 </li>
                                 <li><a class="active" href="{{ route('home') }}"><i class="bi bi-house-door"></i>
@@ -270,7 +272,7 @@
             <div class="container">
                 <div class="row">
                     <!-- Start Single Widget  -->
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="axil-footer-widget">
                             <h5 class="widget-title">Support</h5>
                             <!-- <div class="logo mb--30">
@@ -295,7 +297,7 @@
                     </div>
                     <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
-                    <div class="col-lg-3 col-sm-6">
+                    {{-- <div class="col-lg-3 col-sm-6">
                         <div class="axil-footer-widget">
                             <h5 class="widget-title">Account</h5>
                             <div class="inner">
@@ -308,18 +310,17 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="axil-footer-widget">
                             <h5 class="widget-title">Quick Link</h5>
                             <div class="inner">
                                 <ul>
-                                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                    <li><a href="terms-of-service.html">Terms Of Use</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="privacy-policy.html">Home</a></li>
+                                    <li><a href="terms-of-service.html">Shop</a></li>
+                                    <li><a href="contact.html">About Us</a></li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </div>
@@ -327,23 +328,23 @@
                     </div>
                     <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
-                    <div class="col-lg-3 col-sm-6">
+                    <div class="col-lg-4 col-sm-6">
                         <div class="axil-footer-widget">
                             <h5 class="widget-title">Download App</h5>
                             <div class="inner">
-                                <span>Save $3 With App & New User only</span>
+                                <span>Scan the code below to connect with us on WhatsApp for business.</span>
                                 <div class="download-btn-group">
                                     <div class="qr-code">
                                         <img src="/web/assets/images/others/qr.png" alt="Axilthemes">
                                     </div>
-                                    <div class="app-link">
+                                    {{-- <div class="app-link">
                                         <a href="#">
                                             <img src="/web/assets/images/others/app-store.png" alt="App Store">
                                         </a>
                                         <a href="#">
                                             <img src="/web/assets/images/others/play-store.png" alt="Play Store">
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -491,7 +492,6 @@
 
                                         <div class="product-variations-wrapper">
 
-                                            <!-- Start Product Variation  -->
                                             <div class="product-variation">
                                                 <h6 class="title">Colors:</h6>
                                                 <div class="color-variant-wrapper">
@@ -508,9 +508,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <!-- End Product Variation  -->
 
-                                            <!-- Start Product Variation  -->
                                             <div class="product-variation">
                                                 <h6 class="title">Size:</h6>
                                                 <ul class="range-variant">
@@ -521,7 +519,6 @@
                                                     <li>xl</li>
                                                 </ul>
                                             </div>
-                                            <!-- End Product Variation  -->
 
                                         </div>
 
@@ -582,8 +579,8 @@
                     <livewire:components.cart-count :display="'total'" />
                 </h3>
                 <div class="group-btn">
-                    <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                    <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                    <a href="{{ route("cart") }}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                    <a href="{{ route("checkout") }}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
                 </div>
             </div>
         </div>
@@ -637,6 +634,30 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var input = document.querySelector("#phone");
+          var hiddenInput = document.querySelector("#full_phone"); 
+        
+          var iti = window.intlTelInput(input, {
+            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+            separateDialCode: true,
+          });
+        
+     
+          window.iti = iti;
+        
+       
+          $('form').on('submit', function() {
+          
+            var fullPhoneNumber = iti.getNumber();
+            
+    
+            hiddenInput.value = fullPhoneNumber;
+          });
+        });
+        </script> --}}
 
 
 

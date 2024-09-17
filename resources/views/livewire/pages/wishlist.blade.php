@@ -45,6 +45,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if($wishlists->count())
                         @foreach ($wishlists as $wishes)
                             <tr>
                                 <td class="product-remove">
@@ -93,6 +94,11 @@
                                 @endif
                             </tr>
                         @endforeach
+                        @else
+                        <div class="alert alert-secondary" role="alert">
+                            No Favourites To Show Yet! <a href="{{ route("products") }}" class="ms-3 text-primary">Go to Shop >></a>
+                          </div>
+                        @endif
                     </tbody>
                 </table>
             </div>

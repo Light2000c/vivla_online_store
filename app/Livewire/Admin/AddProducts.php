@@ -43,8 +43,6 @@ class AddProducts extends Component
 
     public function send()
     {
-
-        dd($this->description);
         $category_error = "";
 
         $this->message = null;
@@ -95,6 +93,11 @@ class AddProducts extends Component
         $this->resetValues();
         return $this->showAlert("Success", "Product has been successfully created", "success");
     }
+
+    // public function updatedDescription()
+    // {
+    //     dd($this->description);
+    // }
 
 
 

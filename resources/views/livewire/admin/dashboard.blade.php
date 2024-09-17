@@ -28,22 +28,21 @@
                   <div class="card-header pb-0">
                     <div class="d-flex">
                       <div class="order bg-light-primary"><span></span>
-                        <svg>
-                          <use href="../assets/svg/icon-sprite.svg#basket"></use>
-                        </svg>
+                        <div>
+                          <i class="bi bi-handbag-fill" style="font-size: 20px;"></i>
+                        </div>
                       </div>
                       <div class="arrow-chart">
                         <svg>
-                          <use href="../assets/svg/icon-sprite.svg#arrow-chart"></use>
                         </svg><span class="font-danger">-6.3%</span>
                       </div>
                     </div>
-                    <div class="online"><span>Online Order</span>
-                      <h2>16,2873</h2>
+                    <div class="online"><span>Products</span>
+                      <h2>{{ $products->count() }}</h2>
                     </div>
                   </div>
                   <div class="card-body pt-0 ps-2 pe-2">
-                    <div id="online-chart"> </div>
+                    {{-- <div id="online-chart"> </div> --}}
                   </div>
                 </div>
               </div>
@@ -52,22 +51,21 @@
                   <div class="card-header offline-order">
                     <div class="d-flex">
                       <div class="order bg-light-secondary"><span></span>
-                        <svg>
-                          <use href="../assets/svg/icon-sprite.svg#delivery"></use>
-                        </svg>
+                        <div>
+                          <i class="bi bi-people-fill" style="font-size: 20px;"></i>
+                        </div>
                       </div>
                       <div class="arrow-chart">
                         <svg>
-                          <use href="../assets/svg/icon-sprite.svg#arrow-chart-up"></use>
                         </svg><span class="font-success">+8.3%</span>
                       </div>
                     </div>
-                    <div class="online"><span>Offline Order</span>
-                      <h2>62,5461</h2>
+                    <div class="online"><span>Users</span>
+                      <h2>{{ $users->count() }}</h2>
                     </div>
                   </div>
                   <div class="card-body pt-0 ps-2 pe-2">
-                    <div class="offline-chart" id="offline-chart"></div>
+                    {{-- <div class="offline-chart" id="offline-chart"></div> --}}
                   </div>
                 </div>
               </div>
@@ -76,22 +74,24 @@
                   <div class="card-header revenue-order pb-0">
                     <div class="d-flex">
                       <div class="order bg-light-danger"><span></span>
-                        <svg>
+                        <div>
+                          <i class="bi bi-cart4" style="font-size: 20px;"></i>
+                        </div>
+                        {{-- <svg>
                           <use href="../assets/svg/icon-sprite.svg#increased"></use>
-                        </svg>
+                        </svg> --}}
                       </div>
                       <div class="arrow-chart">
                         <svg>
-                          <use href="../assets/svg/icon-sprite.svg#arrow-chart"></use>
                         </svg><span class="font-danger">-3.5%</span>
                       </div>
                     </div>
-                    <div class="online"><span>Total Revenue</span>
-                      <h2>45,9561</h2>
+                    <div class="online"><span>Carts</span>
+                      <h2>{{ $carts->count() }}</h2>
                     </div>
                   </div>
                   <div class="card-body pt-0 ps-2 pe-2">
-                    <div class="revenue" id="Revenue-chart"></div>
+                    {{-- <div class="revenue" id="Revenue-chart"></div> --}}
                   </div>
                 </div>
               </div>

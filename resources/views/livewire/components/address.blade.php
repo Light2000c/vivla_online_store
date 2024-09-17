@@ -7,6 +7,7 @@
         </div>
     </div>
     <div class="row row--30">
+        @if($addresses->count())
         @foreach ($addresses as $address)
             <div class="col-lg-6">
                 <div class="address-info mb--40 border">
@@ -45,6 +46,13 @@
                 </div>
             </div>
         @endforeach
+        @else
+        <div class="col-lg-12">
+        <div class="alert alert-info" role="alert">
+            No Address to Show Yet!
+        </div>
+        </div>
+        @endif
         {{-- <div class="col-lg-6">
             <div class="address-info">
                 <div class="addrss-header d-flex align-items-center justify-content-between">

@@ -192,7 +192,7 @@
                                     @endif
 
                                     {{-- beginning of hover content --}}
-                                    <div class="product-hover-action">
+                                    {{-- <div class="product-hover-action">
 
                                         @if (!Auth::user())
                                             <ul class="cart-action">
@@ -251,7 +251,7 @@
                                                 </li>
                                             </ul>
                                         @endif
-                                    </div>
+                                    </div> --}}
                                     {{-- beginning of hover content --}}
                                 </div>
                                 <div class="product-content">
@@ -286,47 +286,43 @@
         <div class="container">
             <div class="product-area pb--50">
                 <div class="section-title-wrapper section-title-center">
-                    <h2 class="title">How to buy NFTs</h2>
+                    <h2 class="title">How to buy</h2>
                 </div>
                 <div class="row row-cols-xl-4 row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 row--20">
                     <div class="col">
                         <div class="service-box how-to-sell">
                             <div class="icon">
-                                <img src="/web/assets/images/icons/choose.png" alt="Service">
+                                <i class="bi bi-handbag-fill" style="font-size: 30px;color: #DCC168;"></i>
                             </div>
-                            <h6 class="title">Choose Your Favourite</h6>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quas expedita veritatis
-                                ipsum, culpa, asperiores.</p>
+                            <h6 class="title">Browse Products</h6>
+                            <p> Explore categories or use the search bar to find items of interest.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="service-box how-to-sell">
                             <div class="icon">
-                                <img src="/web/assets/images/icons/protection.png" alt="Service">
+                                <i class="bi bi-cart4" style="font-size: 30px;color: #DCC168;"></i>
                             </div>
-                            <h6 class="title">Verify NFTs</h6>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quas expedita veritatis
-                                ipsum, culpa, asperiores.</p>
+                            <h6 class="title">Add to Cart</h6>
+                            <p>Select desired items and add them to your shopping cart.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="service-box how-to-sell">
                             <div class="icon">
-                                <img src="/web/assets/images/icons/purchasing.png" alt="Service">
+                                <i class="bi bi-bag-check" style="font-size: 30px;color: #DCC168;"></i>
                             </div>
-                            <h6 class="title">Purchase NFTS</h6>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quas expedita veritatis
-                                ipsum, culpa, asperiores.</p>
+                            <h6 class="title">Checkout</h6>
+                            <p>Review your cart, enter shipping details, and choose a payment method.</p>
                         </div>
                     </div>
                     <div class="col">
                         <div class="service-box how-to-sell">
                             <div class="icon">
-                                <img src="/web/assets/images/icons/dancing.png" alt="Service">
+                                <i class="bi bi-check-square-fill" style="font-size: 30px;color: #DCC168;"></i>
                             </div>
-                            <h6 class="title">Enjoy!</h6>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex quas expedita veritatis
-                                ipsum, culpa, asperiores.</p>
+                            <h6 class="title">Confirm Order</h6>
+                            <p>Complete the purchase by confirming the order and receiving a receipt or confirmation email.</p>
                         </div>
                     </div>
                 </div>

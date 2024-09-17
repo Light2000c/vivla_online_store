@@ -71,7 +71,7 @@
                                             <td>{{ $product->tag }}</td>
                                             <td> <img class="img-30 me-2" src="/storage/products/{{$product->image}}"
                                                     alt="No Image"></td>
-                                            <td>{{ Str::words($product->description, 6) }}</td>
+                                            <td>{!! Str::words($product->description, 6) !!}</td>
                                             <td>{{ $product->created_at }}</td>
                                             <td>{{ $product->updated_at }}</td>
                                             <td>

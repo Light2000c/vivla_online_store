@@ -39,7 +39,7 @@ class Checkout extends Component
 
         $carts = request()->user()->cart()->get();
 
-        if (!$carts) {
+        if (!$carts->count()) {
             return $this->showToast("info", "You don't have any product on your cart yet!");
         }
 

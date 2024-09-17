@@ -18,7 +18,7 @@
 
 
 
-    <title>Dunzo - Premium Admin Template</title>
+    <title>Vivla Closet | Onlin Store</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Outfit:400,400i,500,500i,700,700i&amp;display=swap"
         rel="stylesheet">
@@ -73,9 +73,10 @@
         <div class="page-header">
             <div class="header-wrapper row m-0">
                 <div class="header-logo-wrapper col-auto p-0">
-                    <div class="logo-wrapper"><a href="index.html"><img class="img-fluid for-light"
-                                src="/web1/assets/images/logo/logo-1.png" alt=""><img class="img-fluid for-dark"
-                                src="/web1/assets/images/logo/logo.png" alt=""></a></div>
+                    <div class="logo-wrapper"><a href="index.html">
+                            <img class="img-fluid for-light" src="/web1/assets/images/logo/logo-1.png" alt="">
+                            <img class="img-fluid for-dark" src="/web1/assets/images/logo/logo.png" alt=""></a>
+                    </div>
                     <div class="toggle-sidebar">
                         <svg class="sidebar-toggle">
                             <use href="/web1/assets/svg/icon-sprite.svg#stroke-animation"></use>
@@ -157,8 +158,11 @@
             <!-- Page Sidebar Start-->
             <div class="sidebar-wrapper" data-layout="fill-svg">
                 <div>
-                    <div class="logo-wrapper"><a href="index.html"><img class="img-fluid"
-                                src="/web1/assets/images/logo/logo.png" alt=""></a>
+                    <div class="logo-wrapper">
+                        <a href="index.html"><img class="img-fluid"
+                                src="/logo/VIVLA MAIN LOGO WEBT2.png"  alt="" width="40" height="157"></a>
+                        {{-- <a href="index.html"><img class="img-fluid"
+                                src="/web1/assets/images/logo/logo.png" alt=""></a> --}}
                         <div class="toggle-sidebar">
                             <svg class="sidebar-toggle">
                                 <use href="/web1/assets/svg/icon-sprite.svg#toggle-icon"></use>
@@ -191,7 +195,8 @@
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-dashboard') }}">
-                                        <span>Dashboard</span></a>
+                                        <span><i class="bi bi-speedometer2 me-2" style="font-size: 16px"></i>
+                                            Dashboard</span></a>
                                 </li>
 
                                 <li class="sidebar-main-title">
@@ -202,33 +207,39 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('add-product') }}"><span>Add
+                                        href="{{ route('add-product') }}"><span>
+                                            <i class="bi bi-bag-plus me-2" style="font-size: 16px"></i> Add
                                             Product</span></a>
                                 </li>
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-product') }}"><span>
-                                            Products</span></a>
+                                            <i class="bi bi-handbag me-2"
+                                                style="font-size: 16px"></i>Products</span></a>
                                 </li>
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-categories') }}"><span>
-                                            Categories</span></a>
+                                            <i class="bi bi-ui-checks me-2"
+                                                style="font-size: 16px"></i>Categories</span></a>
                                 </li>
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('admin-cart') }}"><span>Carts</span></a>
+                                        href="{{ route('admin-cart') }}"><span>
+                                            <i class="bi bi-cart4 me-2" style="font-size: 16px"></i>Carts</span></a>
                                 </li>
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('admin-wishlist') }}"><span>Wishlists</span></a>
+                                        href="{{ route('admin-wishlist') }}"><span>
+                                            <i class="bi bi-heart me-2"
+                                                style="font-size: 16px"></i>Wishlists</span></a>
                                 </li>
-                                <li class="sidebar-list">
+                                {{-- <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-order') }}"><span>Orders</span></a>
-                                </li>
+                                </li> --}}
 
                                 <li class="sidebar-main-title">
                                     <div>
@@ -238,11 +249,14 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href=""><span>Transaction</span></a>
+                                        href="{{ route('admin-transaction') }}"><span>
+                                            <i class="bi bi-arrows-angle-contract me-2"
+                                                style="font-size: 16px"></i>Transaction</span></a>
                                 </li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav"
-                                        href=""><span>Payment</span></a>
+                                    <a class="sidebar-link sidebar-title link-nav" href=""><span><i
+                                                class="bi bi-credit-card-2-back me-2"
+                                                style="font-size: 16px"></i>Payment</span></a>
                                 </li>
 
                                 <li class="sidebar-main-title">
@@ -253,15 +267,20 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('admin-address') }}"><span>Address</span></a>
+                                        href="{{ route('admin-address') }}"><span>
+                                            <i class="bi bi-person-lines-fill me-2"
+                                                style="font-size: 16px"></i>Address</span></a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav" href="{{ route('users') }}"><span>
+                                            <i class="bi bi-person-gear me-2"
+                                                style="font-size: 16px"></i>Users</span></a>
                                 </li>
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('users') }}"><span>Users</span></a>
-                                </li>
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('team-member') }}"><span>Team Members</span></a>
+                                        href="{{ route('team-member') }}"><span>
+                                            <i class="bi bi-people me-2" style="font-size: 16px"></i>Team
+                                            Members</span></a>
                                 </li>
 
 
@@ -349,7 +368,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        CKEDITOR.replace('editor', {versionCheck: false});
+        CKEDITOR.replace('editor', {
+            versionCheck: false
+        });
     </script>
 
 

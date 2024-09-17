@@ -7,6 +7,7 @@
                  <span class="subtotal-amount">${{ number_format($this->getTotal()) }}</span>
              @endif
          @else
+         @if($cartCount->count())
              @foreach ($cartCount as $cart)
                  <li class="cart-item">
                      <div class="item-img">
@@ -56,6 +57,11 @@
                      </div>
                  </li>
              @endforeach
+             @else
+             <div class="alert alert-secondary" role="alert">
+                 No Cart To Show Yet! <a href="{{ route("products") }}" class="ms-3 text-primary">Go to Shop >></a>
+               </div>
+             @endif
          @endif
      @else
          @if ($display === 'count')

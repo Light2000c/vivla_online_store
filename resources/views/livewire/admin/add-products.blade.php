@@ -115,21 +115,13 @@
                                                      <small class="text-danger">{{ $message }}</small>
                                                  @enderror
                                              </div>
-                                             {{-- <div class="col-12 mb-3">
-                                                 <label class="form-label"
-                                                     for="exampleFormControlTextarea1">Description</label>
-                                                 <textarea wire:model="description" class="form-control" id="" rows="4"></textarea>
-                                                 @error('description')
-                                                     <small class="text-danger">{{ $message }}</small>
-                                                 @enderror
-                                             </div> --}}
-                                             {{-- ck editor --}}
                                              <div class="col-12 mb-3">
                                                  <div wire:ignore>
                                                      <label class="form-label"
                                                          for="exampleFormControlTextarea1">Description</label>
                                                      <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
                                                  </div>
+
                                                  @error('description')
                                                      <small class="text-danger">{{ $message }}</small>
                                                  @enderror
@@ -159,6 +151,7 @@
                                  </div>
                              </div>
                              <div class="btn-showcase text-end">
+                                 {{-- <button wire:click="send" type="button" class="btn btn-primary" type="submit"> --}}
                                  <button type="submit" class="btn btn-primary" type="submit">
                                      <span wire:loading.remove>Save Product</span>
                                      <div wire:loading wire:target="send">
@@ -167,7 +160,7 @@
                                      </div>
                                  </button>
                              </div>
-                         </form>
+                             {{-- </form> --}}
 
                      </div>
                  </div>
@@ -188,12 +181,6 @@
 
              console.log(data);
 
-             //  Swal.fire({
-             //      title: data.title,
-             //      text: data.text,
-             //      icon: data.icon,
-             //  });
-
              Swal.fire({
                  title: data.title,
                  text: data.text,
@@ -211,34 +198,35 @@
          });
      </script>
 
-     @push('scripts')
-         <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-         <script>
-             document.addEventListener('livewire:load', function() {
-                 var editor = CKEDITOR.replace('editor', {
-                     versionCheck: false
-                 });
 
-                 // Ensure Livewire gets the correct data when CKEditor is ready and when content changes
-                 editor.on('instanceReady', function() {
-                     console.log('CKEditor instance ready!'); // Debugging log
-                     editor.setData(@this.get('description')); // Set initial Livewire content to CKEditor
-                 });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+      
+            if (CKEDITOR.instances['editor']) {
+                var editor = CKEDITOR.instances['editor'];
+            } else {
+              
+                var editor = CKEDITOR.replace('editor', {
+                    versionCheck: false
+                });
+            }
+    
+           
+            document.querySelector('form').addEventListener('submit', function(event) {
+              
+                var data = editor.getData();
+                console.log('CKEditor content on submit: ', data);
+    
+                document.getElementById('editor').value = data;
+    
+                @this.set('description', data);
+            });
+        });
+    </script>
+    
 
-                 // Update Livewire property on content change
-                 editor.on('change', function() {
-                     console.log('CKEditor content changed!'); // Debugging log
-                     @this.set('description', editor.getData()); // Sync CKEditor content with Livewire
-                 });
 
-                 // Handle other events (e.g., blur, key events)
-                 editor.on('blur', function() {
-                     console.log('CKEditor blur event!'); // Debugging log
-                     @this.set('description', editor.getData()); // Sync on blur as well for better experience
-                 });
-             });
-         </script>
-     @endpush
+     @stack('scripts')
 
-      @stack('scripts')
+
  </div>

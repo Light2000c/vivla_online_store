@@ -21,9 +21,11 @@ class Products extends Component
     private $products = [];
     public $categories;
     public $previousSelected;
-    public $selectedCategory = null;
+    public $selectedCategory = "";
     public $price_range;
     public $hiddenRange;
+    public $min_price;
+    public $max_price;
 
     public function mount() {}
 
@@ -38,14 +40,30 @@ class Products extends Component
 
     public function load()
     {
-
-        if ($this->selectedCategory) {
-            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')->orderBy("created_at", "DESC")->paginate(16);
-            $this->categories = Category::orderBy("created_at", "DESC")->get();
-        } else {
+        if(!$this->selectedCategory && !$this->hiddenRange){
             $this->products = Product::orderBy("created_at", "DESC")->paginate(16);
             $this->categories = Category::orderBy("created_at", "DESC")->get();
         }
+
+        if ($this->selectedCategory && !$this->hiddenRange) {
+            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')->orderBy("created_at", "DESC")->paginate(16);
+            $this->categories = Category::orderBy("created_at", "DESC")->get();
+        }
+
+        if ($this->selectedCategory && $this->hiddenRange) {
+            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')
+            ->where("price", ">=", $this->min_price)
+            ->where("price", "<=", $this->max_price)
+            ->orderBy("created_at", "DESC")->paginate(16);
+        }
+
+
+        if (!$this->selectedCategory && $this->hiddenRange) {
+            $this->products = Product::where("price", ">=", $this->min_price)
+            ->where("price", "<=", $this->max_price)
+            ->orderBy("created_at", "DESC")->paginate(16);
+        }
+        
     }
 
 
@@ -59,17 +77,23 @@ class Products extends Component
     public function filterProduct()
     {
         // dd($this->selectedCategory);
-        dd($this->hiddenRange);
+        // dd($this->hiddenRange);
 
-        // return redirect()->route('products', ['category' => $this->selectedCategory]);
-
-        if ($this->selectedCategory == $this->previousSelected) {
-            return;
+        if($this->hiddenRange){
+            [$this->min_price, $this->max_price] = explode(",", $this->hiddenRange);
         }
+      
+            $this->load();
+            $this->resetPage();
+    }
+
+    public function resetFilters(){
+        $this->selectedCategory = "";
+        $this->hiddenRange = "";
+        $this->price_range = "";
 
         $this->load();
-        $this->previousSelected = $this->selectedCategory;
-        // $this->resetPage();
+        $this->resetPage();
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Cart;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
@@ -28,13 +29,8 @@ class viewServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
 
-            if (Auth::check()) {
-                $carts = Auth::user()->cart()->get();
-                View::share('globalUserCart', $carts);
-            } else {
-
-                View::share('globalUserCart', "");
-            }
+                $categories = Category::orderBy("created_at", "DESC")->take(10)->get();
+                View::share('globalCategories', $categories);
         });
     }
 }

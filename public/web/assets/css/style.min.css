@@ -3,6 +3,7 @@
 :root {
     --color-gold-rgb: rgb(220, 193, 104);
     --color-gold: #DCC168;
+    --color-gold2: #DCC168;
     --color-primary: #3577f0;
     --light-primary: #8c71db;
     --color-secondary: #ff497c;
@@ -16,7 +17,8 @@
     --color-chart01: #896BA7;
     --color-chart02: #BADEFF;
     --color-chart03: #E76458;
-    --color-heading: #292930;
+    --color-heading: #35353a;
+    --color-heading2: #292930;
     --color-body: #777777;
     --color-border-light: #E3E6E9;
     --color-border-dark: #42424A;
@@ -3099,7 +3101,7 @@ button.axil-btn.btn-outline {
 a.axil-btn.btn-outline:hover,
 button.axil-btn.btn-outline:hover {
     background-color: var(--color-gold);
-    border-color: var(--color-gold);
+    /* border-color: var(--color-gold); */
     color: var(--color-white)
 }
 
@@ -3143,7 +3145,7 @@ button.axil-btn.wishlist-btn:before {
 
 a.axil-btn.wishlist-btn:hover,
 button.axil-btn.wishlist-btn:hover {
-    border-color: var(--color-gold)
+    /* border-color: var(--color-gold) */
 }
 
 a.axil-btn.wishlist-btn:hover i,
@@ -7674,7 +7676,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-5 .mainmenu>li.dropdown .dropdown-toggle i {
-    color: var(--color-primary)
+    /* color: var(--color-primary) */
 }
 
 .header-style-5 .mainmenu>li.dropdown .dropdown-toggle:after {
@@ -9181,7 +9183,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-megamenu .department-submenu ul li a:hover {
-    color: var(--color-gold)
+    /* color: var(--color-gold) */
 }
 
 .axil-mainmenu.aside-category-menu .header-department .department-megamenu .featured-product {

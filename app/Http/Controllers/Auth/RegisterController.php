@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -66,9 +67,40 @@ class RegisterController extends Controller
         }
 
         if (!Auth::attempt($request->only("email", "password", true))) {
-            return back()->with("error", "User was not able to login.");
+            return back()->with("error", "Authentication failed! please check details and try again.");
         }
 
+        $this->moveCartToDb();
+
         return redirect()->route("home");
+    }
+
+
+    public function moveCartToDb()
+    {
+
+        $carts = session()->get('cart', []);
+
+        if (!empty($carts)) {
+            foreach ($carts as $id => $item) {
+
+                $product = Product::find($id);
+
+                if (!$product) {
+                    continue;
+                }
+
+                if ($product->hasCart(Auth::user())) {
+                    continue;
+                }
+
+                Auth::user()->cart()->create([
+                    'product_id' => $id,
+                    'quantity' => $item['quantity']
+                ]);
+            }
+
+            session()->forget('cart');
+        }
     }
 }

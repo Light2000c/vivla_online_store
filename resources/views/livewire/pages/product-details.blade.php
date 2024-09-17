@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                                 <p class="description">
-                                    {{ Str::words($product->description, 22) }}
+                                    {!! Str::words($product->description, 22) !!}
                                 </p>
 
                                 <div class="product-variations-wrapper">
@@ -97,6 +97,12 @@
                                         <div class="product-variation product-size-variation">
                                             <span><b>Brand</b></span>
                                             <span class="ms-3">{{ $product->brand }}</span>
+                                        </div>
+                                    @endif
+                                    @if ($product->category)
+                                        <div class="product-variation product-size-variation">
+                                            <span style="color: #DCC168;"><b>Category:</b></span>
+                                            <span class="ms-3 text-capitalize">{{ $this->getCategory($product->category) }}</span>
                                         </div>
                                     @endif
                                     <!-- End Product Variation  -->
@@ -160,8 +166,8 @@
                                                     </a>
                                                 </li>
                                             @endif
-                                            <li class="wishlist"><a href="wishlist.html"
-                                                    class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
+                                            <li class="wishlist"><a wire:click="addToWishlist({{ $product->id }})"
+                                                    class="btn axil-btn wishlist-btn"><i class="far fa-heart"></i></a></li>
                                         </ul>
                                         <!-- End Product Action  -->
 
@@ -284,7 +290,7 @@
                                 <div class="col-lg-12 mb--30">
                                     <div class="single-desc">
                                         <h5 class="title">Description</h5>
-                                        <p>{{ $product->description }}</p>
+                                        <p>{!! $product->description !!}</p>
                                     </div>
                                 </div>
                                 <!-- End .col-lg-6 -->
@@ -504,9 +510,8 @@
     <div class="axil-product-area bg-color-white axil-section-gap pb--50 pb_sm--30">
         <div class="container">
             <div class="section-title-wrapper">
-                <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> Your
-                    Recently</span>
-                <h2 class="title">Viewed Items</h2>
+                <span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> products</span>
+                <h2 class="title">Related Products</h2>
             </div>
             <div wire:ignore class="recent-product-activation slick-layout-wrapper--15 axil-slick-arrow arrow-top-slide">
 
@@ -514,24 +519,51 @@
                     <div class="slick-single-layout">
                         <div class="axil-product product-style-one mb--30 border p-3">
                             <div class="thumbnail">
-                                <a href="single-product.html">
-                                    <img src="/storage/products/{{ $related->image }}" alt="Product Images">
+                                <a >
+                                    <img src="/storage/products/{{ $related->image }}" alt="Product Images" style="height: 300px">
                                 </a>
                                 @if ($related->discount)
                                     <div class="label-block label-right">
-                                        <div class="product-badget">{{ $product->discount }}% OFF</div>
+                                        <div class="product-badget">{{ $related->discount }}% OFF</div>
                                     </div>
                                 @endif
                                 <div class="product-hover-action">
 
                                     @if (!Auth::user())
                                         <ul class="cart-action">
-                                            <li class="wishlist"><a href="wishlist.html"><i
-                                                        class="far fa-heart"></i></a></li>
-                                            <li class="select-option"><a href="cart.html">Add to Cart</a></li>
-                                            <li class="quickview"><a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a>
-                                            </li>
+                                            <li class="wishlist"><a
+                                                wire:click="addToWishlist({{ $related->id }})"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li class="select-option">
+                                            @if ($this->isInCart($related->id))
+                                                <a class="btn"
+                                                    wire:click="removeFromSessionCart({{ $related->id }})">
+                                                    <span wire:loading.remove
+                                                        wire:target="removeFromSessionCart({{ $related->id }})"><i
+                                                            class="bi bi-cart"></i> Remove</span>
+                                                    <span wire:loading
+                                                        wire:target="removeFromSessionCart({{ $related->id }})"
+                                                        class="spinner-border spinner-border-sm"
+                                                        aria-hidden="true"></span>
+                                                </a>
+                                            @else
+                                                <a class="btn"
+                                                    wire:click="addToSessionCart({{ $related->id }})">
+                                                    <span wire:loading.remove
+                                                        wire:target="addToSessionCart({{ $related->id }})"><i
+                                                            class="bi bi-cart"></i> Add</span>
+                                                    <span wire:loading
+                                                        wire:target="addToSessionCart({{ $related->id }})"
+                                                        class="spinner-border spinner-border-sm"
+                                                        aria-hidden="true"></span>
+                                                </a>
+                                            @endif
+                                        </li>
+                                        <li class="quickview"><a
+                                                href="{{ route('product-detail', $related->id) }}">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                        </li>
                                         </ul>
                                     @else
                                         <ul class="cart-action">
@@ -585,7 +617,7 @@
                                                     </a>
                                                 @endif
                                             </li>
-                                            <li class="quickview"><a href="#" data-bs-toggle="modal"
+                                            <li class="quickview"><a href="{{ route("product-detail", $related->id) }}" data-bs-toggle="modal"
                                                     data-bs-target="#quick-view-modal"><i class="far fa-eye"></i></a>
                                             </li>
                                         </ul>
@@ -595,7 +627,7 @@
                             <div class="product-content">
                                 @if ($product->discount)
                                     <div class="inner">
-                                        <h5 class="title"><a href="single-product.html">{{ $related->name }}</a>
+                                        <h5 class="title"><a href="{{ route("product-detail", $related->id) }}">{{ $related->name }}</a>
                                         </h5>
                                         <div class="product-price-variant">
                                             <span

@@ -69,7 +69,8 @@
                             </div>
                         </div>
                         {{-- <button wire:click.prevent="filterProduct" class="axil-btn btn-bg-primary">Filter</button> --}}
-                        <button wire:click.prevent="filterProduct" class="axil-btn mb-4" style="background-color: #DCC168;" wire:loading.attr="disabled">
+                        <button wire:click.prevent="filterProduct" class="axil-btn mb-4"
+                            style="background-color: #DCC168;" wire:loading.attr="disabled">
                             <span wire:loading.remove wire:target="filterProduct">Filter</span>
                             <span wire:loading wire:target="filterProduct" class="spinner-border" role="status"
                                 aria-hidden="true"></span>
@@ -83,12 +84,23 @@
                     </div>
                     <!-- End .axil-shop-sidebar -->
                 </div>
+
                 <div class="col-lg-9">
-                    <!-- End .row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="axil-shop-top mb--40">
+                                <div class="d-lg-none">
+                                    <button class="product-filter-mobile filter-toggle"><i class="fas fa-filter"></i>
+                                        FILTER</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     @if ($products->count())
                         <div class="row row--15">
                             @foreach ($products as $index => $product)
-                                <div class="col-xl-3 col-sm-6" wire:key="product-{{ $index }}">
+                                <div class="col-sm-12 col-md-4 col-xl-3" wire:key="product-{{ $index }}">
                                     {{-- <livewire:components.product-item :product="$product"  /> --}}
                                     <div class="axil-product  product-style-one mb--30">
                                         {{-- <div class="axil-product  product-style-one mb--30 border p-3"> --}}
@@ -112,7 +124,8 @@
                                                         <li class="select-option">
                                                             @if ($this->isInCart($product->id))
                                                                 <a class="btn"
-                                                                    wire:click="removeFromSessionCart({{ $product->id }})" wire:loading.attr="disabled">
+                                                                    wire:click="removeFromSessionCart({{ $product->id }})"
+                                                                    wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="removeFromSessionCart({{ $product->id }})"><i
                                                                             class="bi bi-cart"></i> Remove</span>
@@ -123,7 +136,8 @@
                                                                 </a>
                                                             @else
                                                                 <a class="btn"
-                                                                    wire:click="addToSessionCart({{ $product->id }})" wire:loading.attr="disabled">
+                                                                    wire:click="addToSessionCart({{ $product->id }})"
+                                                                    wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="addToSessionCart({{ $product->id }})"><i
                                                                             class="bi bi-cart"></i> Add</span>
@@ -170,7 +184,8 @@
                                                         <li class="select-option">
                                                             @if ($product->hasCart(Auth::user()))
                                                                 <a class="btn"
-                                                                    wire:click="removeFromCart({{ $product->id }})" wire:loading.attr="disabled">
+                                                                    wire:click="removeFromCart({{ $product->id }})"
+                                                                    wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="removeFromCart({{ $product->id }})">
                                                                         <i class="bi bi-cart"></i> Remove</span>
@@ -181,7 +196,8 @@
                                                                 </a>
                                                             @else
                                                                 <a class="btn"
-                                                                    wire:click="addToCart({{ $product->id }})" wire:loading.attr="disabled">
+                                                                    wire:click="addToCart({{ $product->id }})"
+                                                                    wire:loading.attr="disabled">
                                                                     <span wire:loading.remove
                                                                         wire:target="addToCart({{ $product->id }})">
                                                                         <i class="bi bi-cart"></i> Add</span>

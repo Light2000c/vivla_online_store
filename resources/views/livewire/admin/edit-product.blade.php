@@ -135,7 +135,7 @@
 
 
                             <div class="btn-showcase text-end">
-                                <button type="submit" class="btn btn-primary" type="submit">
+                                <button type="submit" class="btn btn-primary" type="submit" wire:loading.attr="disabled" wire:target="update">
                                     <span wire:loading.remove wire:target="update">Save Changes</span>
                                     <div wire:loading wire:target="update">
                                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>

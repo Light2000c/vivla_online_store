@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/personal/personal.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/css/intlTelInput.css">
+
     @livewireStyles
 
     @stack('scripts')
@@ -116,15 +118,8 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-header-menu">
                                         @foreach($globalCategories as $category)
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">{{ $category->name }}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route("products") }}?category={{ $category->name }}">{{ $category->name }}</a></li>
                                         @endforeach
-                                        {{-- <li><a class="dropdown-item" href="shop-sidebar.html">Electronics</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Home Decor</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Medicine</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Furniture</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Crafts</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Accessories</a></li>
-                                        <li><a class="dropdown-item" href="shop-sidebar.html">Handicraft</a></li> --}}
                                     </ul>
                                 </li>
                                 <li><a class="active" href="{{ route('home') }}"><i class="bi bi-house-door"></i>
@@ -318,10 +313,10 @@
                             <h5 class="widget-title">Quick Link</h5>
                             <div class="inner">
                                 <ul>
-                                    <li><a href="privacy-policy.html">Home</a></li>
-                                    <li><a href="terms-of-service.html">Shop</a></li>
-                                    <li><a href="contact.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{ route("home") }}">Home</a></li>
+                                    <li><a href="{{ route("products") }}">Shop</a></li>
+                                    <li><a href="{{ route("about") }}">About Us</a></li>
+                                    <li><a href="{{ route("contact") }}">Contact</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -634,8 +629,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
 
-    {{-- <script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
           var input = document.querySelector("#phone");
           var hiddenInput = document.querySelector("#full_phone"); 
@@ -657,7 +654,7 @@
             hiddenInput.value = fullPhoneNumber;
           });
         });
-        </script> --}}
+        </script>
 
 
 

@@ -152,7 +152,7 @@
                              </div>
                              <div class="btn-showcase text-end">
                                  {{-- <button wire:click="send" type="button" class="btn btn-primary" type="submit"> --}}
-                                 <button type="submit" class="btn btn-primary" type="submit">
+                                 <button type="submit" class="btn btn-primary" type="submit" wire:loading.attr="disabled" wire:target="send">
                                      <span wire:loading.remove>Save Product</span>
                                      <div wire:loading wire:target="send">
                                          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>

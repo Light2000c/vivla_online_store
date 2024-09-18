@@ -136,11 +136,21 @@ class StripeController extends Controller
                             ->where('id', $item->product_id)
                             ->value('price');
 
-                        $total = $productPrice * $item->quantity;
+                        $productDiscount = DB::table('products')
+                            ->where('id', $item->product_id)
+                            ->value('discount');
+
+                        if ($productDiscount) {
+                            $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
+                        } else {
+                            $total = $productPrice * $item->quantity;
+                        }
+
 
                         return [
                             'user_id' => $item->user_id,
                             'product_id' => $item->product_id,
+                            'price' =>  $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
                             'quantity' => $item->quantity,
                             'transaction_id' => $transactionId,
                             'total' => $total,

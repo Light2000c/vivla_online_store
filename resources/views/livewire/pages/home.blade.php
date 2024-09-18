@@ -7,7 +7,7 @@
                 @foreach ($categories as $category)
                     <div class="slick-single-layout slick-slide">
                         <div class="categrie-product-2">
-                            <a href="#">
+                            <a href="{{ route("products") }}?category='{{ $category->name }}'">
                                 {{-- <img class="img-fluid" src="/web/assets/images/product/categories/furni-1.png" alt="product categorie"> --}}
                                 <h6 class="cat-title text-nowrap">{{ $category->name }}</h6>
                             </a>
@@ -118,7 +118,7 @@
                                                         class="fas fa-badge-check"></i></span></a></h5>
                                         <div class="product-hover-action">
                                             <ul class="cart-action">
-                                                <li class="select-option"><a href="single-product-7.html">Buy
+                                                <li class="select-option"><a href="{{ route("product-detail", $new->id) }}">Buy
                                                         Product</a>
                                                 </li>
                                             </ul>
@@ -180,7 +180,7 @@
                         <div  class="slick-single-layout">
                             <div  class="axil-product product-style-four">
                                 <div class="thumbnail border p-2">
-                                    <a href="single-product.html">
+                                    <a href="{{ route("product-detail", $new) }}">
                                         <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
                                             src="/storage/products/{{ $new->image }}" alt="Product Images"
                                             style="height: 330px;">
@@ -256,7 +256,7 @@
                                 </div>
                                 <div class="product-content">
                                     <div class="inner">
-                                        <h5 class="title"><a href="s">{{ $new->name }}</a></h5>
+                                        <h5 class="title"><a href="{{ route("product-detail", $new) }}">{{ $new->name }}</a></h5>
                                         @if ($new->discount)
                                             <div class="product-price-variant">
                                                 <span
@@ -363,7 +363,7 @@
                                         @endif
                                     </div>
                                     <div class="product-cart">
-                                        <a href="single-product-7.html" class="cart-btn">Buy Now</a>
+                                        <a href="{{ route("product-detail", $new) }}" class="cart-btn">Buy Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -372,7 +372,7 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-center mt--20 mt_sm--0">
-                        <a href="shop.html" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
+                        <a href="{{ route("products") }}" class="axil-btn btn-bg-lighter btn-load-more">View All Products</a>
                     </div>
                 </div>
             </div>

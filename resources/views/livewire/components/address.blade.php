@@ -7,51 +7,53 @@
         </div>
     </div>
     <div class="row row--30">
-        @if($addresses->count())
-        @foreach ($addresses as $address)
-            <div class="col-lg-6">
-                <div class="address-info mb--40 border">
-                    <div class="addrss-header d-flex align-items-center justify-content-between m-3">
-                        {{-- <h5 class="title mb-0">Address {{ $loop->index + 1 }}</h5> --}}
-                        <div class="col-3">
-                            <button wire:click="setAsDefault({{ $address->id }})" class="btn btn-outline-primary btn-lg"
-                                @disabled($address->active === 1)>
-                                <span wire:loading.remove wire:target="setAsDefault({{ $address->id }})">Set as
-                                    Default</span>
-                                <span wire:loading wire:target="setAsDefault({{ $address->id }})"
-                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                        <div class="d-flex">
-                            <a wire:click="openUpdateModal({{ $address->id }})"
-                                class="btn btn-outline-primary  me-3"><i class="far fa-edit"></i></a>
-                            <a wire:click="delete({{ $address->id }})" class="btn btn-outline-danger ">
-                                <i wire:loading.remove wire:target="delete({{ $address->id }})"
-                                    class="far fa-trash text-danger"></i>
-                                <span wire:loading wire:target="delete({{ $address->id }})"
-                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            </a>
-                        </div>
+        @if ($addresses->count())
+            @foreach ($addresses as $address)
+                <div class="col-lg-6">
+                    <div class="address-info mb--40 border">
+                        <div class="addrss-header d-flex align-items-center justify-content-between m-3">
+                            {{-- <h5 class="title mb-0">Address {{ $loop->index + 1 }}</h5> --}}
+                            <div class="col-3">
+                                <button wire:click="setAsDefault({{ $address->id }})"
+                                    class="btn btn-outline-primary btn-lg" @disabled($address->active === 1)>
+                                    <span wire:loading.remove wire:target="setAsDefault({{ $address->id }})">Set as
+                                        Default</span>
+                                    <span wire:loading wire:target="setAsDefault({{ $address->id }})"
+                                        class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="d-flex">
+                                <a wire:click="openUpdateModal({{ $address->id }})"
+                                    class="btn btn-outline-primary  me-3"><i class="far fa-edit"></i></a>
+                                <a wire:click="delete({{ $address->id }})" class="btn btn-outline-danger ">
+                                    <i wire:loading.remove wire:target="delete({{ $address->id }})"
+                                        class="far fa-trash text-danger"></i>
+                                    <span wire:loading wire:target="delete({{ $address->id }})"
+                                        class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                </a>
+                            </div>
 
+                        </div>
+                        <ul class="address-details m-3">
+                            <li>Name: {{ "$address->firstname $address->lastname" }}</li>
+                            <li>Email: {{ $address->email }}</li>
+                            <li>Phone: {{ $address->phone }}</li>
+                            <li>Phone: {{ $address->phone }}</li>
+                            <li class="mt--30">{{ $address->street }}</li>
+                            <li>city: {{ $address->city }}</li>
+                            <li>country: {{ $address->country }}</li>
+                        </ul>
                     </div>
-                    <ul class="address-details m-3">
-                        <li>Name: {{ "$address->firstname $address->lastname" }}</li>
-                        <li>Email: {{ $address->email }}</li>
-                        <li>Phone: {{ $address->phone }}</li>
-                        <li>Phone: {{ $address->phone }}</li>
-                        <li class="mt--30">{{ $address->street }}</li>
-                        <li>city: {{ $address->city }}</li>
-                        <li>country: {{ $address->country }}</li>
-                    </ul>
+                </div>
+            @endforeach
+        @else
+            <div class="col-lg-12">
+                <div class="alert alert-info" role="alert">
+                    No Address to Show Yet!
                 </div>
             </div>
-        @endforeach
-        @else
-        <div class="col-lg-12">
-        <div class="alert alert-info" role="alert">
-            No Address to Show Yet!
-        </div>
-        </div>
         @endif
         {{-- <div class="col-lg-6">
             <div class="address-info">
@@ -119,7 +121,10 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Phone</label>
-                                        <input wire:model="phone" type="text" class="form-control">
+                                        <input wire:model="phone" type="tel" id="phone" class="form-control tel-input"
+                                            name="phone" required>
+                                        <input type="hidden" id="full_phone" name="full_phone">
+                                        <div class="invalid-feedback"></div>
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -161,7 +166,8 @@
 
                                 <div class="col-12">
                                     <div class="form-group mb--0">
-                                        <button type="submit" class="btn btn-lg" value="" style="background-color: #d6b446;">
+                                        <button type="submit" class="btn btn-lg" value=""
+                                            style="background-color: #d6b446;">
                                             <span wire:loading.remove wire:target="send">Save</span>
                                             <span wire:loading wire:target="send"
                                                 class="spinner-border spinner-border-sm" role="status"
@@ -328,4 +334,32 @@
 
         });
     </script>
+
+{{--  @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var input = document.querySelector("#phone");
+            var hiddenInput = document.querySelector("#full_phone"); // Select the hidden input
+
+            var iti = window.intlTelInput(input, {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+                separateDialCode: true,
+            });
+
+            window.iti = iti;
+
+            $('form').on('submit', function() {
+
+                var fullPhoneNumber = iti.getNumber();
+
+                hiddenInput.value = fullPhoneNumber;
+            });
+        });
+    </script>
+
+@endpush
+@stack('scripts') --}}
+
 </div>

@@ -161,21 +161,17 @@
           var input = document.querySelector("#phone");
           var hiddenInput = document.querySelector("#full_phone"); // Select the hidden input
         
-          // Initialize intlTelInput
           var iti = window.intlTelInput(input, {
             utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
             separateDialCode: true,
           });
         
-          // Store the instance globally to access it from the console if needed
           window.iti = iti;
         
-          // Listen for form submission to update the hidden input
           $('form').on('submit', function() {
-            // Get the full phone number (country code + user's input)
+
             var fullPhoneNumber = iti.getNumber();
             
-            // Set the value of the hidden input to the full phone number
             hiddenInput.value = fullPhoneNumber;
           });
         });

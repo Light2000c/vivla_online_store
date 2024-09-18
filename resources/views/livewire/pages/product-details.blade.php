@@ -10,7 +10,7 @@
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item" aria-current="{{ route('products') }}">Shop</li>
                             <li class="separator"></li>
-                            <li class="axil-breadcrumb-item active">{{ $product->name }}</li>
+                            {{-- <li class="axil-breadcrumb-item active">{{ $product->name }}</li> --}}
                         </ul>
                         <h1 class="title">{{ $product->name }}</h1>
                     </div>

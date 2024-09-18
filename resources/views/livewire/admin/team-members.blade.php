@@ -142,7 +142,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-secondary">
+                            <button type="submit" class="btn btn-secondary" wire:loading.attr="disabled" wire:target="store">
                                 <span wire:loading.remove wire:target="store">Add Member</span>
                                 <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>

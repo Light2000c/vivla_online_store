@@ -37,7 +37,7 @@ class AccountDetails extends Component
 
         $user = Auth::user();
 
-        if($this->current_password || $this->password || $this->current_password){
+        if($this->current_password || $this->password || $this->password_confirmation){
 
            $validate = $this->validate([
                 "name" => "required",

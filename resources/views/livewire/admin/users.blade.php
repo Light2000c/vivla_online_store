@@ -61,7 +61,7 @@
                                                         <i class="bi bi-eye"></i>
                                                     </button>
                                                     <button wire:click="delete({{ $user->id }})"
-                                                        class="btn btn-danger btn-sm" type="submit">
+                                                        class="btn btn-danger btn-sm" type="submit" wire:loading.attr="disabled" wire:target="delete({{ $user->id }})">
                                                         <i wire:loading.remove wire:target="delete({{ $user->id }})"
                                                             class="bi bi-trash3-fill"></i>
                                                         <span wire:loading wire:target="delete({{ $user->id }})"
@@ -80,7 +80,7 @@
                         {{ $users->withQueryString()->links() }}
                     </div>
                     <div class="align-self-start m-3">
-                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit">
+                        <button wire:click="deleteSelected" class="btn btn-primary" type="submit" wire:loading.attr="disabled" wire:target="deleteSelected">
                             <span wire:loading.remove wire:target="deleteSelected">Delete Selected</span>
                             <span wire:loading wire:target="deleteSelected" class="spinner-border spinner-border-sm"
                                 aria-hidden="true"></span>

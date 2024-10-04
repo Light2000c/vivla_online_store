@@ -127,7 +127,7 @@
                                                     <td>{{ $cart->product->name }}</td>
                                                     <td>{{ $cart->quantity }}</td>
                                                     <td> <img class="img-30 me-2"
-                                                            src="/storage/products/{{ $cart->product->image }}"
+                                                            src="/products/{{ $cart->product->image }}"
                                                             alt="profile"></td>
                                                     <td>{{ $cart->product->price }}</td>
                                                     <td>{{ $cart->product->price * $cart->quantity }}</td>
@@ -168,7 +168,7 @@
                                                         <td>{{ $wishlist->user->name }}</td>
                                                         <td>{{ $wishlist->product->name }}</td>
                                                         <td> <img class="img-30 me-2"
-                                                                src="/storage/products/{{ $wishlist->product->image }}" alt="profile">
+                                                                src="/products/{{ $wishlist->product->image }}" alt="profile">
                                                         </td>
                                                         <td>{{ $wishlist->product->price }}</td>
                                                         <td>{{ $wishlist->created_at }}</td>

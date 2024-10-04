@@ -1,46 +1,15 @@
-{{-- @extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
-
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
-
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }},
-                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> 
-
-@endsection --}}
-
-
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Vivla Closet | Onlin Store</title>
+    <title>Vivla Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/web/assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <!-- CSS
     ============================================ -->
@@ -57,6 +26,20 @@
     <link rel="stylesheet" href="/web/assets/css/vendor/base.css">
     <link rel="stylesheet" href="/web/assets/css/style.min.css">
 
+        <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66f7ec7ee5982d6c7bb6005b/1i8s77jop';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
 </head>
 
 
@@ -67,10 +50,10 @@
         <div class="signin-header">
             <div class="row align-items-center">
                 <div class="col-xl-4 col-sm-6">
-                    <a href="index.html" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
+                    <a href="{{  route("home") }}" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
                 </div>
                 <div class="col-md-2 d-lg-block d-none">
-                    <a href="sign-in.html" class="back-btn"><i class="far fa-angle-left"></i></a>
+                    <a href="{{ route("login") }}" class="back-btn"><i class="far fa-angle-left"></i></a>
                 </div>
                 <div class="col-xl-6 col-lg-4 col-sm-6">
                     <div class="singin-header-btn">
@@ -84,7 +67,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-6">
                 <div class="axil-signin-banner bg_image bg_image--10">
-                    <h3 class="title">We Offer the Best Products</h3>
+                    {{-- <h3 class="title">We Offer the Best Products</h3> --}}
                 </div>
             </div>
             <div class="col-lg-6 offset-xl-2">

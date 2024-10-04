@@ -69,7 +69,7 @@
                                             <td>{{ $product->brand }}</td>
                                             <td>{{ $product->category }}</td>
                                             <td>{{ $product->tag }}</td>
-                                            <td> <img class="img-30 me-2" src="/storage/products/{{$product->image}}"
+                                            <td> <img class="img-30 me-2" src="/products/{{$product->image}}"
                                                     alt="No Image"></td>
                                             <td>{!! Str::words($product->description, 6) !!}</td>
                                             <td>{{ $product->created_at }}</td>

@@ -45,8 +45,8 @@ class Cart extends Component
 
                 $product = Product::find($id);
 
-                if(!$product){
-                  return null;  
+                if (!$product) {
+                    return null;
                 }
                 return (object) [
                     'id' => $id,
@@ -61,18 +61,17 @@ class Cart extends Component
             $this->subTotal = collect($sessionCarts)->sum(function ($item) {
 
                 $product = Product::find($item['product_id']); // Assume 'id' is part of the $item array
-            
-                if(!$product){
-                  return 0;  // Return 0 for invalid products
+
+                if (!$product) {
+                    return 0;  // Return 0 for invalid products
                 }
-            
+
                 // Calculate based on discount if available
-                if($product->discount){
+                if ($product->discount) {
                     return $item['quantity'] * ($product->price - ($product->price * $product->discount / 100));
-                }else{
+                } else {
                     return $item['quantity'] * $product->price;
                 }
-            
             });
         }
     }
@@ -93,15 +92,19 @@ class Cart extends Component
     public function inc($id)
     {
 
-        $cartService = new CartService;
+        $cart = ModelCart::find($id);
 
-        $save = CartService::inc($id);
+        if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
+            $save = CartService::inc($id);
 
-        if ($save) {
-            $this->load();
+            if ($save) {
+                $this->load();
 
-            $this->dispatch('cartUpdated');
-            return $this->showToast("success", "Cart updated");
+                $this->dispatch('cartUpdated');
+                return $this->showToast("success", "Cart updated");
+            }
+        } else {
+            return $this->showToast("failed", "Product is out of stock");
         }
     }
 
@@ -174,22 +177,37 @@ class Cart extends Component
         return !empty($product) ? $product->image : "";
     }
 
+    public function getProductQuantity($id)
+    {
+
+        $product = Product::find($id);
+
+        return !empty($product) ? $product->quantity : "";
+    }
+
 
     public function incSessionCart($id)
     {
 
-        $cart = session()->get('cart', []);
+        $product = Product::find($id);
 
+        if (!$product) {
+            return;
+        }
+
+        $cart = session()->get('cart', []);
 
         if (array_key_exists($id, $cart)) {
 
-            $cart[$id]['quantity'] += 1;
+            if ($cart[$id]['quantity'] < $product->quantity) {
+                $cart[$id]['quantity'] += 1;
 
-            session()->put('cart', $cart);
+                session()->put('cart', $cart);
 
-            $this->dispatch('cartUpdated');
+                $this->dispatch('cartUpdated');
 
-            return true;
+                return true;
+            }
         }
 
         return false;

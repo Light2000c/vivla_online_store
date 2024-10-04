@@ -10,15 +10,15 @@
     <meta name="keywords"
         content="admin template, Dunzo admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="/web1/assets/images/favicon.png" type="image/x-icon">
-    <link rel="shortcut icon" href="/web1/assets/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     {{-- Ck editor script --}}
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
 
 
-    <title>Vivla Closet | Onlin Store</title>
+    <title>Vivla Closet | Online Store</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Outfit:400,400i,500,500i,700,700i&amp;display=swap"
         rel="stylesheet">
@@ -73,7 +73,7 @@
         <div class="page-header">
             <div class="header-wrapper row m-0">
                 <div class="header-logo-wrapper col-auto p-0">
-                    <div class="logo-wrapper"><a href="index.html">
+                    <div class="logo-wrapper"><a href="{{ route("home") }}">
                             <img class="img-fluid for-light" src="/web1/assets/images/logo/logo-1.png" alt="">
                             <img class="img-fluid for-dark" src="/web1/assets/images/logo/logo.png" alt=""></a>
                     </div>
@@ -137,7 +137,10 @@
                                 </li>
                                 {{-- <li><a href=""><i data-feather="settings"></i><span>Settings</span></a></li> --}}
                                 <li>
-                                    <a ><i data-feather="log-in"> </i><span>Logout</span></a>
+                                    <form  action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link btn-sm"><i data-feather="log-in"> </i><span>Logout</span></button>
+                                    </form>
                                 </li>
                             </ul>
                         </li>

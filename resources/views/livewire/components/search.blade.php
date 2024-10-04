@@ -18,7 +18,7 @@
                 <div class="axil-product-list">
                     <div class="thumbnail">
                         <a href="single-product.html">
-                            <img src="/storage/products/{{$result->image}}" alt="Yantiti Leather Bags" style="width: 100px; height: 100px;">
+                            <img src="/products/{{$result->image}}" alt="Yantiti Leather Bags" style="width: 100px; height: 100px;">
                         </a>
                     </div>
                     <div class="product-content">

@@ -1165,7 +1165,8 @@ ol li a {
 }
 
 .bg_image--5 {
-    background-image: url(../images/bg/bg-image-5.jpg)
+    /* background-image: url(../images/bg/bg-image-5.jpg); */
+    background-image: url(../../../logo/VIV\ FLAT.jpg)
 }
 
 .bg_image--6 {
@@ -1181,11 +1182,11 @@ ol li a {
 }
 
 .bg_image--9 {
-    background-image: url(../images/bg/bg-image-9.jpg)
+    background-image: url(../../../logo/SIGNING\ IN.jpg)
 }
 
 .bg_image--10 {
-    background-image: url(../images/bg/bg-image-10.jpg)
+    background-image: url(../../../logo/RESET.jpg)
 }
 
 .bg_image--11 {
@@ -1193,7 +1194,7 @@ ol li a {
 }
 
 .bg_image--12 {
-    background-image: url(../images/bg/bg-image-12.jpg)
+    background-image: url(../../../logo/VIV\ FLAT.jpg)
 }
 
 .bg_image--13 {
@@ -7795,7 +7796,8 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-7 .axil-header-top {
-    background-color: var(--color-heading);
+    background-color: var(--color-gold);
+    /* background-color: var(--color-heading); */
     padding: 7px 45px
 }
 
@@ -8046,10 +8048,12 @@ button.axil-btn.btn-size-md i {
     z-index: 5
 }
 
+/* easily find 2 */
 .header-style-7 .axil-mainmenu {
     padding: 20px 45px;
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, .03);
-    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.03))
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.03));
+    background-color: var(--color-black);
 }
 
 @media(max-width: 991px) {
@@ -8184,11 +8188,14 @@ button.axil-btn.btn-size-md i {
     }
 }
 
+/* easily find */
+
 .header-style-7 .mainmenu>li>a {
     font-size: 16px;
     font-weight: 500;
     line-height: 1 !important;
-    height: auto !important
+    height: auto !important;
+    color: var(--color-light);
 }
 
 .header-style-7 .mainmenu>li>a i {
@@ -9548,7 +9555,8 @@ button.axil-btn.btn-size-md i {
 }
 
 .mainmenu>li>a:hover {
-    color: var(--color-black)
+    /* color: var(--color-black) */
+    color: var(--color-gold)
 }
 
 .mainmenu>li>a:hover::before {
@@ -9556,8 +9564,10 @@ button.axil-btn.btn-size-md i {
     width: 100%
 }
 
+ /* easily find 3 */
 .mainmenu>li>a.active {
-    color: var(--color-black)
+    /* color: var(--color-black) */
+    color: var(--color-light);
 }
 
 .mainmenu>li>a.active:before {
@@ -10247,7 +10257,8 @@ body.open .closeMask {
     transition: .3s;
     box-shadow: 0 16px 32px 0 rgba(0, 0, 0, .06);
     position: relative;
-    z-index: 1
+    z-index: 1;
+    white-space: nowrap;
 }
 
 .axil-product .cart-action li.select-option a:before {
@@ -13586,8 +13597,11 @@ body.open .closeMask {
     border-color: var(--color-gold);
 }
 
+/* easily 4 */
+
 .axil-order-summery {
-    background-color: #f9f3f0;
+    /* background-color: #f9f3f0; */
+    background-color: var(--color-dark);
     border-radius: 6px;
     padding: 40px
 }
@@ -13599,7 +13613,8 @@ body.open .closeMask {
 }
 
 .axil-order-summery .title {
-    font-weight: var(--s-medium)
+    font-weight: var(--s-medium);
+    color: var(--color-light);
 }
 
 @media only screen and (max-width: 991px) {
@@ -13617,7 +13632,8 @@ body.open .closeMask {
     border-color: rgba(101, 105, 115, .2);
     font-size: var(--font-size-b1);
     font-weight: var(--s-medium);
-    color: #292930;
+    /* color: #292930; */
+    color: var(--color-light);
     padding: 18px 15px 18px 0;
     min-width: 180px
 }

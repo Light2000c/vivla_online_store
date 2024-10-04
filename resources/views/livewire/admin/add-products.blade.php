@@ -34,7 +34,8 @@
                              </div>
                          @enderror
 
-                         <form class="row" wire:submit.prevent="send">
+                         {{-- <form class="row" wire:submit.prevent="send"> --}}
+                         <form class="row" id="productForm" wire:submit.prevent="send">
                              <div class="col-sm-12">
                                  <div class="row">
                                      <div class="col-sm-12 col-lg-8">
@@ -115,11 +116,22 @@
                                                      <small class="text-danger">{{ $message }}</small>
                                                  @enderror
                                              </div>
-                                             <div class="col-12 mb-3">
+                                             {{-- <div class="col-12 mb-3">
                                                  <div wire:ignore>
                                                      <label class="form-label"
                                                          for="exampleFormControlTextarea1">Description</label>
                                                      <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
+                                                 </div>
+
+                                                 @error('description')
+                                                     <small class="text-danger">{{ $message }}</small>
+                                                 @enderror
+                                             </div> --}}
+                                             <div class="col-12 mb-3">
+                                                 <div wire:ignore>
+                                                     <label class="form-label"
+                                                         for="exampleFormControlTextarea1">Description</label>
+                                                     <textarea class="form-control" id="editor" rows="4"></textarea>
                                                  </div>
 
                                                  @error('description')
@@ -152,15 +164,24 @@
                              </div>
                              <div class="btn-showcase text-end">
                                  {{-- <button wire:click="send" type="button" class="btn btn-primary" type="submit"> --}}
-                                 <button type="submit" class="btn btn-primary" type="submit" wire:loading.attr="disabled" wire:target="send">
+                                 {{-- <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                     wire:target="send">
                                      <span wire:loading.remove>Save Product</span>
+                                     <div wire:loading wire:target="send">
+                                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                         <span role="status">Loading...</span>
+                                     </div>
+                                 </button> --}}
+                                 <button type="submit" class="btn btn-primary" id="submitBtn"
+                                     wire:loading.attr="disabled" wire:target="send">
+                                     <span wire:loading.remove wire:target="send">Save Product</span>
                                      <div wire:loading wire:target="send">
                                          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                          <span role="status">Loading...</span>
                                      </div>
                                  </button>
                              </div>
-                             {{-- </form> --}}
+                         </form>
 
                      </div>
                  </div>
@@ -191,7 +212,7 @@
              }).then((result) => {
                  if (result.isConfirmed) {
                      // Redirect to the URL
-                     window.location.href = data.redirectUrl;
+                     //  window.location.href = data.redirectUrl;
                  }
              });
 
@@ -199,31 +220,74 @@
      </script>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-      
-            if (CKEDITOR.instances['editor']) {
-                var editor = CKEDITOR.instances['editor'];
-            } else {
+     {{-- <script>
+             document.addEventListener('DOMContentLoaded', function() {
+
+                 if (CKEDITOR.instances['editor']) {
+                     var editor = CKEDITOR.instances['editor'];
+                 } else {
+
+                     var editor = CKEDITOR.replace('editor', {
+                         versionCheck: false
+                     });
+                 }
+
+                 console.log("got here");
+
+                 document.querySelector('form').addEventListener('submit', function(event) {
+
+                     console.log("got here 2");
+
+                     var data = editor.getData();
+                     console.log('CKEditor content on submit: ', data);
+
+                     document.getElementById('editor').value = data;
+
+                     @this.set('description', data);
+                 });
+             });
+         </script> --}}
+
+     <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            //  var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor');
+            var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor', {
+            toolbar: [
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+                { name: 'styles', items: ['Format', 'Paragraph'] },
+                { name: 'alignment', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight'] },
+                { name: 'indent', items: ['Outdent', 'Indent'] }
+            ],
+            removePlugins: 'elementspath',  
+            resize_enabled: false,  
+        })
+
+             console.log("CKEditor initialized");
+
+            //  editor.on('change', function() {
+            //      var data = editor.getData();
+            //      console.log('CKEditor content changed: ', data);
+            //      @this.set('description', data);
+            //  });
+
+            
+             document.getElementById('productForm').addEventListener('submit', function(event) {
+                 event.preventDefault(); 
+
+                 var data = editor.getData(); 
+                 console.log('CKEditor content on submit: ', data);
+
               
-                var editor = CKEDITOR.replace('editor', {
-                    versionCheck: false
-                });
-            }
-    
-           
-            document.querySelector('form').addEventListener('submit', function(event) {
-              
-                var data = editor.getData();
-                console.log('CKEditor content on submit: ', data);
-    
-                document.getElementById('editor').value = data;
-    
-                @this.set('description', data);
-            });
-        });
-    </script>
-    
+                 @this.set('description', data).then(() => {
+                     @this.call(
+                     'send'); 
+                 });
+             });
+         });
+     </script>
+
+
 
 
      @stack('scripts')

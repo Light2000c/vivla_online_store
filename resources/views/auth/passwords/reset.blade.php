@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/web/assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <!-- CSS
     ============================================ -->
@@ -26,6 +26,20 @@
     <link rel="stylesheet" href="/web/assets/css/vendor/base.css">
     <link rel="stylesheet" href="/web/assets/css/style.min.css">
 
+        <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66f7ec7ee5982d6c7bb6005b/1i8s77jop';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+
 </head>
 
 
@@ -36,10 +50,10 @@
         <div class="signin-header">
             <div class="row align-items-center">
                 <div class="col-xl-4 col-sm-6">
-                    <a href="index.html" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
+                    <a href="{{  route("home") }}" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
                 </div>
                 <div class="col-md-2 d-lg-block d-none">
-                    <a href="forgot-password.html" class="back-btn"><i class="far fa-angle-left"></i></a>
+                    <a href="{{ route("login") }}" class="back-btn"><i class="far fa-angle-left"></i></a>
                 </div>
                 <div class="col-xl-6 col-lg-4 col-sm-6">
                     <div class="singin-header-btn">
@@ -53,7 +67,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-6">
                 <div class="axil-signin-banner bg_image bg_image--10">
-                    <h2 class="title">We Offer the Best Products</h2>
+                    {{-- <h2 class="title">We Offer the Best Products</h2> --}}
                 </div>
             </div>
             <div class="col-lg-6 offset-xl-2">

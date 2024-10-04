@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Address;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,6 +14,7 @@ class Orders extends Component
     public $transaction;
     public $total;
     public $quantity;
+    public $address;
 
     public function mount($id) {
         $this->id = $id;
@@ -39,6 +41,21 @@ class Orders extends Component
         }
 
         $this->orders = $transaction->order()->orderBy("created_at", "DESC")->get();
+
+        $address = Address::find($transaction->address_id);
+
+        $this->address = $address;
+
+        if(!$this->address){
+            // dd("jdsk");
+            $this->redirect(route('admin-transaction'));
+            // $this->redirectIntended('/admin/transactions');
+        }
+
+        if($this->address->user_id !== $transaction->user_id){
+            $this->address = [];
+        }
+
 
         $this->total = $this->orders->sum("total");
         $this->quantity = $this->orders->sum("quantity");

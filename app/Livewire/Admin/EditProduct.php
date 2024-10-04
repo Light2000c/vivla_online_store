@@ -79,6 +79,8 @@ class EditProduct extends Component
 
     public function update()
     {
+        $this->dispatch('syncCKEditorContent');
+
 
         $this->category_error = "";
 

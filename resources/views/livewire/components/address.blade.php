@@ -75,6 +75,8 @@
 
 
 
+
+
     <!-- Create Modal -->
     <div wire:ignore.self class="modal modal-lg fade" id="createModal" data-bs-backdrop="static"
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -86,7 +88,7 @@
                 </div>
                 <div class="modal-body m-3" style="padding-top: 30px; padding-bottom: 30px;">
                     <div class="axil-dashboard-account">
-                        <form wire:submit="send" class="account-details-form">
+                        <form  wire:submit="send" class="account-details-form" id="createForm">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -119,11 +121,11 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group">
+                                    <div wire:ignore class="form-group">
                                         <label>Phone</label>
-                                        <input wire:model="phone" type="tel" id="phone" class="form-control tel-input"
+                                        <input type="tel" id="phone" class="form-control tel-input"
                                             name="phone" required>
-                                        <input type="hidden" id="full_phone" name="full_phone">
+                                        <input wire:model="phone" type="hidden" id="full_phone" name="full_phone">
                                         <div class="invalid-feedback"></div>
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
@@ -198,7 +200,7 @@
                 </div>
                 <div class="modal-body m-3">
                     <div class="axil-dashboard-account">
-                        <form wire:submit="update" class="account-details-form">
+                        <form wire:submit="update" class="account-details-form" id="updateForm">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -231,9 +233,12 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group">
+                                    <div wire:ignore class="form-group">
                                         <label>Phone</label>
-                                        <input wire:model="phone" type="text" class="form-control">
+                                        <input type="tel" id="updatePhone" class="form-control tel-input"
+                                            name="phone"  required>
+                                        <input wire:model="updatePhone" type="hidden" id="full_update_phone" name="full_phone">
+                                        <div class="invalid-feedback"></div>
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -335,31 +340,63 @@
         });
     </script>
 
-{{--  @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
+@push('scripts')
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var input = document.querySelector("#phone");
-            var hiddenInput = document.querySelector("#full_phone"); // Select the hidden input
+{{-- <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script> --}}
 
-            var iti = window.intlTelInput(input, {
-                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
-                separateDialCode: true,
-            });
+<script>
+   document.addEventListener("DOMContentLoaded", function() {
+       var input = document.querySelector("#phone");
+       var hiddenInput = document.querySelector("#full_phone");
+       var updateInput = document.querySelector("#updatePhone");
+       var updateHiddenInput = document.querySelector("#full_update_phone");
 
-            window.iti = iti;
+  
+     $('#createModal').on('shown.bs.modal', function () {
+           var itiCreate = window.intlTelInput(input, {
+               utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+               separateDialCode: true,
+           });
 
-            $('form').on('submit', function() {
+        
+           $('#createForm').on('submit', function() {
+               var fullPhoneNumberCreate = itiCreate.getNumber();
+               @this.set('phone', fullPhoneNumberCreate); 
+           });
 
-                var fullPhoneNumber = iti.getNumber();
+           $('#createModal').on('hidden.bs.modal', function () {
+               if (itiCreate) {
+                   itiCreate.destroy(); 
+               }
+           });
+       });
 
-                hiddenInput.value = fullPhoneNumber;
-            });
-        });
-    </script>
+       $('#updateModal').on('shown.bs.modal', function () {
+           var itiUpdate = window.intlTelInput(updateInput, {
+               utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+               separateDialCode: true,
+           });
+
+           var initialPhoneNumber = @this.get('updatePhone'); 
+           itiUpdate.setNumber(initialPhoneNumber); 
+
+           $('#updateForm').on('submit', function() {
+               var fullPhoneNumberUpdate = itiUpdate.getNumber();
+               @this.set('updatePhone', fullPhoneNumberUpdate); 
+           });
+
+           $('#updateModal').on('hidden.bs.modal', function () {
+               if (itiUpdate) {
+                   itiUpdate.destroy(); 
+               }
+           });
+       });
+   });
+</script>
 
 @endpush
-@stack('scripts') --}}
+@stack('scripts')
+
+
 
 </div>

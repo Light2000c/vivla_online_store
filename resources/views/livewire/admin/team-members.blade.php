@@ -38,6 +38,7 @@
                         <table class="table">
                             <thead>
                                 <tr class="border-bottom-primary">
+                                    <th scope="col"></th>
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
@@ -55,6 +56,7 @@
                                         <th scope="row">{{ $member->id }}</th>
                                         <td>{{ $member->name }}</td>
                                         <td>{{ $member->email }}</td>
+                                        <td>{{ $member->role == 1? "Admin" : "Super admin" }}</td>
                                         <td>{{ $member->created_at }}</td>
                                         <td>{{ $member->updated_at }}</td>
                                         <td>
@@ -188,8 +190,8 @@
 
                             <div class="mb-3">
                                 <label for="validationCustom01">Password</label>
-                                <input wire:model="password_confirmation" class="form-control"
-                                    id="validationCustom01" type="email" placeholder="Password">
+                                <input wire:model="password" class="form-control"
+                                    id="validationCustom01" type="password" placeholder="Password">
                                 @error('password')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -197,14 +199,14 @@
 
                             <div class="mb-3">
                                 <label for="validationCustom01">Confirm Password</label>
-                                <input wire:model="comfirm_password" class="form-control" id="validationCustom01"
-                                    type="email" placeholder="Confirm Password">
+                                <input wire:model="password_confirmation" class="form-control" id="validationCustom01"
+                                    type="password" placeholder="Confirm Password">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-secondary">
-                                <span wire:loading.remove wire:target="store">Save changes</span>
-                                <span wire:loading wire:target="store" class="spinner-border spinner-border-sm"
+                            <button type="submit" class="btn btn-secondary" wire:target="update" wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="update">Save changes</span>
+                                <span wire:loading wire:target="update" class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>
                             </button>
                         </div>

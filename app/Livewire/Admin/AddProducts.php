@@ -43,6 +43,9 @@ class AddProducts extends Component
 
     public function send()
     {
+        $this->dispatch('syncCKEditorContent');
+
+
         $category_error = "";
 
         $this->message = null;
@@ -54,6 +57,7 @@ class AddProducts extends Component
             "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
             "description" => "required",
         ]);
+
 
         if (empty($this->selectedItems)) {
             return $this->addError("category_error", "Please select product categories");
@@ -94,10 +98,6 @@ class AddProducts extends Component
         return $this->showAlert("Success", "Product has been successfully created", "success");
     }
 
-    // public function updatedDescription()
-    // {
-    //     dd($this->description);
-    // }
 
 
 
@@ -105,7 +105,10 @@ class AddProducts extends Component
     public function resetValues()
     {
         $this->reset();
+        $this->resetValidation($this->name);
     }
+
+
 
     public function getSelectedCategories()
     {
@@ -139,6 +142,4 @@ class AddProducts extends Component
     {
         $this->description = $value;
     }
-
- 
 }

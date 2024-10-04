@@ -50,4 +50,8 @@ class Product extends Model
     {
         return $this->wishlist->contains("user_id", $user->id);
     }
+
+    public function outOfStock(){
+        return $this->quantity == 0;
+    }
 }

@@ -3,9 +3,10 @@
 namespace App\Livewire\Admin;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class TeamMembers extends Component
 {
@@ -37,10 +38,11 @@ class TeamMembers extends Component
     public function load()
     {
         if (!$this->search) {
-            $this->teamMembers = User::where("role", 1)->orderBy("created_at", "DESC")->paginate(10);
+            $this->teamMembers = User::where("role", 1)->orWhere("role", 2)->orderBy("created_at", "DESC")->paginate(10);
         } else {
             $this->teamMembers = User::orderBy("created_at", "DESC")
                 ->where("role", 1)
+                ->orWhere("role", 2)
                 ->where(function ($query) {
                     $query->where("name", "LIKE", '%' . $this->search . '%')
                         ->orWhere("email", "LIKE", '%' . $this->search . '%');
@@ -117,27 +119,63 @@ class TeamMembers extends Component
     public function update()
     {
 
-        $this->validate([
-            "name" => "required",
-            "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|:max:255|unique:categories,name",
-            "password" => "required|confirmed",
-        ]);
+        if ($this->password) {
 
-        $user = User::find($this->activeTeamMember->id);
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
 
-        if (!$user) {
-            return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
+            $this->validate([
+                "name" => "required",
+                "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|:max:255|unique:categories,name",
+                "password" => "required|confirmed",
+            ]);
+
+            $user = User::find($this->activeTeamMember->id);
+
+            if (!$user) {
+                return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
+            }
+
+
+            $updated =  $user->update([
+                "name" =>  $this->name,
+                "email" => $this->email,
+                "password" => Hash::make($this->password),
+            ]);
+
+            if (!$updated) {
+                return $this->showToast("error", "Member info was not successfully update.");
+            }
+        } else {
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $this->validate([
+                "name" => "required",
+                "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|:max:255|unique:categories,name",
+            ]);
+
+            $user = User::find($this->activeTeamMember->id);
+
+            if (!$user) {
+                return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
+            }
+
+
+            $updated =  $user->update([
+                "name" =>  $this->name,
+                "email" => $this->email
+            ]);
+
+            if (!$updated) {
+                return $this->showToast("error", "Member info was not successfully update.");
+            }
         }
 
-        $updated =  $user->update([
-            "name" =>  $this->name,
-            "email" => $this->email,
-            "password" => Hash::make($this->password),
-        ]);
 
-        if (!$updated) {
-            return $this->showToast("error", "Member info was not successfully update.");
-        }
 
         $this->load();
         $this->dispatch("closeUpdateModal");
@@ -147,6 +185,10 @@ class TeamMembers extends Component
 
     public function delete($id)
     {
+
+        if (Auth::user()->role != 2) {
+            return $this->showToast("error", "You don't have permission to perform this action");
+        }
 
         $user = User::find($id);
 
@@ -168,6 +210,10 @@ class TeamMembers extends Component
     {
         if (empty($this->selectedItems)) {
             return $this->showToast("info", "you haven't selected any member yet!");
+        }
+
+        if (Auth::user()->role != 2) {
+            return $this->showToast("error", "You don't have permission to perform this action");
         }
 
         $delete = User::whereIn("id", $this->selectedItems)->delete();

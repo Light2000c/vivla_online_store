@@ -38,10 +38,10 @@ class ProductDetails extends Component
         $new_category = "";
 
         foreach ($categories as $cat) {
-            if($new_category == ""){
+            if ($new_category == "") {
                 $new_category = $new_category . ' ' . $cat;
-            }else{
-            $new_category = $new_category . ' | ' . $cat;
+            } else {
+                $new_category = $new_category . ' | ' . $cat;
             }
         }
         return $new_category;
@@ -120,7 +120,7 @@ class ProductDetails extends Component
         if (!Auth::check()) {
             return redirect()->route("login");
         }
-        
+
         $product = Product::find($id);
 
         if (!$product) {
@@ -171,16 +171,19 @@ class ProductDetails extends Component
         }
 
 
-        $cart->quantity++;
-        $save =  $cart->save();
+        if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
 
+            $cart->quantity++;
+            $save =  $cart->save();
 
+            if ($save) {
+                $this->load();
 
-        if ($save) {
-            $this->load();
-
-            $this->dispatch('cartUpdated');
-            return $this->showToast("success", "Cart updated");
+                $this->dispatch('cartUpdated');
+                return $this->showToast("success", "Cart updated");
+            }
+        } else {
+            return $this->showToast("failed", "Product is out of stock");
         }
     }
 
@@ -274,22 +277,31 @@ class ProductDetails extends Component
     public function incSessionCart($id)
     {
 
-        $cart = session()->get('cart', []);
 
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $cart = session()->get('cart', []);
 
         if (array_key_exists($id, $cart)) {
 
-            $cart[$id]['quantity'] += 1;
+            if ($cart[$id]['quantity'] < $product->quantity) {
+                $cart[$id]['quantity'] += 1;
 
-            session()->put('cart', $cart);
+                session()->put('cart', $cart);
 
-            $this->dispatch('cartUpdated');
+                $this->dispatch('cartUpdated');
 
-            return true;
+                return true;
+            }
         }
 
         return false;
     }
+
 
     public function decSessionCart($id)
     {
@@ -313,6 +325,18 @@ class ProductDetails extends Component
         }
 
         return false;
+    }
+
+    public function getSessionCartQuantity($id)
+    {
+        $cart = session()->get('cart', []);
+
+
+        if (array_key_exists($id, $cart)) {
+
+            return $cart[$id]['quantity'];
+        }
+        return 0;
     }
 
 

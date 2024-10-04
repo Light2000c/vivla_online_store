@@ -16,7 +16,7 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role == 1) {
+        if (Auth::check() && (Auth::user()->role == 1 || Auth::user()->role == 2)) {
             return $next($request);
         }else{
            return redirect()->route("admin-login");

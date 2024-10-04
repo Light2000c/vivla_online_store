@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Mail\InfoMail;
+use App\Mail\PaymentMail;
 use App\Models\Cart;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Stripe\Exception\CardException;
 use Stripe\StripeClient;
 use Stripe\Stripe;
@@ -27,6 +31,7 @@ class StripeController extends Controller
 
     public function checkout(Request $request)
     {
+
 
         $this->validate($request, [
             'fullName' => 'required',
@@ -63,6 +68,7 @@ class StripeController extends Controller
     public function success(Request $request)
     {
 
+
         $sessionId = $request->query('session_id');
 
         try {
@@ -72,15 +78,51 @@ class StripeController extends Controller
             // dd($session);
             if ($session->payment_status == 'paid') {
 
+
                 $this->saveTransaction();
 
                 $reference = $this->reference ? $this->reference : "";
 
+                $date = now()->format('Y-m-d H:i:s');
+
+                $details = [
+                    "name" => Auth::user()->name,
+                    "email" => Auth::user()->email,
+                    "order_number" => $reference,
+                    "order_date" => $date
+                ];
+
+                $sent = Mail::to(Auth::user()->email)->send(new PaymentMail($details));
+
+                //sent to admin organisation email
+                $sent_to_admin = Mail::to("tegaonitsha@gmail.com")->send(new InfoMail($details));
+
+                if (!$sent) {
+                    return $this->error();
+                }
+
+                if (!$sent_to_admin) {
+                    return $this->error();
+                }
+
                 return view('payment.paymentsuccess', ['session' => $session, 'reference' => $reference]);
             } else {
-                dd('Payment not completed.');
+                return $this->error();
+                // dd('Payment not completed.');
                 // return redirect('/')->with('error', 'Payment not completed.');
             }
+        } catch (\Exception $e) {
+            return $this->error();
+            // dd('Failed to retrieve payment details: ' . $e->getMessage());
+            // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
+        }
+    }
+
+    public function error()
+    {
+
+        try {
+            return view('payment.paymenterror');
         } catch (\Exception $e) {
             dd('Failed to retrieve payment details: ' . $e->getMessage());
             // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
@@ -99,31 +141,32 @@ class StripeController extends Controller
     public function saveTransaction()
     {
 
-
         $random_number = $this->generateReference();
 
 
         $cart = auth()->user()->cart()->get();
 
         if ($cart->isEmpty()) {
-            // return response()->json([
-            //     "status" => "failed",
-            //     "message" => "User has not added any product to cart yet"
-            // ]);
-            dd("User has not added any product to cart yet");
+            return $this->error();
+        }
+
+        $address = auth::user()->address()->where("active", 1)->first();
+
+        if (!$address) {
+            // return $this->error();
         }
 
 
         $transaction = request()->user()->transaction()->create([
             "reference" => $random_number,
+            "address_id" => $address->id
         ]);
 
         $this->reference = $random_number;
 
 
         if (!$transaction) {
-            // return back()->with('error', "Something went wrong, please try again.");
-            dd("Something went wrong, please try again");
+            return $this->error();
         }
 
         $transactionId = $transaction->id;
@@ -166,8 +209,8 @@ class StripeController extends Controller
 
             // return redirect()->route("dashboard");
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return back()->with('error', "Something went wrong, please try again.");
+            // return back()->with('error', "Something went wrong, please try again.");
+            return $this->error();
         }
     }
 

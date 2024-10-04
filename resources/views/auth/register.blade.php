@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Vivla Closet | Onlin Store</title>
+    <title>Vivla Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/web/assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <!-- CSS
     ============================================ -->
@@ -28,18 +28,19 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/css/intlTelInput.css">
 
-    {{-- <style>
-        input {
-            width: 250px;
-            padding: 10px;
-            border-radius: 2px;
-            border: 1px solid #ccc;
-        }
-
-        input::placeholder {
-            color: #BBB;
-        }
-    </style> --}}
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/66f7ec7ee5982d6c7bb6005b/1i8s77jop';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+        </script>
+        <!--End of Tawk.to Script-->
 
 </head>
 
@@ -51,7 +52,7 @@
         <div class="signin-header">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <a href="index.html" class="site-logo"><img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="logo" width="40" height="157"></a>
+                    <a href="{{  route("home") }}" class="site-logo"><img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="logo" width="40" height="157"></a>
                 </div>
                 <div class="col-md-6">
                     <div class="singin-header-btn">
@@ -66,7 +67,7 @@
         <div class="row">
             <div class="col-xl-4 col-lg-6">
                 <div class="axil-signin-banner bg_image bg_image--10">
-                    <h3 class="title">We Offer the Best Products</h3>
+                    {{-- <h3 class="title">We Offer the Best Products</h3> --}}
                 </div>
             </div>
             <div class="col-lg-6 offset-xl-2">
@@ -98,11 +99,6 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="form-group mt-2">
-                                <input type="tel" id="phone" class="form-control tel-input" name="phone" required>
-                                <input type="hidden" id="full_phone" name="full_phone"> 
-                                <div class="invalid-feedback"></div>
-                              </div> --}}
 
                             <div class="form-group">
                                 <label>Password</label>
@@ -154,7 +150,7 @@
     <script src="/web/assets/js/main.js"></script>
 
     <!-- intlTelInput JS -->
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -175,7 +171,7 @@
             hiddenInput.value = fullPhoneNumber;
           });
         });
-        </script>
+        </script> --}}
         
         
 

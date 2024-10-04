@@ -4,13 +4,20 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Mail\InfoMail;
+use App\Mail\PaymentMail;
+
+
 
 class Checkout extends Component
 {
 
     public $carts;
     public $subTotal;
-    public $address;
+    public $address = [];
+    public $whatsAppUrl;
+
     public function mount()
     {
         $this->load();
@@ -32,10 +39,38 @@ class Checkout extends Component
             }
             return $cart->quantity * $cart->product->price;
         });
+        $this->setWhatsappUrl();
     }
 
     public function pay()
     {
+        $carts = request()->user()->cart()->get();
+
+        if ($carts->isEmpty()) {
+            return $this->showToast("info", "You don't have any product on your cart yet!");
+        }
+
+        $default_address = request()->user()->address()->where("active", 1)->first();
+
+        if (!$default_address) {
+            return $this->showToast("info", "You haven't set you default address yet");
+        }
+
+
+        foreach ($carts as $cart) {
+            if ($cart->quantity > $cart->product->quantity) {
+                return $this->showToast("info", "please re-confirm carts and try again");
+            }
+        }
+
+        $this->dispatch('submit-payment-form');
+    }
+
+    public function setWhatsappUrl()
+    {
+        $message = '';
+
+        $message .= "Products: \n";
 
         $carts = request()->user()->cart()->get();
 
@@ -43,11 +78,31 @@ class Checkout extends Component
             return $this->showToast("info", "You don't have any product on your cart yet!");
         }
 
-        return redirect()->route("pay");
+        foreach ($this->carts as $cart) {
+            $message .= $cart->product->name . " x " . $cart->product->price . "\n";
+        }
+
+        $message .= "Total: " . $this->subTotal . " \n";
+
+        $encodedMessage = urlencode($message);
+
+        $phone = '2348131658436';
+
+        $this->whatsAppUrl = "https://wa.me/$phone?text=$encodedMessage";
+
+        // dd($this->whatsAppUrl);
     }
+
+
+
+
+    //********************************************************************** */
+
+    //********************************************************************** */
 
     public function showToast($icon, $title)
     {
+
         $this->dispatch(
             'message',
             icon: $icon,

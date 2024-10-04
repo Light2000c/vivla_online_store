@@ -59,7 +59,7 @@
                                         <td>{{ $cart->product->name }}</td>
                                         <td>{{ $cart->quantity }}</td>
                                         <td> <img class="img-30 me-2"
-                                                src="/storage/products/{{ $cart->product->image }}" alt="profile"></td>
+                                                src="/products/{{ $cart->product->image }}" alt="profile"></td>
                                         <td>{{ $cart->product->price }}</td>
                                         <td>{{ $cart->product->price * $cart->quantity }}</td>
                                         <td>{{ $cart->created_at }}</td>

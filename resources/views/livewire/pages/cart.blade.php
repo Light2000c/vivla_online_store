@@ -6,7 +6,7 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html" class="text-dark">Home</a></li>
+                            <li class="axil-breadcrumb-item"><a href="{{ route("home") }}" class="text-dark">Home</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active" aria-current="page">Wishlist</li>
                         </ul>
@@ -61,10 +61,10 @@
                                             </a>
                                         </td>
                                         <td class="product-thumbnail"><a href="single-product.html"><img
-                                                    src="/storage/products/{{ $cart->product->image }}"
+                                                    src="/products/{{ $cart->product->image }}"
                                                     alt="Digital Product"></a></td>
                                         <td class="product-title"><a
-                                                href="single-product.html">{{ $cart->product->name }}</a></td>
+                                                href="single-product.html">{{ $cart->product->name }} <p>{{  $cart->product->quantity > 1? $cart->product->quantity .' units left' : $cart->product->quantity .' unit left' }}</p></a></td>
                                         <td class="product-price" data-title="Price"><span
                                                 class="currency-symbol">$</span>
                                             @if ($cart->product->discount)
@@ -118,8 +118,8 @@
                                             aria-hidden="true"></span>
                                     </a>
                                 </td>
-                                <td class="product-thumbnail"><a href="single-product.html"><img src="/storage/products/{{ $this->getProductImage($cart->id) }}" alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product.html">{{ $this->getProductName($cart->id) }}</a></td>
+                                <td class="product-thumbnail"><a href="single-product.html"><img src="/products/{{ $this->getProductImage($cart->id) }}" alt="Digital Product"></a></td>
+                                <td class="product-title"><a href="single-product.html">{{ $this->getProductName($cart->id) }} <p>{{  $this->getProductQuantity($cart->id) > 1?  $this->getProductQuantity($cart->id) .' units left' :  $this->getProductQuantity($cart->id) .' unit left' }}</p></a></td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>{{ number_format($cart->product->price) }}</td>
                                 <td class="product-quantity" data-title="Qty">
                                     <div class="pro-qty">

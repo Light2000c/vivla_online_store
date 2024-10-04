@@ -6,7 +6,7 @@
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="index.html" class="text-dark">Home</a></li>
+                            <li class="axil-breadcrumb-item"><a href="{{ route("home") }}" class="text-dark">Home</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active" aria-current="page">Wishlist</li>
                         </ul>
@@ -30,7 +30,7 @@
     <div class="axil-wishlist-area axil-section-gap">
         <div class="container">
             <div class="product-table-heading">
-                <h4 class="title">My Wish List on eTrade</h4>
+                <h4 class="title">My Wish List on Vivlaviv closet</h4>
             </div>
             <div class="table-responsive">
                 <table class="table axil-product-table axil-wishlist-table">
@@ -58,7 +58,7 @@
                                     </a>
                                 </td>
                                 <td class="product-thumbnail"><a href="single-product.html"><img
-                                            src="/storage/products/{{ $wishes->product->image }}"
+                                            src="/products/{{ $wishes->product->image }}"
                                             alt="Digital Product"></a></td>
                                 <td class="product-title"><a href="single-product.html">{{ $wishes->product->name }}</a>
                                 </td>

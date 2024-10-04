@@ -37,6 +37,18 @@
                         <p class="text-dark"><span style="font-weight: bold">Total Amount:</span> <span class="ms-3">${{ $total }}</span></p>
                     </div>
 
+                    <div class="mt-4 mb-4 p-2 border">
+                        <h5 class="ms-4">Order Address</h5>
+                        <ul class="address-details m-3" style="list-style-type: none;">
+                            <li>Name: {{ "$address->firstname $address->lastname" }}</li>
+                            <li>Email: {{ $address->email }}</li>
+                            <li>Phone: {{ $address->phone }}</li>
+                            <li class="mt--30">Street/City: {{ $address->street }}</li>
+                            <li>city: {{ $address->city }}</li>
+                            <li>country: {{ $address->country }}</li>
+                        </ul>
+                    </div>
+
                     <div class="table-responsive custom-scrollbar mt-2">
                         <table class="table">
                             <thead>
@@ -63,7 +75,7 @@
                                     <td>{{ $order->user->name }}</td>
                                     <td>{{ $order->product->name }}</td>
                                     <td>{{ $order->quantity }}</td>
-                                    <td> <img class="img-30 me-2" src="/storage/products/{{ $order->product->image }}" alt="profile">
+                                    <td> <img class="img-30 me-2" src="/products/{{ $order->product->image }}" alt="profile">
                                     </td>
                                     <td>{{ $order->product->price }}</td>
                                     <td>{{ $total }}</td>

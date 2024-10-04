@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components;
 
+use App\Models\Cart;
 use App\Services\CartService;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -59,14 +60,19 @@ class CartCount extends Component
 
     public function inc($id)
     {
+        $cart = Cart::find($id);
 
-        $save = CartService::inc($id);
+        if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
+            $save = CartService::inc($id);
 
-        if ($save) {
-            $this->load();
+            if ($save) {
+                $this->load();
 
-            $this->dispatch('cartUpdated');
-            return $this->showToast("success", "Cart updated");
+                $this->dispatch('cartUpdated');
+                return $this->showToast("success", "Cart updated");
+            }
+        } else {
+            return $this->showToast("failed", "Product is out of stock");
         }
     }
 

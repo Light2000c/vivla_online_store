@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Payment\StripeController;
@@ -28,6 +28,7 @@ use App\Livewire\Pages\ProductDetails;
 use App\Livewire\Pages\Products as PagesProducts;
 use App\Livewire\Pages\Wishlist;
 use App\Livewire\Profile\Dashboard as ProfileDashboard;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +51,7 @@ Route::get("/reset-password", function () {
     return view("auth.passwords.email");
 })->name("reset-password");
 
+
 Auth::routes(['verify' => true]);
 
 
@@ -58,7 +60,7 @@ Auth::routes(['verify' => true]);
 //Auth Routes
 Route::get("login", [LoginController::class, "index"])->name("login");
 Route::post("login", [LoginController::class, "login"]);
-Route::post("logout", [LoginController::class, "logout"])->name("logout");
+
 // Route::post("logout", [LoginController::class, "logout"]);
 
 Route::get("register", [RegisterController::class, "index"])->name("register");
@@ -71,6 +73,7 @@ Route::get("about", About::class)->name("about");
 
 Route::get("contact-us", Contact::class)->name("contact");
 
+Route::post("logout", [LoginController::class, "logout"])->name("logout")->middleware("auth");
 
 //Pages Routes
 Route::get("/", Home::class);

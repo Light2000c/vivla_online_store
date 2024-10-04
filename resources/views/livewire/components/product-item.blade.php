@@ -1,7 +1,7 @@
 <div class="axil-product product-style-one mb--30 border p-3">
         <div class="thumbnail">
             <a>
-                <img src="/storage/products/{{ $product->image }}" alt="Product Images">
+                <img src="/products/{{ $product->image }}" alt="Product Images">
             </a>
             @if ($product->discount)
                 <div class="label-block label-right">

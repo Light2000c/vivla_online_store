@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -35,10 +36,10 @@ class Users extends Component
     public function load()
     {
         if (!$this->search) {
-            $this->users = User::where("role", "!=", 1)->orderBy("created_at", "DESC")->paginate(10);
+            $this->users = User::where("role", 0)->orderBy("created_at", "DESC")->paginate(10);
         } else {
             $this->users = User::orderBy("created_at", "DESC")
-                ->where("role", "!=", 1)
+                ->where("role", 0)
                 ->where(function ($query) {
                     $query->where("name", "LIKE", '%' . $this->search . '%')
                         ->orWhere("email", "LIKE", '%' . $this->search . '%');
@@ -54,6 +55,10 @@ class Users extends Component
 
     public function delete($id)
     {
+
+        if (Auth::user()->role != 2) {
+            return $this->showToast("error", "You don't have permission to perform this action");
+        }
 
         $user = User::find($id);
 
@@ -76,6 +81,10 @@ class Users extends Component
     {
         if (empty($this->selectedItems)) {
             return $this->showToast("info", "you haven't selected any member yet!");
+        }
+
+        if (Auth::user()->role != 2) {
+            return $this->showToast("error", "You don't have permission to perform this action");
         }
 
         $delete = User::whereIn("id", $this->selectedItems)->delete();

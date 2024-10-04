@@ -15,6 +15,7 @@ class Address extends Component
     public $lastname;
     public $email;
     public $phone;
+    public $updatePhone;
     public $street;
     public $city;
     public $country;
@@ -74,7 +75,7 @@ class Address extends Component
         $this->firstname = $address->firstname;
         $this->lastname = $address->lastname;
         $this->email = $address->email;
-        $this->phone = $address->phone;
+        $this->updatePhone = $address->phone;
         $this->street = $address->street;
         $this->city = $address->city;
         $this->country = $address->country;
@@ -85,6 +86,8 @@ class Address extends Component
 
     public function send()
     {
+
+
         $validators = $this->validate([
             "firstname" => "required",
             "lastname" => "required",
@@ -111,17 +114,18 @@ class Address extends Component
     public function update()
     {
 
+
         $address = ModelsAddress::find($this->activeAddress->id);
 
         if (!$address) {
             return;
         }
 
-        $validators = $this->validate([
+        $validated = $this->validate([
             "firstname" => "required",
             "lastname" => "required",
             "email" => "required",
-            "phone" => "required",
+            "updatePhone" => "required",
             "street" => "required",
             "city" => "required",
             "country" => "required",
@@ -130,7 +134,12 @@ class Address extends Component
 
         if ($address && $address->user->is(Auth::user())) {
 
-            $updated = $address->update($validators);
+            $validated["phone"] = $this->updatePhone;
+
+            unset($validated["updatePhone"]);
+
+
+            $updated = $address->update($validated);
 
             if ($updated) {
                 $this->load();

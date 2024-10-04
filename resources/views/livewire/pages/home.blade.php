@@ -9,7 +9,7 @@
                         <div class="categrie-product-2">
                             <a href="{{ route("products") }}?category='{{ $category->name }}'">
                                 {{-- <img class="img-fluid" src="/web/assets/images/product/categories/furni-1.png" alt="product categorie"> --}}
-                                <h6 class="cat-title text-nowrap">{{ $category->name }}</h6>
+                                <h6 class="cat-title text-nowrap text-capitalize">{{ $category->name }}</h6>
                             </a>
                         </div>
                     </div>
@@ -38,41 +38,28 @@
                 <div class="slider-activation-two axil-slick-dots">
                     <div class="single-slide slick-slide">
                         <div class="main-slider-content">
-                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
-                            <h1 class="title">Neon Stylish Sofa Chair</h1>
+                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal of the week</span>
+                            <h1 class="title">Ankara Gown With Dye Prints</h1>
                             <div class="shop-btn">
-                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>
+                                <a href="{{ route("products") }}" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>
                                     Shop Now</a>
                             </div>
                         </div>
                         <div class="main-slider-thumb">
-                            <img src="/web/assets/images/product/product-47.png" alt="Product">
+                            <img src="/logo/SLIDER 1.png" alt="Product">
                         </div>
                     </div>
                     <div class="single-slide slick-slide">
                         <div class="main-slider-content">
-                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
-                            <h1 class="title">Sofa Chair with Lamp</h1>
+                            {{-- <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span> --}}
+                            <h1 class="title">Register Now To Enjoy Discounts </h1>
                             <div class="shop-btn">
-                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>
+                                <a href="{{ route("products") }}" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>
                                     Shop Now</a>
                             </div>
                         </div>
                         <div class="main-slider-thumb">
-                            <img src="/web/assets/images/product/product-48.png" alt="Product">
-                        </div>
-                    </div>
-                    <div class="single-slide slick-slide">
-                        <div class="main-slider-content">
-                            <span class="subtitle"><i class="fas fa-fire"></i> Hot Deal In This Week</span>
-                            <h1 class="title">Neon Stylish Sofa Chair</h1>
-                            <div class="shop-btn">
-                                <a href="shop.html" class="axil-btn btn-bg-white"><i class="fal fa-shopping-cart"></i>
-                                    Shop Now</a>
-                            </div>
-                        </div>
-                        <div class="main-slider-thumb">
-                            <img src="/web/assets/images/product/product-47.png" alt="Product">
+                            <img src="/logo/SLIDER 2.png" alt="Product">
                         </div>
                     </div>
                 </div>
@@ -98,7 +85,7 @@
                                 <div class="thumbnail">
                                     <a href="single-product-7.html">
                                         <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                                            src="/storage/products/{{ $new->image }}" alt="Product Images"
+                                            src="/products/{{ $new->image }}" alt="Product Images"
                                             style="height: 300px">
                                     </a>
                                 </div>
@@ -148,15 +135,15 @@
                             <div class="section-title-wrapper">
                                 <span class="title-highlighter highlighter-secondary"> <i
                                         class="far fa-shopping-basket"></i> Don’t Miss!!</span>
-                                <h2 class="title">Let's Shopping Today</h2>
+                                <h2 class="title">Hot Pink Patent Heels</h2>
                             </div>
                             <div class="poster-countdown countdown mb--40"></div>
-                            <a href="#" class="axil-btn btn-bg-primary">Check it Out!</a>
+                            <a href="{{ route("products") }}" class="axil-btn btn-bg-primary">Check it Out!</a>
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-6">
                         <div class="poster-countdown-thumbnail">
-                            <img src="/web/assets/images/product/poster/poster-05.png" alt="Poster Product">
+                            <img src="/logo/COUNTDOWN.png" alt="Poster Product">
                         </div>
                     </div>
                 </div>
@@ -182,7 +169,7 @@
                                 <div class="thumbnail border p-2">
                                     <a href="{{ route("product-detail", $new) }}">
                                         <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
-                                            src="/storage/products/{{ $new->image }}" alt="Product Images"
+                                            src="/products/{{ $new->image }}" alt="Product Images"
                                             style="height: 330px;">
                                     </a>
                                     @if ($new->discount)
@@ -346,7 +333,7 @@
                                 <div class="thumbnail">
                                     <a href="single-product-7.html">
                                         <img data-sal="zoom-in" data-sal-delay="100" data-sal-duration="1500"
-                                            src="/storage/products/{{ $new->image }}" alt="NFT">
+                                            src="/products/{{ $new->image }}" alt="NFT">
                                     </a>
                                 </div>
                                 <div class="product-content">

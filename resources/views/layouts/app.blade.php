@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Vivla Closet | Onlin Store</title>
+    <title>Vivla Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/web/assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
     <!-- CSS
     ============================================ -->
@@ -29,6 +29,20 @@
     <link rel="stylesheet" href="/personal/personal.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/css/intlTelInput.css">
+
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/66f7ec7ee5982d6c7bb6005b/1i8s77jop';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     @livewireStyles
 
@@ -72,7 +86,7 @@
                                     <li><a href="{{ route('login') }}">Sign In</a></li>
                                 @endif
                                 @if (Auth::user())
-                                    <li><a href="{{ route("dashboard") }}"><i class="bi bi-person-fill"></i>
+                                    <li><a href="{{ route('dashboard') }}"><i class="bi bi-person-fill"></i>
                                             {{ Auth::user()->name }}</a></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
@@ -94,7 +108,7 @@
             <div class="container">
                 <div class="header-navbar">
                     <div class="header-brand">
-                        <a href="index.html" class="logo logo-dark">
+                        <a href="{{ route("home") }}" class="logo logo-dark">
                             {{-- <img src="/web/assets/images/logo/logo.png" alt="Site Logo"> --}}
                             <img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="Site Logo" width="40" height="157">
                         </a>
@@ -107,28 +121,34 @@
                         <nav class="mainmenu-nav">
                             <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
                             <div class="mobile-nav-brand">
-                                <a href="index.html" class="logo">
-                                    <img src="/web/assets/images/logo/logo.png" alt="Site Logo">
+                                <a href="{{ route("home") }}" class="logo">
+                                    <img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="Site Logo" width="40" height="157">
                                 </a>
                             </div>
                             <ul class="mainmenu">
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdown-header-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="dropdown-toggle" href="#" role="button"
+                                        id="dropdown-header-menu" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="far fa-th-large"></i> Categories
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-header-menu">
-                                        @foreach($globalCategories as $category)
-                                        <li><a class="dropdown-item" href="{{ route("products") }}?category={{ $category->name }}">{{ $category->name }}</a></li>
+                                        @foreach ($globalCategories as $category)
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('products') }}?category={{ $category->name }}">{{ $category->name }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </li>
                                 <li><a class="active" href="{{ route('home') }}"><i class="bi bi-house-door"></i>
                                         Home</a></li>
                                 <li>
-                                    <a href="{{ route('products') }}"><i class="bi bi-bag-dash"></i> Shop</a>
+                                    <a class="" href="{{ route('products') }}"><i class="bi bi-bag-dash"></i>
+                                        Shop</a>
                                 </li>
-                                <li><a href="{{ route('about') }}"><i class="bi bi-info-circle"></i> About</a></li>
-                                <li><a href="{{ route('contact') }}"><i class="bi bi-telephone"></i> Contact</a></li>
+                                <li><a class="" href="{{ route('about') }}"><i class="bi bi-info-circle"></i>
+                                        About</a></li>
+                                <li><a class="" href="{{ route('contact') }}"><i class="bi bi-telephone"></i>
+                                        Contact</a></li>
                             </ul>
                         </nav>
                         <!-- End Mainmanu Nav -->
@@ -145,17 +165,17 @@
                             </li>
                             <li class="axil-search d-xl-none d-block">
                                 <a href="javascript:void(0)" class="header-search-icon" title="Search">
-                                    <i class="bi bi-search bi-sm"></i>
+                                    <i class="bi bi-search bi-sm text-white"></i>
                                 </a>
                             </li>
                             <li class="wishlist">
-                                <a href="{{ route('wishlist') }}">
+                                <a class="text-white" href="{{ route('wishlist') }}">
                                     <i class="bi bi-heart"></i>
                                 </a>
                             </li>
                             <li class="shopping-cart">
                                 @if (Auth::user())
-                                    <a class="cart-dropdown-btn">
+                                    <a class="cart-dropdown-btn text-white">
                                         <span class="cart-count">
                                             <livewire:components.cart-count :display="'count'" />
                                         </span>
@@ -163,7 +183,7 @@
                                     </a>
                                 @endif
                                 @if (Auth::guest())
-                                    <a href="{{ route('cart') }}" class="cart-dropdown-new-btn">
+                                    <a href="{{ route('cart') }}" class="cart-dropdown-new-btn text-white">
                                         <span class="cart-count">
                                             <livewire:components.cart-count :display="'count'" />
                                         </span>
@@ -173,7 +193,7 @@
                             </li>
                             <li class="axil-mobile-toggle">
                                 <button class="menu-btn mobile-nav-toggler">
-                                    <i class="bi bi-list"></i>
+                                    <i class="bi bi-list text-white"></i>
                                 </button>
                             </li>
                         </ul>
@@ -220,7 +240,7 @@
                         </div>
                         <div class="content">
                             <h6 class="title">Fast &amp; Secure Delivery</h6>
-                            <p>Tell about your service.</p>
+                            <p>Reliable, fast delivery to your location.</p>
                         </div>
                     </div>
                 </div>
@@ -231,7 +251,7 @@
                         </div>
                         <div class="content">
                             <h6 class="title">Money Back Guarantee</h6>
-                            <p>Within 10 days.</p>
+                            <p>Shop with confidence, satisfaction guaranteed.</p>
                         </div>
                     </div>
                 </div>
@@ -242,7 +262,7 @@
                         </div>
                         <div class="content">
                             <h6 class="title">24 Hour Return Policy</h6>
-                            <p>No question ask.</p>
+                            <p>Easily return items within 3 days of delivery.</p>
                         </div>
                     </div>
                 </div>
@@ -276,15 +296,14 @@
                             </a>
                         </div> -->
                             <div class="inner">
-                                <p>685 Market Street, <br>
-                                    Las Vegas, LA 95820, <br>
+                                <p>2750 FM 1463 Road, <br>
+                                    Suite 150-233 Katy Tx 77494, <br>
                                     United States.
                                 </p>
                                 <ul class="support-list-item">
                                     <li><a href="mailto:example@domain.com"><i class="fal fa-envelope-open"></i>
                                             example@domain.com</a></li>
-                                    <li><a href="tel:(+01)850-315-5862"><i class="fal fa-phone-alt"></i> (+01)
-                                            850-315-5862</a></li>
+                                    <li><a href="tel:+1(713)820-7857"><i class="fal fa-phone-alt"></i> +1 (713) 820-7857</a></li>
                                     <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
                                 </ul>
                             </div>
@@ -292,31 +311,15 @@
                     </div>
                     <!-- End Single Widget  -->
                     <!-- Start Single Widget  -->
-                    {{-- <div class="col-lg-3 col-sm-6">
-                        <div class="axil-footer-widget">
-                            <h5 class="widget-title">Account</h5>
-                            <div class="inner">
-                                <ul>
-                                    <li><a href="my-account.html">My Account</a></li>
-                                    <li><a href="sign-up.html">Login / Register</a></li>
-                                    <li><a href="cart.html">Cart</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <!-- End Single Widget  -->
-                    <!-- Start Single Widget  -->
                     <div class="col-lg-4 col-sm-6">
                         <div class="axil-footer-widget">
                             <h5 class="widget-title">Quick Link</h5>
                             <div class="inner">
                                 <ul>
-                                    <li><a href="{{ route("home") }}">Home</a></li>
-                                    <li><a href="{{ route("products") }}">Shop</a></li>
-                                    <li><a href="{{ route("about") }}">About Us</a></li>
-                                    <li><a href="{{ route("contact") }}">Contact</a></li>
+                                    <li><a href="{{ route('home') }}">Home</a></li>
+                                    <li><a href="{{ route('products') }}">Shop</a></li>
+                                    <li><a href="{{ route('about') }}">About Us</a></li>
+                                    <li><a href="{{ route('contact') }}">Contact</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -574,8 +577,8 @@
                     <livewire:components.cart-count :display="'total'" />
                 </h3>
                 <div class="group-btn">
-                    <a href="{{ route("cart") }}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                    <a href="{{ route("checkout") }}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                    <a href="{{ route('cart') }}" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                    <a href="{{ route('checkout') }}" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
                 </div>
             </div>
         </div>
@@ -586,7 +589,7 @@
     @stack('scripts')
 
 
-  
+
 
 
     {{-- <script src="/personal/personal.js"></script> --}}
@@ -630,32 +633,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          var input = document.querySelector("#phone");
-          var hiddenInput = document.querySelector("#full_phone"); 
-        
-          var iti = window.intlTelInput(input, {
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
-            separateDialCode: true,
-          });
-        
-     
-          window.iti = iti;
-        
-       
-          $('form').on('submit', function() {
-          
-            var fullPhoneNumber = iti.getNumber();
-            
-    
-            hiddenInput.value = fullPhoneNumber;
-          });
-        });
-        </script>
-
 
 
 </body>

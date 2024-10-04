@@ -13,14 +13,22 @@ class Transaction extends Model
 
     public $fillable = [
         "user_id",
+        "address_id",
         "reference",
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function order(){
+    public function order()
+    {
         return $this->hasMany(Order::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

@@ -27,7 +27,8 @@
             axilInit.axilSlickActivation();
             axilInit.countdownInit('.coming-countdown', '2023/10/01');
             axilInit.campaignCountdown('.campaign-countdown', '2023/10/01');
-            axilInit.countdownInit('.poster-countdown', '2023/06/01');
+            // axilInit.countdownInit('.poster-countdown', '2023/06/01');
+            axilInit.countdownInit('.poster-countdown', 24);
             axilInit.countdownInit('.sale-countdown', '2023/10/31');
             axilInit.sideOffcanvasToggle('.cart-dropdown-btn', '#cart-dropdown');
             // axilInit.sideOffcanvasToggle('.cart-dropdown-new-btn', '#cart-dropdown');
@@ -990,18 +991,74 @@
             });
         },
 
-        countdownInit: function (countdownSelector, countdownTime) {
+        // countdownInit: function (countdownSelector, countdownTime) {
+        //     var eventCounter = $(countdownSelector);
+        //     if (eventCounter.length) {
+        //         eventCounter.countdown(countdownTime, function (e) {
+        //             $(this).html(
+        //                 e.strftime(
+        //                     "<div class='countdown-section'><div><div class='countdown-number'>%-D</div> <div class='countdown-unit'>Day</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%H</div> <div class='countdown-unit'>Hrs</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%M</div> <div class='countdown-unit'>Min</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%S</div> <div class='countdown-unit'>Sec</div> </div></div>"
+        //                 )
+        //             );
+        //         });
+        //     }
+        // },
+
+
+        countdownInit: function (countdownSelector, countdownHours) {
             var eventCounter = $(countdownSelector);
+
+            let countdownEndTime = localStorage.getItem('countdownEndTime');
+            
+            if (!countdownEndTime || isNaN(countdownEndTime)) {
+                countdownEndTime = Date.now() + countdownHours * 60 * 60 * 1000;
+                localStorage.setItem('countdownEndTime', countdownEndTime);
+            } else {
+                countdownEndTime = parseInt(countdownEndTime, 10);
+            }
+
             if (eventCounter.length) {
-                eventCounter.countdown(countdownTime, function (e) {
-                    $(this).html(
-                        e.strftime(
-                            "<div class='countdown-section'><div><div class='countdown-number'>%-D</div> <div class='countdown-unit'>Day</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%H</div> <div class='countdown-unit'>Hrs</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%M</div> <div class='countdown-unit'>Min</div> </div></div><div class='countdown-section'><div><div class='countdown-number'>%S</div> <div class='countdown-unit'>Sec</div> </div></div>"
-                        )
-                    );
-                });
+                function updateCountdown() {
+                    const now = Date.now();
+                    const timeRemaining = countdownEndTime - now;
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timer);
+                        eventCounter.html("<h6>Countdown is over!</h6>");
+                        localStorage.removeItem('countdownEndTime'); 
+                    } else {
+                        const hours = String(Math.floor((timeRemaining / (1000 * 60 * 60)))).padStart(2, '0');
+                        const minutes = String(Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                        const seconds = String(Math.floor((timeRemaining % (1000 * 60)) / 1000)).padStart(2, '0');
+
+                        eventCounter.html(`
+                            <div class='countdown-section'>
+                                <div>
+                                    <div class='countdown-number'>${hours}</div>
+                                    <div class='countdown-unit'>Hrs</div>
+                                </div>
+                            </div>
+                            <div class='countdown-section'>
+                                <div>
+                                    <div class='countdown-number'>${minutes}</div>
+                                    <div class='countdown-unit'>Min</div>
+                                </div>
+                            </div>
+                            <div class='countdown-section'>
+                                <div>
+                                    <div class='countdown-number'>${seconds}</div>
+                                    <div class='countdown-unit'>Sec</div>
+                                </div>
+                            </div>
+                        `);
+                    }
+                }
+
+                updateCountdown();
+                var timer = setInterval(updateCountdown, 1000); 
             }
         },
+
 
         campaignCountdown: function (countdownSelector, countdownTime) {
             var eventCounter = $(countdownSelector);

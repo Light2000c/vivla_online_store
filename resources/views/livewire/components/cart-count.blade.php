@@ -11,7 +11,7 @@
              @foreach ($cartCount as $cart)
                  <li class="cart-item">
                      <div class="item-img">
-                         <a href="single-product.html"><img src="/storage/products/{{ $cart->product->image }}"
+                         <a href="{{ route("product-detail", $cart->product) }}"><img src="/products/{{ $cart->product->image }}"
                                  alt="Commodo Blown Lamp"></a>
                          <button wire:click="delete({{ $cart->id }})" class="close-btn">
                              <i wire:loading.remove wire:target="delete({{ $cart->id }})" class="fas fa-times"></i>
@@ -30,7 +30,7 @@
                         </span>
                         <span class="rating-number">(64)</span>
                     </div> --}}
-                         <h3 class="item-title"><a href="single-product-3.html">{{ $cart->product->name }}</a>
+                         <h3 class="item-title"><a href="{{ route("product-detail", $cart->product) }}">{{ $cart->product->name }}</a>
                          </h3>
                          <div class="item-price"><span class="currency-symbol">$</span>
                              @if ($cart->product->discount)

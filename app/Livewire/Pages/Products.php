@@ -26,6 +26,7 @@ class Products extends Component
     public $hiddenRange;
     public $min_price;
     public $max_price;
+    public $filter = "";
 
     public function mount() {}
 
@@ -40,30 +41,30 @@ class Products extends Component
 
     public function load()
     {
-        if(!$this->selectedCategory && !$this->hiddenRange){
+
+        if ($this->filter == "") {
             $this->products = Product::orderBy("created_at", "DESC")->paginate(16);
             $this->categories = Category::orderBy("created_at", "DESC")->get();
-        }
+        } else {
+            if ($this->selectedCategory && !$this->hiddenRange) {
+                $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')->orderBy("created_at", "DESC")->paginate(16);
+                $this->categories = Category::orderBy("created_at", "DESC")->get();
+            }
 
-        if ($this->selectedCategory && !$this->hiddenRange) {
-            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')->orderBy("created_at", "DESC")->paginate(16);
-            $this->categories = Category::orderBy("created_at", "DESC")->get();
-        }
-
-        if ($this->selectedCategory && $this->hiddenRange) {
-            $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')
-            ->where("price", ">=", $this->min_price)
-            ->where("price", "<=", $this->max_price)
-            ->orderBy("created_at", "DESC")->paginate(16);
-        }
+            if ($this->selectedCategory && $this->hiddenRange) {
+                $this->products = Product::where("category", 'LIKE', '%' . $this->selectedCategory . '%')
+                    ->where("price", ">=", $this->min_price)
+                    ->where("price", "<=", $this->max_price)
+                    ->orderBy("created_at", "DESC")->paginate(16);
+            }
 
 
-        if (!$this->selectedCategory && $this->hiddenRange) {
-            $this->products = Product::where("price", ">=", $this->min_price)
-            ->where("price", "<=", $this->max_price)
-            ->orderBy("created_at", "DESC")->paginate(16);
+            if (!$this->selectedCategory && $this->hiddenRange) {
+                $this->products = Product::where("price", ">=", $this->min_price)
+                    ->where("price", "<=", $this->max_price)
+                    ->orderBy("created_at", "DESC")->paginate(16);
+            }
         }
-        
     }
 
 
@@ -79,18 +80,23 @@ class Products extends Component
         // dd($this->selectedCategory);
         // dd($this->hiddenRange);
 
-        if($this->hiddenRange){
+        $this->filter = "yes";
+
+        if ($this->hiddenRange) {
             [$this->min_price, $this->max_price] = explode(",", $this->hiddenRange);
         }
-      
-            $this->load();
-            $this->resetPage();
+
+        $this->load();
+        $this->resetPage();
     }
 
-    public function resetFilters(){
+    public function resetFilters()
+    {
         $this->selectedCategory = "";
         $this->hiddenRange = "";
         $this->price_range = "";
+
+        $this->filter = "";
 
         $this->load();
         $this->resetPage();

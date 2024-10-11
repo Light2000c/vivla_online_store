@@ -59,9 +59,9 @@
                                     @if ($carts->count())
                                         @foreach ($carts as $cart)
                                             <tr class="order-product">
-                                                <td class="text-dark">{{ $cart->product->name }}<span class="quantity">
+                                                <td class="checkout-text">{{ $cart->product->name }}<span class="quantity">
                                                         {{ 'x  ' . $cart->quantity }}</span></td>
-                                                <td class="text-dark">$
+                                                <td class="checkout-text">$
                                                     @if ($cart->product->discount)
                                                         {{ number_format($cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount) / 100)) }}
                                                     @else
@@ -84,29 +84,9 @@
                                         </div>
                                     @endif
 
-                                    <tr class="order-subtotal">
-                                        <td class="text-dark ">Subtotal</td>
-                                        <td class="text-dark">${{ number_format($subTotal) }}</td>
-                                    </tr>
-                                    <tr class="order-shipping">
-                                        <td colspan="2">
-                                            <div class="shipping-amount text-dark">
-                                                <span class="title text-dark">Shipping Method</span>
-                                                <span class="amount">$35.00</span>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio1" name="shipping" checked>
-                                                <label for="radio1">Free Shippping</label>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio2" name="shipping">
-                                                <label for="radio2">Local</label>
-                                            </div>
-                                            <div class="input-group">
-                                                <input type="radio" id="radio3" name="shipping">
-                                                <label for="radio3">Flat rate</label>
-                                            </div>
-                                        </td>
+                                    <tr class="order-subtotal checkout-item">
+                                        <td >Subtotal</td>
+                                        <td >${{ number_format($subTotal) }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <td>Total</td>
@@ -183,6 +163,30 @@
                 icon: data.icon,
                 title: data.title
             });
+
+        });
+
+
+   
+        window.addEventListener("alert", function(e) {
+
+            let data = e.detail;
+
+            console.log(data);
+
+            Swal.fire({
+                title: data.title,
+                text: data.text,
+                icon: data.icon,
+                showCancelButton: true,
+                confirmButtonText: 'Go To Cart',
+                cancelButtonText: 'Close'
+            }).then((result) => {
+                 if (result.isConfirmed) {
+                    //  Redirect to the URL
+                      window.location.href = data.redirectUrl;
+                 }
+             });
 
         });
 

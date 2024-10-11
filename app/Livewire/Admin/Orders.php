@@ -16,9 +16,9 @@ class Orders extends Component
     public $quantity;
     public $address;
 
-    public function mount($id) {
+    public function mount($id)
+    {
         $this->id = $id;
-     
     }
 
     public function render()
@@ -33,7 +33,7 @@ class Orders extends Component
     public function load()
     {
 
-        $transaction = Transaction::where("reference",$this->id)->first();
+        $transaction = Transaction::where("reference", $this->id)->first();
         $this->transaction = $transaction;
 
         if (!$transaction && $transaction->user()->is(Auth::user())) {
@@ -46,13 +46,14 @@ class Orders extends Component
 
         $this->address = $address;
 
-        if(!$this->address){
-            // dd("jdsk");
-            $this->redirect(route('admin-transaction'));
+        if (!$this->address) {
+            dd("jdsk");
+            return $this->redirect("/home");
+            // $this->redirect(route('admin-transaction'));
             // $this->redirectIntended('/admin/transactions');
         }
 
-        if($this->address->user_id !== $transaction->user_id){
+        if ($this->address->user_id !== $transaction->user_id) {
             $this->address = [];
         }
 

@@ -63,7 +63,7 @@
                                 <div class="flex-center mt--20">
                                     <span class="input-range">Price: </span>
                                     <input wire:model.lazy="price_range" type="text" id="amount"
-                                        class="amount-range">
+                                        class="amount-range" @disabled(true)>
                                     <input type="hidden" wire:model.lazy="hiddenRange" id="hidden-price-range">
                                 </div>
                             </div>

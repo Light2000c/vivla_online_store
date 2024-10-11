@@ -109,7 +109,8 @@
 
 .timeline-item.completed::after {
   /* background-color: #28a745; */
-  border-left: 4px dashed #28a745;;
+  border-left: 4px dashed #28a745;
+  ;
 }
 
 .timeline-item.pending::after {
@@ -157,6 +158,8 @@
   color: #6c757d;
 }
 
+
+
 /* end of timeline styles */
 
 
@@ -164,6 +167,7 @@
 
 @media only screen and (max-width: 700px) {
   .shop-image {
-    height: 300px;
+    height: 350px;
   }
+
 }

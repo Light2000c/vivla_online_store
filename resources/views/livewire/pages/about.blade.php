@@ -41,7 +41,6 @@
                            <div class="about-content content-right">
                                <span class="title-highlighter highlighter-primary2"> <i
                                        class="far fa-shopping-basket"></i>About Store</span>
-                               {{-- <h3 class="title">Online shopping includes both buying things online.</h3> --}}
                                <span class="text-heading">Vivla Closet enhance your unique style with an extensive
                                    range of
                                    affordable, ready-to-wear clothing, shoes, bags, jewelry, designer wear, and vibrant
@@ -49,13 +48,13 @@
                                <div class="row">
                                    <div class="col-xl-6">
                                        <h5>Mission:</h5>
-                                       <p>To provide a diverse selection of high-quality, affordable fashion that
+                                       <p class="text-heading">To provide a diverse selection of high-quality, affordable fashion that
                                            celebrates individuality and beauty for all, ensuring everyone feels
                                            confident and stylish in their everyday lives.</p>
                                    </div>
                                    <div class="col-xl-6">
                                     <h5>Vision:</h5>
-                                       <p class="mb--0">To be a leading fashion destination known for blending modern
+                                       <p class="mb--0 text-heading">To be a leading fashion destination known for blending modern
                                            trends with cultural heritage, empowering individuals across the globe to
                                            express themselves through style.</p>
                                    </div>

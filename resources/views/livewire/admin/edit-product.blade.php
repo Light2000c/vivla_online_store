@@ -220,8 +220,8 @@
 
          
             @this.set('description', data).then(() => {
-                @this.call(
-                'update'); 
+                // @this.call(
+                // 'update'); 
             });
         });
     });

@@ -59,7 +59,8 @@ class Checkout extends Component
 
         foreach ($carts as $cart) {
             if ($cart->quantity > $cart->product->quantity) {
-                return $this->showToast("info", "please re-confirm carts and try again");
+                // return $this->showToast("info", "please re-confirm carts and try again");
+                return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
             }
         }
 
@@ -107,6 +108,18 @@ class Checkout extends Component
             'message',
             icon: $icon,
             title: $title,
+        );
+    }
+
+    public function showAlert($icon, $title, $text)
+    {
+
+        $this->dispatch(
+            'alert',
+            icon: $icon,
+            title: $title,
+            text: $text,
+            redirectUrl: url('/cart')
         );
     }
 }

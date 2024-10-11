@@ -134,9 +134,14 @@
                 title: data.title,
                 text: data.text,
                 icon: data.icon,
-                // showCancelButton: true,
-                // confirmButtonText: 'Go To Product',
-                // cancelButtonText: 'Close'
+                showCancelButton: true,
+                confirmButtonText: 'Go To Product',
+                cancelButtonText: 'Close'
+            }).then((result) => {
+                 if (result.isConfirmed) {
+                     // Redirect to the URL
+                     //  window.location.href = data.redirectUrl;
+                 }
             });
 
         });

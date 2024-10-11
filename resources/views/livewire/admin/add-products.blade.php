@@ -212,7 +212,7 @@
              }).then((result) => {
                  if (result.isConfirmed) {
                      // Redirect to the URL
-                     //  window.location.href = data.redirectUrl;
+                      window.location.href = data.redirectUrl;
                  }
              });
 
@@ -220,33 +220,7 @@
      </script>
 
 
-     {{-- <script>
-             document.addEventListener('DOMContentLoaded', function() {
 
-                 if (CKEDITOR.instances['editor']) {
-                     var editor = CKEDITOR.instances['editor'];
-                 } else {
-
-                     var editor = CKEDITOR.replace('editor', {
-                         versionCheck: false
-                     });
-                 }
-
-                 console.log("got here");
-
-                 document.querySelector('form').addEventListener('submit', function(event) {
-
-                     console.log("got here 2");
-
-                     var data = editor.getData();
-                     console.log('CKEditor content on submit: ', data);
-
-                     document.getElementById('editor').value = data;
-
-                     @this.set('description', data);
-                 });
-             });
-         </script> --}}
 
      <script>
          document.addEventListener('DOMContentLoaded', function() {
@@ -265,12 +239,6 @@
 
              console.log("CKEditor initialized");
 
-            //  editor.on('change', function() {
-            //      var data = editor.getData();
-            //      console.log('CKEditor content changed: ', data);
-            //      @this.set('description', data);
-            //  });
-
             
              document.getElementById('productForm').addEventListener('submit', function(event) {
                  event.preventDefault(); 
@@ -280,8 +248,8 @@
 
               
                  @this.set('description', data).then(() => {
-                     @this.call(
-                     'send'); 
+                    //  @this.call(
+                    //  'send'); 
                  });
              });
          });

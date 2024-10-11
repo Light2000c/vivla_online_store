@@ -13687,12 +13687,14 @@ body.open .closeMask {
     }
 }
 
+/* marked 1 */
 .axil-order-summery.order-checkout-summery .summery-table th {
     font-size: 20px;
     color: var(--color-heading);
     text-transform: capitalize;
     padding: 15px 0
 }
+
 
 .axil-order-summery.order-checkout-summery .summery-table td {
     padding: 18px 0
@@ -13711,7 +13713,7 @@ body.open .closeMask {
 }
 
 .axil-order-summery.order-checkout-summery .summery-table td.order-total-amount {
-    color: var(--color-black)
+    color: var(--color-black);
 }
 
 .axil-order-summery.order-checkout-summery .summery-table th:last-child,
@@ -13751,7 +13753,17 @@ body.open .closeMask {
 .axil-order-summery.order-checkout-summery .summery-table .order-total td {
     font-size: 20px;
     font-weight: 600;
-    color: var(--color-black)
+    /* color: var(--color-black); */
+    color: var(--color-gold)
+}
+
+@media only screen and (max-width: 767px) {
+    .axil-order-summery.order-checkout-summery .summery-table .order-total td {
+        font-size: 20px;
+        font-weight: 600;
+        /* color: var(--color-black); */
+        color: var(--color-white);
+    }
 }
 
 .axil-order-summery.order-checkout-summery .order-payment-method .single-payment {

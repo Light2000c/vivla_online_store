@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -31,8 +32,6 @@ class StripeController extends Controller
 
     public function checkout(Request $request)
     {
-
-
         $this->validate($request, [
             'fullName' => 'required',
             'amount' => 'required|numeric',
@@ -206,11 +205,32 @@ class StripeController extends Controller
                 });
             });
 
+            $this->updateProdQuantity($transactionId);
+
 
             // return redirect()->route("dashboard");
         } catch (\Exception $e) {
             // return back()->with('error', "Something went wrong, please try again.");
             return $this->error();
+        }
+    }
+
+    public function updateProdQuantity($transactionId)
+    {
+        $orders = Order::with('product')->where("transaction_id", $transactionId)->get();
+
+        if ($orders->count()) {
+            foreach ($orders as $order) {
+                $product = $order->product;
+
+                if ($product->quantity >= $order->quantity) {
+                    $new_quantity = $product->quantity - $order->quantity;
+
+                    $product->quantity = $new_quantity;
+                    $product->save();
+                } else {
+                }
+            }
         }
     }
 

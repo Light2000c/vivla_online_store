@@ -140,6 +140,8 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
     Route::get("admin/transactions", Transactions::class)->name("admin-transaction");
 
     Route::get("admin/payments", Payments::class)->name("admin-payment");
+
+    Route::post("logout", [AdminLoginController::class, "logout"])->name("admin-logout");
 });
 
 

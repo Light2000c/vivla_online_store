@@ -137,7 +137,7 @@
                                 </li>
                                 {{-- <li><a href=""><i data-feather="settings"></i><span>Settings</span></a></li> --}}
                                 <li>
-                                    <form  action="{{ route('logout') }}" method="POST">
+                                    <form  action="{{ route('admin-logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-link btn-sm"><i data-feather="log-in"> </i><span>Logout</span></button>
                                     </form>
@@ -306,15 +306,15 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 p-0 footer-copyright">
-                            <p class="mb-0">Copyright 2023 © Dunzo theme by pixelstrap.</p>
+                            <p class="mb-0">Copyright 2024 © VivlaCloset.</p>
                         </div>
-                        <div class="col-md-6 p-0">
+                        {{-- <div class="col-md-6 p-0">
                             <p class="heart mb-0">Hand crafted &amp; made with
                                 <svg class="footer-icon">
                                     <use href="/web1/assets/svg/icon-sprite.svg#heart"></use>
                                 </svg>
                             </p>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </footer>

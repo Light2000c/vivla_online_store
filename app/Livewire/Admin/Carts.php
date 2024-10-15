@@ -35,18 +35,17 @@ class Carts extends Component
         $searchTerm = '%' . $this->search . '%'; // Define the search term
 
         if (!$this->search) {
-            // If no search term is provided, get all carts ordered by creation date
             $this->carts = Cart::orderBy('created_at', 'DESC')->paginate(6);
         } else {
-            // If a search term is provided, filter carts by product and user names
+
             $this->carts = Cart::whereHas('product', function ($query) use ($searchTerm) {
                 $query->where('name', 'LIKE', $searchTerm);
             })
-            ->whereHas('user', function ($query) use ($searchTerm) {
-                $query->where('name', 'LIKE', $searchTerm);
-            })
-            ->orderBy('created_at', 'DESC') // Ensure the results are ordered
-            ->paginate(6); // Paginate the results
+                ->whereHas('user', function ($query) use ($searchTerm) {
+                    $query->where('name', 'LIKE', $searchTerm);
+                })
+                ->orderBy('created_at', 'DESC')
+                ->paginate(6);
         }
     }
 
@@ -54,6 +53,7 @@ class Carts extends Component
     public function delete($id)
     {
 
+        try{
         $cart = Cart::find($id);
 
         if (!$cart) {
@@ -68,10 +68,16 @@ class Carts extends Component
 
         $this->load();
         return $this->showToast("success", "cart has been deleted");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong please try again.");
+    }
     }
 
     public function deleteSelected()
     {
+
+        try{
         if (empty($this->selectedItems)) {
             return $this->showToast("info", "you haven't selected any item yet!");
         }
@@ -85,6 +91,10 @@ class Carts extends Component
         $this->load();
         $this->resetValue();
         return $this->showToast("success", "carts has been deleted");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong please try again.");
+    }
     }
 
     public function resetValue()

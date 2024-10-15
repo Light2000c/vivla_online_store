@@ -39,6 +39,7 @@
 
                     <div class="mt-4 mb-4 p-2 border">
                         <h5 class="ms-4">Order Address</h5>
+                        @if($address)
                         <ul class="address-details m-3" style="list-style-type: none;">
                             <li>Name: {{ "$address->firstname $address->lastname" }}</li>
                             <li>Email: {{ $address->email }}</li>
@@ -47,6 +48,7 @@
                             <li>city: {{ $address->city }}</li>
                             <li>country: {{ $address->country }}</li>
                         </ul>
+                        @endif
                     </div>
 
                     <div class="table-responsive custom-scrollbar mt-2">

@@ -116,115 +116,109 @@ class TeamMembers extends Component
         return $this->showToast("success", "Team Member added.");
     }
 
+
+
     public function update()
     {
 
-        if ($this->password) {
-
-            if (Auth::user()->role != 2) {
-                return $this->showToast("error", "You don't have permission to perform this action");
-            }
-
-            $this->validate([
-                "name" => "required",
-                "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|:max:255|unique:categories,name",
-                "password" => "required|confirmed",
-            ]);
-
-            $user = User::find($this->activeTeamMember->id);
-
-            if (!$user) {
-                return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
-            }
-
-
-            $updated =  $user->update([
-                "name" =>  $this->name,
-                "email" => $this->email,
-                "password" => Hash::make($this->password),
-            ]);
-
-            if (!$updated) {
-                return $this->showToast("error", "Member info was not successfully update.");
-            }
-        } else {
-
-            if (Auth::user()->role != 2) {
-                return $this->showToast("error", "You don't have permission to perform this action");
-            }
-
-            $this->validate([
-                "name" => "required",
-                "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|:max:255|unique:categories,name",
-            ]);
-
-            $user = User::find($this->activeTeamMember->id);
-
-            if (!$user) {
-                return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
-            }
-
-
-            $updated =  $user->update([
-                "name" =>  $this->name,
-                "email" => $this->email
-            ]);
-
-            if (!$updated) {
-                return $this->showToast("error", "Member info was not successfully update.");
-            }
+        if (Auth::user()->role != 2) {
+            return $this->showToast("error", "You don't have permission to perform this action");
         }
 
+        $validationRules = [
+            "name" => "required",
+            "email" => $this->activeTeamMember->email === $this->email ? "required" : "required|max:255|unique:categories,name",
+        ];
 
+        if ($this->password) {
+            $validationRules["password"] = "required|confirmed";
+        }
 
-        $this->load();
-        $this->dispatch("closeUpdateModal");
-        $this->resetValues();
-        return $this->showToast("success", "Member info updated.");
+        $this->validate($validationRules);
+
+        try {
+
+            $user = User::find($this->activeTeamMember->id);
+
+            if (!$user) {
+                return $this->showToast("error", "No user found with ID " . $this->activeTeamMember->id);
+            }
+
+            $user->name = $this->name;
+            $user->email = $this->email;
+
+            if ($this->password) {
+                $user->password = Hash::make($this->password);
+            }
+
+            $updated = $user->save();
+
+            if (!$updated) {
+                return $this->showToast("error", "Member info was not successfully updated.");
+            }
+
+            $this->load();
+            $this->dispatch("closeUpdateModal");
+            $this->resetValues();
+            return $this->showToast("success", "Member info updated.");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, member info was not successfully updated");
+        }
     }
 
     public function delete($id)
     {
 
-        if (Auth::user()->role != 2) {
-            return $this->showToast("error", "You don't have permission to perform this action");
+        try {
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $user = User::find($id);
+
+            if (!$user) {
+                return $this->showToast("error", "Member was not successfully deleted");
+            }
+
+            $deleted = $user->delete();
+
+            if (!$deleted) {
+                return $this->showToast("error", "Member was not successfully deleted");
+            }
+
+            $this->load();
+            return $this->showToast("success", "Member has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, member was not successfully deleted");
         }
-
-        $user = User::find($id);
-
-        if (!$user) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $deleted = $user->delete();
-
-        if (!$deleted) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $this->load();
-        return $this->showToast("success", "Member has been deleted");
     }
 
     public function deleteSelected()
     {
-        if (empty($this->selectedItems)) {
-            return $this->showToast("info", "you haven't selected any member yet!");
+
+        try {
+
+            if (empty($this->selectedItems)) {
+                return $this->showToast("info", "you haven't selected any member yet!");
+            }
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $delete = User::whereIn("id", $this->selectedItems)->delete();
+
+            if (!$delete) {
+                return $this->showToast("error", "Member was not successfully deleted");
+            }
+
+            $this->load();
+            $this->resetSelectItem();
+            return $this->showToast("success", "Members has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, members were not successfully deleted");
         }
-
-        if (Auth::user()->role != 2) {
-            return $this->showToast("error", "You don't have permission to perform this action");
-        }
-
-        $delete = User::whereIn("id", $this->selectedItems)->delete();
-
-        if (!$delete) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $this->load();
-        $this->resetSelectItem();
-        return $this->showToast("success", "Members has been deleted");
     }
 
     public function showToast($icon, $title)

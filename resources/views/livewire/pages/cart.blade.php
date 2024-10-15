@@ -1,12 +1,12 @@
 <main class="main-wrapper">
-     <!-- Start Breadcrumb Area  -->
-     <div class="axil-breadcrumb-area dark-bg">
+    <!-- Start Breadcrumb Area  -->
+    <div class="axil-breadcrumb-area dark-bg">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-8">
                     <div class="inner">
                         <ul class="axil-breadcrumb">
-                            <li class="axil-breadcrumb-item"><a href="{{ route("home") }}" class="text-dark">Home</a></li>
+                            <li class="axil-breadcrumb-item"><a href="{{ route('home') }}" class="text-dark">Home</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active" aria-current="page">Wishlist</li>
                         </ul>
@@ -31,9 +31,9 @@
             <div class="axil-product-cart-wrap">
                 <div class="product-table-heading">
                     <h4 class="title">Your Cart</h4>
-                    <a href="#" class="cart-clear">Clear Shoping Cart</a>
+                    <a  class="cart-clear">Clear Shoping Cart</a>
                 </div>
-               
+
                 <div class="table-responsive">
                     <table class="table axil-product-table axil-cart-table mb--40">
                         <thead>
@@ -46,114 +46,137 @@
                                 <th scope="col" class="product-subtotal">Subtotal</th>
                             </tr>
                         </thead>
-                        @if($carts->count())
-                        <tbody>
-                            @if (Auth::user())
-                                @foreach ($carts as $index => $cart)
-                                    <tr>
-                                        <td class="product-remove">
-                                            <a wire:click="delete({{ $cart->id }})" class="remove-wishlist">
-                                                <i wire:loading.remove wire:target="delete({{ $cart->id }})"
-                                                    class="fal fa-times"></i>
-                                                <span wire:loading wire:target="delete({{ $cart->id }})"
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                            </a>
-                                        </td>
-                                        <td class="product-thumbnail"><a href="single-product.html"><img
-                                                    src="/products/{{ $cart->product->image }}"
-                                                    alt="Digital Product"></a></td>
-                                        <td class="product-title"><a
-                                                href="single-product.html">{{ $cart->product->name }} <p>{{  $cart->product->quantity > 1? $cart->product->quantity .' units left' : $cart->product->quantity .' unit left' }}</p></a></td>
-                                        <td class="product-price" data-title="Price"><span
-                                                class="currency-symbol">$</span>
-                                            @if ($cart->product->discount)
-                                                {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
-                                            @else
-                                                {{ number_format($cart->product->price) }}
-                                            @endif
-                                        </td>
-                                        <td class="product-quantity" data-title="Qty">
-                                            <div class="pro-qty">
-                                                <span wire:click="dec({{ $cart->id }})" class="dec qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="dec({{ $cart->id }})">-</span>
-                                                    <span wire:loading wire:target="dec({{ $cart->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
+                        @if ($carts->count())
+                            <tbody>
+                                @if (Auth::user())
+                                    @foreach ($carts as $index => $cart)
+                                        <tr>
+                                            <td class="product-remove">
+                                                <a wire:click="delete({{ $cart->id }})" class="remove-wishlist">
+                                                    <i wire:loading.remove wire:target="delete({{ $cart->id }})"
+                                                        class="fal fa-times"></i>
+                                                    <span wire:loading wire:target="delete({{ $cart->id }})"
+                                                        class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
-                                                </span>
-                                                <input wire:change="update({{ $cart->id }}, $event.target.value)"
-                                                    type="number" class="quantity-input"
-                                                    value="{{ $cart->quantity }}" disabled>
-                                                <span wire:click="inc({{ $cart->id }})" class="inc qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="inc({{ $cart->id }})">+</span>
-                                                    <span wire:loading wire:target="inc({{ $cart->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal" data-title="Subtotal"><span
-                                                class="currency-symbol">$</span>
-                                            @if ($cart->product->discount)
-                                                {{ number_format($cart->quantity * $cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
-                                            @else
-                                                {{ number_format($cart->quantity * $cart->product->price) }}
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                                                </a>
+                                            </td>
+                                            <td class="product-thumbnail"><a
+                                                    href="{{ route('product-detail', $cart->product->id) }}"><img
+                                                        src="/products/{{ $cart->product->image }}"
+                                                        alt="Digital Product"></a></td>
+                                            <td class="product-title"><a
+                                                    href="{{ route('product-detail', $cart->product->id) }}">{{ $cart->product->name }}
+                                                    <p><small>{{ $cart->product->quantity > 1 ? $cart->product->quantity . ' units left' : $cart->product->quantity . ' unit left' }}</small>
+                                                    </p></a></td>
+                                            <td class="product-price" data-title="Price"><span
+                                                    class="currency-symbol">$</span>
+                                                @if ($cart->product->discount)
+                                                    {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
+                                                @else
+                                                    {{ number_format($cart->product->price) }}
+                                                @endif
+                                            </td>
+                                            <td class="product-quantity" data-title="Qty">
+                                                <div class="pro-qty">
+                                                    <span wire:click="dec({{ $cart->id }})" class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="dec({{ $cart->id }})">-</span>
+                                                        <span wire:loading wire:target="dec({{ $cart->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input
+                                                        wire:change="update({{ $cart->id }}, $event.target.value)"
+                                                        type="number" class="quantity-input"
+                                                        value="{{ $cart->quantity }}" disabled>
+                                                    <span wire:click="inc({{ $cart->id }})" class="inc qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="inc({{ $cart->id }})">+</span>
+                                                        <span wire:loading wire:target="inc({{ $cart->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal" data-title="Subtotal"><span
+                                                    class="currency-symbol">$</span>
+                                                @if ($cart->product->discount)
+                                                    {{ number_format($cart->quantity * $cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
+                                                @else
+                                                    {{ number_format($cart->quantity * $cart->product->price) }}
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
 
-                            @if(Auth::guest())
-                            @foreach($carts as $cart)
-                            <tr>
-                                <td class="product-remove">
-                                    <a wire:click="removeFromSessionCart({{ $cart->id }})" class="remove-wishlist">
-                                        <i wire:loading.remove wire:target="removeFromSessionCart({{ $cart->id }})"
-                                            class="fal fa-times"></i>
-                                        <span wire:loading wire:target="removeFromSessionCart({{ $cart->id }})"
-                                            class="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                                <td class="product-thumbnail"><a href="single-product.html"><img src="/products/{{ $this->getProductImage($cart->id) }}" alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product.html">{{ $this->getProductName($cart->id) }} <p>{{  $this->getProductQuantity($cart->id) > 1?  $this->getProductQuantity($cart->id) .' units left' :  $this->getProductQuantity($cart->id) .' unit left' }}</p></a></td>
-                                <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>{{ number_format($cart->product->price) }}</td>
-                                <td class="product-quantity" data-title="Qty">
-                                    <div class="pro-qty">
-                                        <span wire:click="decSessionCart({{ $cart->id }})" class="dec qtybtn">
-                                            <span wire:loading.remove
-                                                wire:target="decSessionCart({{ $cart->id }})">-</span>
-                                            <span wire:loading wire:target="decSessionCart({{ $cart->id }})"
-                                                class="spinner-grow spinner-grow" role="status"
-                                                aria-hidden="true"></span>
-                                        </span>
-                                        <input type="number" class="quantity-input" value="{{ $cart->quantity  }}" disabled>
-                                        <span wire:click="incSessionCart({{ $cart->id }})" class="inc qtybtn">
-                                            <span wire:loading.remove
-                                                wire:target="incSessionCart({{ $cart->id }})">+</span>
-                                            <span wire:loading wire:target="incSessionCart({{ $cart->id }})"
-                                                class="spinner-grow spinner-grow" role="status"
-                                                aria-hidden="true"></span>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="product-subtotal" data-title="Subtotal"><span class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity)) }}</td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
+                                @if (Auth::guest())
+                                    @foreach ($carts as $cart)
+                                        <tr>
+                                            <td class="product-remove">
+                                                <a wire:click="removeFromSessionCart({{ $cart->id }})"
+                                                    class="remove-wishlist">
+                                                    <i wire:loading.remove
+                                                        wire:target="removeFromSessionCart({{ $cart->id }})"
+                                                        class="fal fa-times"></i>
+                                                    <span wire:loading
+                                                        wire:target="removeFromSessionCart({{ $cart->id }})"
+                                                        class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                </a>
+                                            </td>
+                                            <td class="product-thumbnail"><a
+                                                    href="{{ route('product-detail', $cart->id) }}"><img
+                                                        src="/products/{{ $this->getProductImage($cart->id) }}"
+                                                        alt="Digital Product"></a></td>
+                                            <td class="product-title"><a
+                                                    href="{{ route('product-detail', $cart->id) }}">{{ $this->getProductName($cart->id) }}
+                                                    <p><small>{{ $this->getProductQuantity($cart->id) > 1 ? $this->getProductQuantity($cart->id) . ' units left' : $this->getProductQuantity($cart->id) . ' unit left' }}</small>
+                                                    </p></a></td>
+                                            <td class="product-price" data-title="Price"><span
+                                                    class="currency-symbol">$</span>{{ number_format($cart->product->price) }}
+                                            </td>
+                                            <td class="product-quantity" data-title="Qty">
+                                                <div class="pro-qty">
+                                                    <span wire:click="decSessionCart({{ $cart->id }})"
+                                                        class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="decSessionCart({{ $cart->id }})">-</span>
+                                                        <span wire:loading
+                                                            wire:target="decSessionCart({{ $cart->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input type="number" class="quantity-input"
+                                                        value="{{ $cart->quantity }}" disabled>
+                                                    <span wire:click="incSessionCart({{ $cart->id }})"
+                                                        class="inc qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="incSessionCart({{ $cart->id }})">+</span>
+                                                        <span wire:loading
+                                                            wire:target="incSessionCart({{ $cart->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal" data-title="Subtotal"><span
+                                                    class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity)) }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
                         @else
-                        <div class="alert alert-secondary" role="alert">
-                            No Cart To Show Yet! <a href="{{ route("products") }}" class="ms-3 text-primary">Go to Shop >></a>
-                          </div>
+                            <div class="alert alert-secondary" role="alert">
+                                No Cart To Show Yet! <a href="{{ route('products') }}" class="ms-3 text-primary">Go
+                                    to Shop >></a>
+                            </div>
                         @endif
                     </table>
                 </div>
-          
- 
+
+
                 <div class="row">
                     <div class="col-xl-5 col-lg-7 offset-xl-7 offset-lg-5">
                         <div class="axil-order-summery mt--80">
@@ -189,7 +212,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{{ route("checkout") }}" class="axil-btn btn-bg-primary checkout-btn">Process to
+                            <a href="{{ route('checkout') }}" class="axil-btn btn-bg-primary checkout-btn">Proceed to
                                 Checkout</a>
                         </div>
                     </div>

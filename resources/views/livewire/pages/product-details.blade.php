@@ -82,7 +82,9 @@
                                         <i class="far fa-star"></i>
                                     </div> --}}
                                     <div class="review-link">
-                                        <a href="#">(<span>2</span> customer reviews)</a>
+                                        {{-- <a href="#">(<span>2</span> unit left)</a> --}}
+                                        <a
+                                            href="#">({{ $product->quantity <= 1 ? $product->quantity . ' unit left' : $product->quantity . ' units left' }})</a>
                                     </div>
                                 </div>
                                 <p class="description">
@@ -132,7 +134,8 @@
                                                         class="spinner-grow spinner-grow" role="status"
                                                         aria-hidden="true"></span>
                                                 </span>
-                                                <input type="text" value="{{ $this->getSessionCartQuantity($product->id) }}" disabled>
+                                                <input type="text"
+                                                    value="{{ $this->getSessionCartQuantity($product->id) }}" disabled>
                                                 <span wire:click="incSessionCart({{ $product->id }})"
                                                     class="dec qtybtn">
                                                     <span wire:loading.remove
@@ -208,7 +211,7 @@
                                                         aria-hidden="true"></span>
                                                 </span>
                                                 <input type="text"
-                                                    value="{{ $this->getCartQuantity($product->id) }}">
+                                                    value="{{ $this->getCartQuantity($product->id) }}" disabled>
                                                 <span wire:click="inc({{ $product->id }})" class="dec qtybtn">
                                                     <span wire:loading.remove
                                                         wire:target="inc({{ $product->id }})">+</span>
@@ -658,7 +661,7 @@
                                 </div> --}}
                             </div>
                             <div class="product-content">
-                                @if ($product->discount)
+                                @if ($related->discount)
                                     <div class="inner">
                                         <h5 class="title"><a
                                                 href="{{ route('product-detail', $related->id) }}">{{ $related->name }}</a>
@@ -671,7 +674,8 @@
                                     </div>
                                 @else
                                     <div class="inner">
-                                        <h5 class="title"><a href="single-product.html">{{ $related->name }}</a>
+                                        <h5 class="title"><a
+                                                href="{{ route('product-detail', $related->id) }}">{{ $related->name }}</a>
                                         </h5>
                                         <div class="product-price-variant">
                                             <span

@@ -26,13 +26,13 @@ class StripeController extends Controller
 
     public function __construct()
     {
-        $this->stripe = $this->stripe = new StripeClient(config('stripe.sk'));
+        $this->stripe = new StripeClient(config('stripe.sk'));
     }
 
 
     public function checkout(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'fullName' => 'required',
             'amount' => 'required|numeric',
         ]);
@@ -77,7 +77,6 @@ class StripeController extends Controller
             // dd($session);
             if ($session->payment_status == 'paid') {
 
-
                 $this->saveTransaction();
 
                 $reference = $this->reference ? $this->reference : "";
@@ -91,129 +90,108 @@ class StripeController extends Controller
                     "order_date" => $date
                 ];
 
-                $sent = Mail::to(Auth::user()->email)->send(new PaymentMail($details));
+                Mail::to(Auth::user()->email)->send(new PaymentMail($details));
 
-                //sent to admin organisation email
-                $sent_to_admin = Mail::to("tegaonitsha@gmail.com")->send(new InfoMail($details));
+                Mail::to("sales@vivlavivcloset.com")->send(new InfoMail($details));
 
-                if (!$sent) {
-                    return $this->error();
-                }
-
-                if (!$sent_to_admin) {
-                    return $this->error();
+                if (count(Mail::failures()) > 0) {
+                    // return $this->error();
                 }
 
                 return view('payment.paymentsuccess', ['session' => $session, 'reference' => $reference]);
             } else {
                 return $this->error();
-                // dd('Payment not completed.');
-                // return redirect('/')->with('error', 'Payment not completed.');
             }
         } catch (\Exception $e) {
             return $this->error();
-            // dd('Failed to retrieve payment details: ' . $e->getMessage());
-            // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
         }
     }
 
     public function error()
     {
 
-        try {
-            return view('payment.paymenterror');
-        } catch (\Exception $e) {
-            dd('Failed to retrieve payment details: ' . $e->getMessage());
-            // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
-        }
+        // try {
+        return view('payment.paymenterror');
+        // } catch (\Exception $e) {
+        // dd('Failed to retrieve payment details: ' . $e->getMessage());
+        // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
+        // }
     }
 
     public function cancel()
     {
         return redirect()->route("checkout");
-        // return view('checkout.cancel');
     }
-
 
 
 
     public function saveTransaction()
     {
-
-        $random_number = $this->generateReference();
-
-
-        $cart = auth()->user()->cart()->get();
-
-        if ($cart->isEmpty()) {
-            return $this->error();
-        }
-
-        $address = auth::user()->address()->where("active", 1)->first();
-
-        if (!$address) {
-            // return $this->error();
-        }
-
-
-        $transaction = request()->user()->transaction()->create([
-            "reference" => $random_number,
-            "address_id" => $address->id
-        ]);
-
-        $this->reference = $random_number;
-
-
-        if (!$transaction) {
-            return $this->error();
-        }
-
-        $transactionId = $transaction->id;
+        DB::beginTransaction(); // Begin a transaction
 
         try {
-            DB::transaction(function () use ($transactionId) {
-                DB::table('carts')->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
-                    $orders = $carts->map(function ($item) use ($transactionId) {
-                        $productPrice = DB::table('products')
-                            ->where('id', $item->product_id)
-                            ->value('price');
 
-                        $productDiscount = DB::table('products')
-                            ->where('id', $item->product_id)
-                            ->value('discount');
+            $random_number = $this->generateReference();
 
-                        if ($productDiscount) {
-                            $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
-                        } else {
-                            $total = $productPrice * $item->quantity;
-                        }
+            $address = auth::user()->address()->where("active", 1)->first();
+            if (!$address) {
+                return $this->error();
+            }
+
+            $transaction = request()->user()->transaction()->create([
+                "reference" => $random_number,
+                "address_id" => $address->id
+            ]);
+
+            $this->reference = $random_number;
+
+            if (!$transaction) {
+                return $this->error();
+            }
+
+            $transactionId = $transaction->id;
 
 
-                        return [
-                            'user_id' => $item->user_id,
-                            'product_id' => $item->product_id,
-                            'price' =>  $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
-                            'quantity' => $item->quantity,
-                            'transaction_id' => $transactionId,
-                            'total' => $total,
-                        ];
-                    });
+            DB::table('carts')->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
+                $orders = $carts->map(function ($item) use ($transactionId) {
+                    $productPrice = DB::table('products')
+                        ->where('id', $item->product_id)
+                        ->value('price');
 
-                    DB::table('orders')->insert($orders->toArray());
+                    $productDiscount = DB::table('products')
+                        ->where('id', $item->product_id)
+                        ->value('discount');
 
-                    DB::table('carts')->whereIn('id', $carts->pluck('id'))->delete();
+                    if ($productDiscount) {
+                        $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
+                    } else {
+                        $total = $productPrice * $item->quantity;
+                    }
+
+                    return [
+                        'user_id' => $item->user_id,
+                        'product_id' => $item->product_id,
+                        'price' => $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
+                        'quantity' => $item->quantity,
+                        'transaction_id' => $transactionId,
+                        'total' => $total,
+                    ];
                 });
+
+                DB::table('orders')->insert($orders->toArray());
+
+                DB::table('carts')->whereIn('id', $carts->pluck('id'))->delete();
             });
 
             $this->updateProdQuantity($transactionId);
 
-
-            // return redirect()->route("dashboard");
+            DB::commit();
         } catch (\Exception $e) {
-            // return back()->with('error', "Something went wrong, please try again.");
+            DB::rollBack();
             return $this->error();
         }
     }
+
 
     public function updateProdQuantity($transactionId)
     {
@@ -224,10 +202,7 @@ class StripeController extends Controller
                 $product = $order->product;
 
                 if ($product->quantity >= $order->quantity) {
-                    $new_quantity = $product->quantity - $order->quantity;
-
-                    $product->quantity = $new_quantity;
-                    $product->save();
+                    $product->decrement('quantity', $order->quantity);
                 } else {
                 }
             }

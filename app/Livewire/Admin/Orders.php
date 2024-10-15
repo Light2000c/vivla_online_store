@@ -46,14 +46,14 @@ class Orders extends Component
 
         $this->address = $address;
 
-        if (!$this->address) {
-            dd("jdsk");
-            return $this->redirect("/home");
+        // if (!$this->address) {
+            // dd("jdsk");
+            // return $this->redirect("/home");
             // $this->redirect(route('admin-transaction'));
             // $this->redirectIntended('/admin/transactions');
-        }
+        // }
 
-        if ($this->address->user_id !== $transaction->user_id) {
+        if (!$this->address || $this->address->user_id !== $transaction->user_id) {
             $this->address = [];
         }
 

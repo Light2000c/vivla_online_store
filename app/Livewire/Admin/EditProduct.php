@@ -77,10 +77,10 @@ class EditProduct extends Component
         $this->setSelectedItems($this->category);
     }
 
+
     public function update()
     {
         $this->dispatch('syncCKEditorContent');
-
 
         $this->category_error = "";
 
@@ -90,93 +90,83 @@ class EditProduct extends Component
             return  $this->showAlert("Error", "No product was found with ID" . $this->id, "error");
         }
 
+        $validationRules = [
+            "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
+            "price" => "required|numeric|min:0",
+            "quantity" => "required|numeric|min:0",
+            "category" => "required",
+            "description" => "required",
+        ];
+
         if ($this->image) {
-            $this->validate([
-                "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
-                "price" => "required|numeric|min:0",
-                "quantity" => "required|numeric|min:0",
-                "category" => "required",
-                "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
-                "description" => "required",
-            ]);
+            $validationRules["image"] = "required|mimes:jpeg,jpg,png,webp,jfif";
+        }
 
-            if (empty($this->selectedItems)) {
-                return $this->addError("category_error", "Please select product categories");
+        $this->validate($validationRules);
+
+        if (empty($this->selectedItems)) {
+            return $this->addError("category_error", "Please select product categories");
+        }
+
+
+        $this->category = $this->getSelectedCategories();
+
+
+        try {
+
+            if ($this->image) {
+
+                $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
+
+                $upload = $this->image->storeAs('products', $file_name, 'public');
+
+                if (!$upload) {
+                    return $this->addError("message", "An error occurred while trying to upload product image, please try again!.");
+                }
+
+                $update = $product->update([
+                    "name" => $this->name,
+                    "price" => (int) $this->price,
+                    "discount" =>  (int) $this->discount,
+                    "quantity" => (int) $this->quantity,
+                    "brand" => $this->brand,
+                    "category" => $this->category,
+                    "tag" => $this->tag,
+                    "image" => $file_name,
+                    "description" => $this->description,
+                ]);
+
+                if (!$update) {
+                    return  $this->addError("message", "Product was not successfully updated!");
+                }
+
+                $this->reload();
+                return $this->showAlert("Success", "Product has been successfully updated", "success");
+            } else {
+
+                $update = $product->update([
+                    "name" => $this->name,
+                    "price" => (int) $this->price,
+                    "discount" =>  (int) $this->discount,
+                    "quantity" => (int) $this->quantity,
+                    "brand" => $this->brand,
+                    "category" => $this->category,
+                    "tag" => $this->tag,
+                    "description" => $this->description,
+                ]);
+
+                if (!$update) {
+                    return  $this->addError("message", "Product was not successfully updated!");
+                }
+
+                $this->reload();
+                return $this->showAlert("Success", "Product has been successfully updated", "success");
             }
-
-            // dd($this->selectedItems);
-
-            $this->category = $this->getSelectedCategories();
-
-            // dd($this->category);
-
-
-            $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
-
-            $upload = $this->image->storeAs('products', $file_name, 'public');
-
-            if (!$upload) {
-                return $this->addError("message", "An error occurred while trying to upload product image, please try again!.");
-            }
-
-            $update = $product->update([
-                "name" => $this->name,
-                "price" => (int) $this->price,
-                "discount" =>  (int) $this->discount,
-                "quantity" => (int) $this->quantity,
-                "brand" => $this->brand,
-                "category" => $this->category,
-                "tag" => $this->tag,
-                "image" => $file_name,
-                "description" => $this->description,
-            ]);
-
-            if (!$update) {
-                return  $this->addError("message", "Product was not successfully updated!");
-            }
-
-            $this->reload();
-            return $this->showAlert("Success", "Product has been successfully updated", "success");
-        } else {
-            $this->validate([
-                "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
-                "price" => "required|numeric|min:0",
-                "quantity" => "required|numeric|min:0",
-                "category" => "required",
-                "description" => "required",
-            ]);
-
-            if (empty($this->selectedItems)) {
-                return $this->addError("category_error", "Please select product categories");
-            }
-
-            // dd($this->selectedItems);
-
-            $this->category = $this->getSelectedCategories();
-
-            // dd($this->category);
-
-
-
-            $update = $product->update([
-                "name" => $this->name,
-                "price" => (int) $this->price,
-                "discount" =>  (int) $this->discount,
-                "quantity" => (int) $this->quantity,
-                "brand" => $this->brand,
-                "category" => $this->category,
-                "tag" => $this->tag,
-                "description" => $this->description,
-            ]);
-
-            if (!$update) {
-                return  $this->addError("message", "Product was not successfully updated!");
-            }
-
-            $this->reload();
-            return $this->showAlert("Success", "Product has been successfully updated", "success");
+        } catch (\Exception $e) {
+            return  $this->addError("message", "Some went wrong, product was not successfully updated");
         }
     }
+
 
     public function getSelectedCategories()
     {
@@ -196,12 +186,9 @@ class EditProduct extends Component
     public function setSelectedItems($categories)
     {
 
-        $storedCategories = $categories; // Example string from the database.
+        $storedCategories = $categories;
 
-        // Split the string into an array.
         $this->selectedItems = explode(',', $storedCategories);
-
-        // dd($this->selectedItems);
     }
 
 

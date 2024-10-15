@@ -50,39 +50,49 @@ class Favourites extends Component
     public function delete($id)
     {
 
-        $wishlist = Wishlist::find($id);
+        try {
+            $wishlist = Wishlist::find($id);
 
-        if (!$wishlist) {
-            return $this->showToast("error", "wish was not successfully deleted");
+            if (!$wishlist) {
+                return $this->showToast("error", "wish was not successfully deleted");
+            }
+
+            $deleted = $wishlist->delete();
+
+            if (!$deleted) {
+                return $this->showToast("error", "wish was not successfully deleted");
+            }
+
+            $this->load();
+            return $this->showToast("success", "wish has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "something went wrong, wish was not successfully deleted");
         }
-
-        $deleted = $wishlist->delete();
-
-        if (!$deleted) {
-            return $this->showToast("error", "wish was not successfully deleted");
-        }
-
-        $this->load();
-        return $this->showToast("success", "wish has been deleted");
     }
 
     public function updateselectedItems() {}
 
     public function deleteSelected()
     {
-        if (empty($this->selectedItems)) {
-            return $this->showToast("info", "you haven't selected any item yet!");
+
+        try {
+
+            if (empty($this->selectedItems)) {
+                return $this->showToast("info", "you haven't selected any item yet!");
+            }
+
+            $delete = Wishlist::whereIn("id", $this->selectedItems)->delete();
+
+            if (!$delete) {
+                return $this->showToast("error", "wishes was not successfully deleted");
+            }
+
+            $this->load();
+            $this->resetValue();
+            return $this->showToast("success", "wishes has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "something went wrong, wishes were not successfully deleted");
         }
-
-        $delete = Wishlist::whereIn("id", $this->selectedItems)->delete();
-
-        if (!$delete) {
-            return $this->showToast("error", "wishes was not successfully deleted");
-        }
-
-        $this->load();
-        $this->resetValue();
-        return $this->showToast("success", "wishes has been deleted");
     }
 
     public function resetValue()

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>eTrade || Sign In</title>
+    <title>Vivla Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -36,7 +36,7 @@
         <div class="signin-header">
             <div class="row align-items-center">
                 <div class="col-sm-4">
-                    <a href="index.html" class="site-logo"><img src="./assets/images/logo/logo.png" alt="logo"></a>
+                    <a href="{{  route("home") }}" class="site-logo"><img src="/logo/VIVLA MAIN LOGO WEBT2.png" alt="logo" width="40" height="157"></a>
                 </div>
                 <div class="col-sm-8">
                     <div class="singin-header-btn">
@@ -70,7 +70,7 @@
                                 <input type="email" class="form-control" name="email" value="{{ old('email') }}"
                                     placeholder="name@example.com">
                                 @error('email')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <small class="text-danger text-start">{{ $message }}</small>
                                 @enderror
                             </div>
 
@@ -78,12 +78,12 @@
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password">
                                 @error('password')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <small class="text-danger text-start">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group d-flex align-items-center justify-content-between">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">Sign In</button>
-                                <a href="forgot-password.html" class="forgot-btn">Forget password?</a>
+                                {{-- <a href="forgot-password.html" class="forgot-btn">Forget password?</a> --}}
                             </div>
                         </form>
                     </div>

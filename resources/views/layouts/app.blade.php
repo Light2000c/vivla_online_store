@@ -328,7 +328,7 @@
                     <!-- Start Single Widget  -->
                     <div class="col-lg-4 col-sm-6">
                         <div class="axil-footer-widget">
-                            <h5 class="widget-title">Download App</h5>
+                            <h5 class="widget-title">Connect on WhatsApp</h5>
                             <div class="inner">
                                 <span>Scan the code below to connect with us on WhatsApp for business.</span>
                                 <div class="download-btn-group">
@@ -369,7 +369,7 @@
                         <div class="copyright-left d-flex flex-wrap justify-content-center">
                             <ul class="quick-link">
                                 <li>© 2023. All rights reserved by <a target="_blank"
-                                        href="https://axilthemes.com/">Axilthemes</a>.</li>
+                                        href="https://vivlavivcloset.com/">VivlaCloset</a>.</li>
                             </ul>
                         </div>
                     </div>

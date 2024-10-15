@@ -42,6 +42,9 @@ class Products extends Component
 
     public function deleteSelected()
     {
+
+        try{
+
         if (empty($this->selectedItems)) {
             return $this->showToast("info", "you haven't selected any item yet!");
         }
@@ -55,6 +58,10 @@ class Products extends Component
         $this->load();
         $this->resetValue();
         return $this->showToast("success", "products has been deleted");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "something went wrong, products were not successfully deleted");
+    }
     }
 
     public function resetValue()
@@ -64,6 +71,8 @@ class Products extends Component
 
     public function deleteProduct($id)
     {
+
+        try{
         $product = Product::find($id);
 
         if (!$product) {
@@ -78,6 +87,10 @@ class Products extends Component
 
         $this->load();
         return $this->showToast("success", "product has been deleted");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "something went wrong, product was not successfully deleted");
+    }
     }
 
     public function showToast($icon, $title)

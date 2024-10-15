@@ -57,10 +57,10 @@
                                             aria-hidden="true"></span></a>
                                     </a>
                                 </td>
-                                <td class="product-thumbnail"><a href="single-product.html"><img
+                                <td class="product-thumbnail"><a href="{{ route('product-detail', $wishes->product->id) }}"><img
                                             src="/products/{{ $wishes->product->image }}"
                                             alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product.html">{{ $wishes->product->name }}</a>
+                                <td class="product-title"><a href="{{ route('product-detail', $wishes->product->id) }}">{{ $wishes->product->name }}</a>
                                 </td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>
                                     @if ($wishes->product->discount)
@@ -69,7 +69,9 @@
                                         {{ number_format($wishes->product->price) }}
                                     @endif
                                 </td>
-                                <td class="product-stock-status" data-title="Status">In Stock</td>
+                                <td class="product-stock-status" data-title="Status">
+                                    {{ $wishes->product->quantity > 0? "In Stock" : "Out of Stock" }}
+                                </td>
                                 @if ($wishes->product->hasCart(Auth::user()))
                                     <td class="product-add-cart">
                                         <a wire:click="removeFromCart({{ $wishes->product->id }})"
@@ -105,4 +107,29 @@
         </div>
     </div>
     <!-- End Wishlist Area  -->
+
+    <script>
+        window.addEventListener('message', function(e) {
+
+            let data = e.detail;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: data.icon,
+                title: data.title
+            });
+
+        });
+    </script>
+    
 </main>

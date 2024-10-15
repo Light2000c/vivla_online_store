@@ -15,7 +15,8 @@ class LoginController extends Controller
         // $this->middleware('auth')->only('logout');
     }
 
-    public function index(){
+    public function index()
+    {
         return view("admin.login");
     }
 
@@ -24,12 +25,18 @@ class LoginController extends Controller
 
         $this->validate($request, [
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string'],
         ]);
 
 
         if (!Auth::attempt($request->only("email", "password", true))) {
             return back()->with("error", "Authentication failed! please check details and try again.");
+        }
+
+
+        if (Auth::user()->role != 1 && Auth::user()->role != 2) {
+            Auth::logout(); // Log the user out
+            return back()->with("error", "You do not have administrative privileges.");
         }
 
 
@@ -39,6 +46,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route("login");
+        return redirect()->route("admin-login");
     }
 }

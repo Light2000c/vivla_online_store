@@ -56,10 +56,8 @@ class Checkout extends Component
             return $this->showToast("info", "You haven't set you default address yet");
         }
 
-
         foreach ($carts as $cart) {
             if ($cart->quantity > $cart->product->quantity) {
-                // return $this->showToast("info", "please re-confirm carts and try again");
                 return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
             }
         }
@@ -90,16 +88,8 @@ class Checkout extends Component
         $phone = '2348131658436';
 
         $this->whatsAppUrl = "https://wa.me/$phone?text=$encodedMessage";
-
-        // dd($this->whatsAppUrl);
     }
 
-
-
-
-    //********************************************************************** */
-
-    //********************************************************************** */
 
     public function showToast($icon, $title)
     {

@@ -58,7 +58,9 @@ class AddProducts extends Component
             "description" => "required",
         ]);
 
+        try{
 
+    
         if (empty($this->selectedItems)) {
             return $this->addError("category_error", "Please select product categories");
         }
@@ -96,6 +98,11 @@ class AddProducts extends Component
 
         $this->resetValues();
         return $this->showAlert("Success", "Product has been successfully created", "success");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong please try again.");
+    }
+
     }
 
 
@@ -134,6 +141,15 @@ class AddProducts extends Component
             text: $text,
             icon: $icon,
             redirectUrl: url('/admin/products')
+        );
+    }
+    
+    public function showToast($icon, $title)
+    {
+        $this->dispatch(
+            'toastmessage',
+            icon: $icon,
+            title: $title,
         );
     }
 

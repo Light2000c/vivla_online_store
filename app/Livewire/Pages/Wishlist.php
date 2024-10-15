@@ -28,58 +28,86 @@ class Wishlist extends Component
     public function addToCart($id)
     {
 
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        $user = Auth::user();
+            $user = Auth::user();
 
-        if ($product->hasCart(Auth::user())) {
-            return;
-        }
+            if ($product->quantity < 1) {
+                return $this->showToast("failed", "Product is out of stock");
+            }
 
-        $cart = $user->cart()->create([
-            'product_id' => $product->id,
-        ]);
+            if ($product->hasCart(Auth::user())) {
+                return;
+            }
 
-        if ($cart) {
-            return $this->dispatch('cartUpdated');
+            $cart = $user->cart()->create([
+                'product_id' => $product->id,
+            ]);
+
+            if ($cart) {
+                return $this->dispatch('cartUpdated');
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
     public function removeFromCart($id)
     {
-        $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
+        try {
 
-        $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
+            $product = Product::find($id);
 
-
-        if ($cart && $cart->user()->is(Auth::user())) {
-            $delete = $cart->delete();
-
-            if ($delete) {
-                return $this->dispatch('cartUpdated');
+            if (!$product) {
+                return;
             }
+
+            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
+
+
+            if ($cart && $cart->user()->is(Auth::user())) {
+                $delete = $cart->delete();
+
+                if ($delete) {
+                    return $this->dispatch('cartUpdated');
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
     public function delete($id)
     {
 
-        $wish = ModelsWishlist::find($id);
+        try {
 
-        if (!$wish) {
-            return;
+            $wish = ModelsWishlist::find($id);
+
+            if (!$wish) {
+                return;
+            }
+
+            $delete = $wish->delete();
+
+            if (!$delete) {
+                return;
+            }
+
+            return $this->load();
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
+    }
 
-        $delete = $wish->delete();
-
-        if (!$delete) {
-            return;
-        }
-
-        return $this->load();
+    public function showToast($icon, $title)
+    {
+        $this->dispatch(
+            'message',
+            icon: $icon,
+            title: $title,
+        );
     }
 }

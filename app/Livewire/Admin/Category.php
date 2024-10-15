@@ -76,22 +76,26 @@ class Category extends Component
     public function store()
     {
 
-        $this->validate([
-            "title" => "required|:max:255|unique:categories,name",
-        ]);
+        try {
+            $this->validate([
+                "title" => "required|:max:255|unique:categories,name",
+            ]);
 
-        $category = ModelCategory::create([
-            "name" => $this->title,
-        ]);
+            $category = ModelCategory::create([
+                "name" => $this->title,
+            ]);
 
-        if (!$category) {
-            return $this->showToast("error", "Category was not successfully created.");
+            if (!$category) {
+                return $this->showToast("error", "Category was not successfully created.");
+            }
+
+            $this->load();
+            $this->dispatch("closeCreateModal");
+            $this->resetValues();
+            return $this->showToast("success", "Category created.");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong please try again.");
         }
-
-        $this->load();
-        $this->dispatch("closeCreateModal");
-        $this->resetValues();
-        return $this->showToast("success", "Category created.");
     }
 
     public function update()

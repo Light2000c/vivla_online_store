@@ -55,47 +55,56 @@ class Users extends Component
 
     public function delete($id)
     {
+        try {
 
-        if (Auth::user()->role != 2) {
-            return $this->showToast("error", "You don't have permission to perform this action");
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $user = User::find($id);
+
+            if (!$user) {
+                return $this->showToast("error", "User was not successfully deleted");
+            }
+
+            $deleted = $user->delete();
+
+            if (!$deleted) {
+                return $this->showToast("error", "User was not successfully deleted");
+            }
+
+            $this->load();
+            return $this->showToast("success", "User has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, User was not successfully deleted");
         }
-
-        $user = User::find($id);
-
-        if (!$user) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $deleted = $user->delete();
-
-        if (!$deleted) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $this->load();
-        return $this->showToast("success", "Member has been deleted");
     }
 
 
     public function deleteSelected()
     {
-        if (empty($this->selectedItems)) {
-            return $this->showToast("info", "you haven't selected any member yet!");
+        try {
+
+            if (empty($this->selectedItems)) {
+                return $this->showToast("info", "you haven't selected any member yet!");
+            }
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $delete = User::whereIn("id", $this->selectedItems)->delete();
+
+            if (!$delete) {
+                return $this->showToast("error", "Users were not successfully deleted");
+            }
+
+            $this->load();
+            $this->resetSelectItem();
+            return $this->showToast("success", "Users has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, Users were not successfully deleted");
         }
-
-        if (Auth::user()->role != 2) {
-            return $this->showToast("error", "You don't have permission to perform this action");
-        }
-
-        $delete = User::whereIn("id", $this->selectedItems)->delete();
-
-        if (!$delete) {
-            return $this->showToast("error", "Member was not successfully deleted");
-        }
-
-        $this->load();
-        $this->resetSelectItem();
-        return $this->showToast("success", "Members has been deleted");
     }
 
     public function showToast($icon, $title)

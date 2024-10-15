@@ -106,84 +106,108 @@ class Products extends Component
     public function addToCart($id)
     {
 
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        $user = Auth::user();
 
-        if ($product->hasCart(Auth::user())) {
-            return;
-        }
+            if (!$product) {
+                return;
+            }
 
-        $cart = $user->cart()->create([
-            'product_id' => $product->id,
-        ]);
+            $user = Auth::user();
 
-        if ($cart) {
-            return $this->dispatch('cartUpdated');
+            if ($product->hasCart(Auth::user())) {
+                return;
+            }
+
+            $cart = $user->cart()->create([
+                'product_id' => $product->id,
+            ]);
+
+            if ($cart) {
+                return $this->dispatch('cartUpdated');
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
     public function removeFromCart($id)
     {
-        $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
+        try {
+            $product = Product::find($id);
 
-        $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
-
-
-        if ($cart && $cart->user()->is(Auth::user())) {
-            $delete = $cart->delete();
-
-            if ($delete) {
-                return $this->dispatch('cartUpdated');
+            if (!$product) {
+                return;
             }
+
+            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
+
+
+            if ($cart && $cart->user()->is(Auth::user())) {
+                $delete = $cart->delete();
+
+                if ($delete) {
+                    return $this->dispatch('cartUpdated');
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
     public function addToWishlist($id)
     {
 
-        if (!Auth::check()) {
-            return redirect()->route("login");
-        }
+        try {
 
-        $product = Product::find($id);
+            if (!Auth::check()) {
+                return redirect()->route("login");
+            }
 
-        $user = Auth::user();
+            $product = Product::find($id);
 
-        if ($product->hasWish(Auth::user())) {
-            return;
-        }
+            $user = Auth::user();
 
-        $wish = $user->wishlist()->create([
-            'product_id' => $product->id,
-        ]);
+            if ($product->hasWish(Auth::user())) {
+                return;
+            }
 
-        if ($wish) {
-            return $this->dispatch('cartUpdated');
+            $wish = $user->wishlist()->create([
+                'product_id' => $product->id,
+            ]);
+
+            if ($wish) {
+                return $this->dispatch('cartUpdated');
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
     public function removeFromWishlist($id)
     {
-        $product = Product::find($id);
+        try {
 
-        if (!$product) {
-            return;
-        }
+            $product = Product::find($id);
 
-        $wish = Wishlist::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
-
-
-        if ($wish && $wish->user()->is(Auth::user())) {
-            $delete = $wish->delete();
-
-            if ($delete) {
-                return $this->dispatch('cartUpdated');
+            if (!$product) {
+                return;
             }
+
+            $wish = Wishlist::where("user_id", Auth::user()->id)->where("product_id", $product->id)->first();
+
+
+            if ($wish && $wish->user()->is(Auth::user())) {
+                $delete = $wish->delete();
+
+                if ($delete) {
+                    return $this->dispatch('cartUpdated');
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
@@ -191,43 +215,54 @@ class Products extends Component
 
     public function addToSessionCart($id)
     {
-        $product = Product::find($id);
 
-        if (!$product) {
-            return;
+        try {
+
+            $product = Product::find($id);
+
+            if (!$product) {
+                return;
+            }
+
+            $cart = session()->get('cart', []);
+
+            if (array_key_exists($id, $cart)) {
+                return;
+            }
+
+
+            $cart[$id] = [
+                'product_id' => $product->id,
+                'quantity' => 1,
+                'price' => $product->price,
+            ];
+
+
+            session()->put('cart', $cart);
+
+            return $this->dispatch('cartUpdated');
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
-
-        $cart = session()->get('cart', []);
-
-        if (array_key_exists($id, $cart)) {
-            return;
-        }
-
-
-        $cart[$id] = [
-            'product_id' => $product->id,
-            'quantity' => 1,
-            'price' => $product->price,
-        ];
-
-
-        session()->put('cart', $cart);
-
-        return $this->dispatch('cartUpdated');
     }
 
 
     public function removeFromSessionCart($id)
     {
-        $cart = session()->get('cart', []);
+        try {
 
-        if (array_key_exists($id, $cart)) {
+            $cart = session()->get('cart', []);
 
-            unset($cart[$id]);
+            if (array_key_exists($id, $cart)) {
 
-            session()->put('cart', $cart);
+                unset($cart[$id]);
 
-            $this->dispatch('cartUpdated');
+                session()->put('cart', $cart);
+
+                $this->dispatch('cartUpdated');
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while updating the cart");
         }
     }
 
@@ -236,5 +271,14 @@ class Products extends Component
     {
         $sessionCart = session()->get('cart', []);
         return array_key_exists($productId, $sessionCart);
+    }
+
+    public function showToast($icon, $title)
+    {
+        $this->dispatch(
+            'message',
+            icon: $icon,
+            title: $title,
+        );
     }
 }

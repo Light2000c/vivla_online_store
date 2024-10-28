@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Wishlist;
 use App\Services\CartService;
 use Livewire\Component;
@@ -13,12 +14,18 @@ class ProductDetails extends Component
 {
     public $product;
     public $related_products;
+    public $reviews;
+
+    public $review;
+    public $activeTab = 'description';
+
 
     public function mount($id)
     {
         $this->product = Product::find($id);
         $this->related_products = Product::where("category", "LIKE", "%" . $this->product->category . "%")
             ->whereNot("id", $this->product->id)->take(5)->get();
+        $this->reviews = $this->product->review()->get();
     }
 
     public function render()
@@ -31,6 +38,7 @@ class ProductDetails extends Component
         $this->product = Product::find($this->product->id);
         $this->related_products = Product::where("category", "LIKE", "%" . $this->product->category . "%")
             ->whereNot("id", $this->product->id)->take(5)->get();
+        $this->reviews = $this->product->review()->get();
     }
 
     public function getCategory($category)
@@ -385,5 +393,76 @@ class ProductDetails extends Component
     {
         $sessionCart = session()->get('cart', []);
         return array_key_exists($productId, $sessionCart);
+    }
+
+    public function setTab($tab)
+    {
+        $this->activeTab = $tab;
+    }
+
+    public function addReview()
+    {
+
+
+        $this->setTab("review");
+
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (!Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
+        $this->validate([
+            "review" => "required|max:500",
+        ]);
+
+        try {
+
+            $review = auth()->user()->review()->create([
+                "product_id" => $this->product->id,
+                "review" => $this->review,
+            ]);
+
+            if ($review) {
+                $this->load();
+                $this->review = "";
+                return $this->showToast("success", "Review was successfully added");
+            } else {
+                return $this->showToast("error", "Something went wrong while trying to add review.");
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while trying to add review.");
+        }
+    }
+
+    public function deleteReview($id)
+    {
+
+        $this->setTab("review");
+
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        try {
+
+            $review = Review::find($id);
+
+            if ($review && $review->user()->is(Auth::user())) {
+
+                $delete = $review->delete();
+
+                if ($delete) {
+                    $this->load();
+                    return $this->showToast("success", "Review was successfully deleted");
+                } else {
+                    return $this->showToast("error", "Review was noit successfully deleted.");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong while trying delete review.");
+        }
     }
 }

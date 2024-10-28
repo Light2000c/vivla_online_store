@@ -49,9 +49,12 @@ class RegisterController extends Controller
 
         // dd($fullPhoneNumber);
 
+        // dd($request);
+
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -59,6 +62,7 @@ class RegisterController extends Controller
         $user =  User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->full_phone,
             'password' => Hash::make($request->password),
         ]);
 

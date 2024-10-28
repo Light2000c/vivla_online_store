@@ -40,6 +40,7 @@ class StripeController extends Controller
 
         try {
             $session = $this->stripe->checkout->sessions->create([
+                // 'payment_method_types' => ['card', 'paypal'],
                 'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
@@ -52,6 +53,7 @@ class StripeController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
+                // 'customer_email' => Auth::user()->email,
                 'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('checkout.cancel'),
             ]);
@@ -59,15 +61,17 @@ class StripeController extends Controller
             return redirect($session->url);
         } catch (\Exception $e) {
 
-            dd($e->getMessage());
-            return back()->with('error', 'Failed to create Stripe Checkout session: ' . $e->getMessage());
+            // dd($e->getMessage());
+            // return back()->with('error', 'Failed to create Stripe Checkout session: ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong while trying to checkout, please try again');
         }
     }
 
+
+
+
     public function success(Request $request)
     {
-
-
         $sessionId = $request->query('session_id');
 
         try {
@@ -75,9 +79,10 @@ class StripeController extends Controller
             $session =  $this->stripe->checkout->sessions->retrieve($sessionId);
 
             // dd($session);
+
             if ($session->payment_status == 'paid') {
 
-                $this->saveTransaction();
+                $this->saveTransaction($session);
 
                 $reference = $this->reference ? $this->reference : "";
 
@@ -90,12 +95,13 @@ class StripeController extends Controller
                     "order_date" => $date
                 ];
 
-                Mail::to(Auth::user()->email)->send(new PaymentMail($details));
+                try {
 
-                Mail::to("sales@vivlavivcloset.com")->send(new InfoMail($details));
+                    Mail::to(Auth::user()->email)->send(new PaymentMail($details));
 
-                if (count(Mail::failures()) > 0) {
-                    // return $this->error();
+                    Mail::to("sales@vivlavivcloset.com")->send(new InfoMail($details));
+                } catch (\Exception $e) {
+                    return $this->error();
                 }
 
                 return view('payment.paymentsuccess', ['session' => $session, 'reference' => $reference]);
@@ -109,14 +115,10 @@ class StripeController extends Controller
 
     public function error()
     {
-
-        // try {
         return view('payment.paymenterror');
-        // } catch (\Exception $e) {
-        // dd('Failed to retrieve payment details: ' . $e->getMessage());
-        // return redirect('/')->with('error', 'Failed to retrieve payment details: ' . $e->getMessage());
-        // }
     }
+
+
 
     public function cancel()
     {
@@ -125,7 +127,30 @@ class StripeController extends Controller
 
 
 
-    public function saveTransaction()
+    public function savePayment($data)
+    {
+        $amount = $data->amount_total / 100;
+
+        try {
+            $payment = request()->user()->payment()->create([
+                "amount" => $amount,
+                "currency" => $data->currency
+            ]);
+
+            if (!$payment) {
+                return false;
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+
+
+
+    public function saveTransaction($session)
     {
         DB::beginTransaction(); // Begin a transaction
 
@@ -133,14 +158,19 @@ class StripeController extends Controller
 
             $random_number = $this->generateReference();
 
-            $address = auth::user()->address()->where("active", 1)->first();
-            if (!$address) {
+            // $address = auth::user()->address()->where("active", 1)->first();
+            // if (!$address) {
+            //     return $this->error();
+            // }
+
+            if (!$this->savePayment($session)) {
+                DB::rollBack();
                 return $this->error();
             }
 
             $transaction = request()->user()->transaction()->create([
                 "reference" => $random_number,
-                "address_id" => $address->id
+                // "address_id" => $address->id
             ]);
 
             $this->reference = $random_number;
@@ -152,7 +182,7 @@ class StripeController extends Controller
             $transactionId = $transaction->id;
 
 
-            DB::table('carts')->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
+            DB::table('carts')->where('user_id', Auth::id())->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
                 $orders = $carts->map(function ($item) use ($transactionId) {
                     $productPrice = DB::table('products')
                         ->where('id', $item->product_id)

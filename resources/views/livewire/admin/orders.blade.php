@@ -37,7 +37,7 @@
                         <p class="text-dark"><span style="font-weight: bold">Total Amount:</span> <span class="ms-3">${{ $total }}</span></p>
                     </div>
 
-                    <div class="mt-4 mb-4 p-2 border">
+                    {{-- <div class="mt-4 mb-4 p-2 border">
                         <h5 class="ms-4">Order Address</h5>
                         @if($address)
                         <ul class="address-details m-3" style="list-style-type: none;">
@@ -49,7 +49,7 @@
                             <li>country: {{ $address->country }}</li>
                         </ul>
                         @endif
-                    </div>
+                    </div> --}}
 
                     <div class="table-responsive custom-scrollbar mt-2">
                         <table class="table">

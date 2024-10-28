@@ -18,7 +18,7 @@
 
 
 
-    <title>Vivla Closet | Online Store</title>
+    <title>Vivlaviv Closet | Online Store</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Outfit:400,400i,500,500i,700,700i&amp;display=swap"
         rel="stylesheet">
@@ -241,6 +241,13 @@
                                             <i class="bi bi-heart me-2"
                                                 style="font-size: 16px"></i>Wishlists</span></a>
                                 </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-review') }}"><span>
+                                            <i class="bi bi-chat-right-quote-fill me-2"
+                                                style="font-size: 16px"></i>Reviews</span></a>
+                                </li>
                                 {{-- <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-order') }}"><span>Orders</span></a>
@@ -259,7 +266,7 @@
                                                 style="font-size: 16px"></i>Transaction</span></a>
                                 </li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" href=""><span><i
+                                    <a class="sidebar-link sidebar-title link-nav" href="{{ route("admin-payment") }}"><span><i
                                                 class="bi bi-credit-card-2-back me-2"
                                                 style="font-size: 16px"></i>Payment</span></a>
                                 </li>
@@ -306,7 +313,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 p-0 footer-copyright">
-                            <p class="mb-0">Copyright 2024 © VivlaCloset.</p>
+                            <p class="mb-0">Copyright 2024 © VivlavivCloset.</p>
                         </div>
                         {{-- <div class="col-md-6 p-0">
                             <p class="heart mb-0">Hand crafted &amp; made with
@@ -372,11 +379,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
+    {{-- <script>
         CKEDITOR.replace('editor', {
             versionCheck: false
         });
-    </script>
+    </script> --}}
 
 
 

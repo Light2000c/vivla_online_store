@@ -6,6 +6,8 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Address as ModelsAddress;
+use App\Services\CountryServices;
+use Illuminate\Support\Facades\Http;
 
 class Address extends Component
 {
@@ -20,9 +22,14 @@ class Address extends Component
     public $city;
     public $country;
     public $activeAddress;
+    public $countries = [];
+
+    public function mount() {}
 
     public function render()
     {
+        $this->countries = CountryServices::getAllCountries();
+
         $this->load();
 
         return view('livewire.components.address', [
@@ -99,15 +106,19 @@ class Address extends Component
         ]);
 
 
+        try {
 
-        $user = User::find(Auth::user()->id);
+            $user = User::find(Auth::user()->id);
 
-        $address = $user->address()->create($validators);
+            $address = $user->address()->create($validators);
 
-        if ($address) {
-            $this->load();
-            $this->dispatch("closeCreateModal");
-            $this->showToast("success", "Address has been successfully added");
+            if ($address) {
+                $this->load();
+                $this->dispatch("closeCreateModal");
+                $this->showToast("success", "Address has been successfully added");
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("info", "Something went wrong while trying to save address");
         }
     }
 
@@ -132,20 +143,25 @@ class Address extends Component
         ]);
 
 
-        if ($address && $address->user->is(Auth::user())) {
+        try {
 
-            $validated["phone"] = $this->updatePhone;
+            if ($address && $address->user->is(Auth::user())) {
 
-            unset($validated["updatePhone"]);
+                $validated["phone"] = $this->updatePhone;
+
+                unset($validated["updatePhone"]);
 
 
-            $updated = $address->update($validated);
+                $updated = $address->update($validated);
 
-            if ($updated) {
-                $this->load();
-                $this->dispatch("closeUpdateModal");
-                $this->showToast("success", "Address has been successfully updated");
+                if ($updated) {
+                    $this->load();
+                    $this->dispatch("closeUpdateModal");
+                    $this->showToast("success", "Address has been successfully updated");
+                }
             }
+        } catch (\Exception $e) {
+            return $this->showToast("info", "Something went wrong while trying to save address");
         }
     }
 

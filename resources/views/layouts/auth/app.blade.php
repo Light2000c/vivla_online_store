@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Vivla Closet | Online Store</title>
+    <title>Vivlaviv Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="/web/assets/css/vendor/magnific-popup.css">
     <link rel="stylesheet" href="/web/assets/css/vendor/base.css">
     <link rel="stylesheet" href="/web/assets/css/style.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/personal/personal.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/css/intlTelInput.css">
+
+
+
+
 
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
@@ -51,7 +59,6 @@
     @yield('content')
 
 
-
     <!-- JS
 ============================================ -->
     <!-- Modernizer JS -->
@@ -76,6 +83,43 @@
 
     <!-- Main JS -->
     <script src="/web/assets/js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            var input = document.querySelector("#phone");
+            var fullPhoneInput = document.querySelector("#full_phone");
+
+            if (input) {
+                // var iti = window.intlTelInput(input, {
+                //     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+                //     separateDialCode: true,
+                // });
+                var iti = window.intlTelInput(input, {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+                separateDialCode: true,
+                initialCountry: "auto", 
+                geoIpLookup: function(callback) {
+                    $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+                        var countryCode = (resp && resp.country) ? resp.country : "us";
+                        callback(countryCode);
+                    });
+                },
+            });
+
+                $('form').on('submit', function(event) {
+                    var fullPhoneNumber = iti.getNumber();
+                    fullPhoneInput.value = fullPhoneNumber;
+                });
+            } else {
+                console.error("Phone input not found!");
+            }
+        });
+    </script>
+
 
 </body>
 

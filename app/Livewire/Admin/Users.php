@@ -135,6 +135,42 @@ class Users extends Component
         $this->dispatch("openViewModal");
     }
 
+    public function verifyUser($id)
+    {
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->showToast("success", "User not found");
+        }
+
+        $user->email_verified_at = now();
+        $save = $user->save();
+
+        if($save){
+            return $this->showToast("success", "User has been successfully verified");
+        }
+
+    }
+
+    public function unVerifyUser($id)
+    {
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->showToast("success", "User not found");
+        }
+
+        $user->email_verified_at = NULL;
+        $save = $user->save();
+
+        if($save){
+            return $this->showToast("success", "User has been successfully unverified");
+        }
+
+    }
+
     public function resetValues()
     {
         $this->activeUser = "";

@@ -55,8 +55,8 @@
                                          aria-selected="false"><i class="fas fa-shopping-basket"></i>Orders</a>
                                      <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address"
                                          role="tab" aria-selected="false"><i class="fas fa-home"></i>Addresses</a>
-                                     <a class="nav-item nav-link" href="sign-in.html"><i
-                                             class="fal fa-sign-out"></i>Logout</a>
+                                     {{-- <a class="nav-item nav-link" href="sign-in.html"><i
+                                             class="fal fa-sign-out"></i>Logout</a> --}}
                                  </div>
                              </nav>
                          </aside>

@@ -146,7 +146,7 @@
                                     <button type="submit" class="btn btn-primary" id="submitBtn"
                                     wire:loading.attr="disabled" wire:target="update">
                                     <span wire:loading.remove wire:target="update">Save Changes</span>
-                                    <div wire:loading wire:target="send">
+                                    <div wire:loading wire:target="update">
                                         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                                         <span role="status">Loading...</span>
                                     </div>
@@ -201,7 +201,8 @@
                 { name: 'indent', items: ['Outdent', 'Indent'] }
             ],
             removePlugins: 'elementspath',
-            resize_enabled: false,  
+            resize_enabled: false,
+            versionCheck: false 
         })
         console.log("CKEditor initialized");
 

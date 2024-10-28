@@ -100,7 +100,7 @@
                     @if ($products->count())
                         <div class="row row--15">
                             @foreach ($products as $index => $product)
-                                <div class="col-12 col-md-3 col-lg-3 col-xl-3" wire:key="product-{{ $index }}">
+                                <div class="col-12 col-md-3 col-lg-3 col-xl-" wire:key="product-{{ $index }}">
                                     {{-- <livewire:components.product-item :product="$product"  /> --}}
                                     <div class="axil-product  product-style-one mb--30">
                                         {{-- <div class="axil-product  product-style-one mb--30 border p-3"> --}}

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\LogoutController as AdminLogoutController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\payment\PaypalController;
 use App\Http\Controllers\Payment\StripeController;
 use App\Livewire\Admin\AddProducts;
 use App\Livewire\Admin\Address;
@@ -15,6 +18,7 @@ use App\Livewire\Admin\Favourites;
 use App\Livewire\Admin\Orders;
 use App\Livewire\Admin\Payments;
 use App\Livewire\Admin\Products;
+use App\Livewire\Admin\Reviews;
 use App\Livewire\Admin\TeamMembers;
 use App\Livewire\Admin\Transactions;
 use App\Livewire\Admin\Users;
@@ -28,7 +32,6 @@ use App\Livewire\Pages\ProductDetails;
 use App\Livewire\Pages\Products as PagesProducts;
 use App\Livewire\Pages\Wishlist;
 use App\Livewire\Profile\Dashboard as ProfileDashboard;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -73,7 +76,9 @@ Route::get("about", About::class)->name("about");
 
 Route::get("contact-us", Contact::class)->name("contact");
 
-Route::post("logout", [LoginController::class, "logout"])->name("logout")->middleware("auth");
+Route::middleware('web')->group(function () {
+    Route::post("logout", [LogoutController::class, "logout"])->name("logout");
+});
 
 //Pages Routes
 Route::get("/", Home::class);
@@ -104,6 +109,11 @@ Route::group(["middleware" => ["auth", "verified"]], function () {
     Route::post('/pay', [StripeController::class, 'checkout'])->name('pay');
     Route::get('/pay/success', [StripeController::class, 'success'])->name('checkout.success');
     Route::get('/pay/cancel', [StripeController::class, 'cancel'])->name('checkout.cancel');
+
+
+    // Route::post('/payWithPaypal', [PaypalController::class, 'checkout'])->name('payWithPaypal');
+    // Route::get('/payWithPaypal/success', [PaypalController::class, 'success'])->name('checkout.paypal.success');
+    // Route::get('/payWithPaypal/cancel', [PaypalController::class, 'cancel'])->name('checkout.paypal.cancel');
 });
 
 
@@ -127,6 +137,8 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
 
     Route::get("admin/wishlists", Favourites::class)->name("admin-wishlist");
 
+    Route::get("admin/reviews", Reviews::class)->name("admin-review");
+
     Route::get("admin/orders/{id}", Orders::class)->name("admin-order");
 
     Route::get("admin/team-members", TeamMembers::class)->name("team-member");
@@ -141,7 +153,7 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
 
     Route::get("admin/payments", Payments::class)->name("admin-payment");
 
-    Route::post("logout", [AdminLoginController::class, "logout"])->name("admin-logout");
+    Route::post("admin/logout", [AdminLogoutController::class, "logout"])->name("admin-logout");
 });
 
 

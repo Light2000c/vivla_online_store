@@ -9,7 +9,7 @@
                             <li class="axil-breadcrumb-item"><a href="{{ route('home') }}" class="text-dark">Home</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item"><a href="{{ route('dashboard') }}"
-                                    class="text-dark">Home</a></li>
+                                    class="text-dark">Dashboard</a></li>
                             <li class="separator"></li>
                             <li class="axil-breadcrumb-item active" aria-current="page">Order</li>
                         </ul>
@@ -65,10 +65,10 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td class="product-thumbnail"><a href="single-product.html"><img
+                                <td class="product-thumbnail"><a href="{{ route("product-detail", $order->product->id) }}"><img
                                             src="/products/{{ $order->product->image }}"
                                             alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="single-product.html">{{ $order->product->name }}</a>
+                                <td class="product-title"><a href="{{ route("product-detail", $order->product->id) }}">{{ $order->product->name }}</a>
                                 </td>
                                 <td class="product-price" data-title="Quantity">{{ $order->quantity }}</td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>

@@ -34,10 +34,11 @@
                         <table class="table">
                             <thead>
                                 <tr class="border-bottom-primary">
+                                    <th scope="col">I</th>
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Role</th>
+                                    <th scope="col">Verified At</th>
                                     <th scope="col">Created_at</th>
                                     <th scope="col">Updated_at</th>
                                     <th scope="col">Action</th>
@@ -51,23 +52,45 @@
                                         <th scope="row">{{ $user->id }}</th>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->email_verified_at }}</td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>{{ $user->updated_at }}</td>
                                         <td>
                                             <div>
-                                                <div class="">
+                                                <div class="d-flex">
                                                     <button wire:click="viewUser({{ $user->id }})"
-                                                        class="btn btn-primary btn-sm" type="submit">
+                                                        class="btn btn-primary btn-sm m-1" type="submit">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
                                                     <button wire:click="delete({{ $user->id }})"
-                                                        class="btn btn-danger btn-sm" type="submit" wire:loading.attr="disabled" wire:target="delete({{ $user->id }})">
+                                                        class="btn btn-danger btn-sm m-1" type="submit" wire:loading.attr="disabled" wire:target="delete({{ $user->id }})">
                                                         <i wire:loading.remove wire:target="delete({{ $user->id }})"
                                                             class="bi bi-trash3-fill"></i>
                                                         <span wire:loading wire:target="delete({{ $user->id }})"
                                                             class="spinner-border spinner-border-sm"
                                                             aria-hidden="true"></span>
                                                     </button>
+                                                    @if($user->email_verified_at)
+                                                    <button wire:click="unVerifyUser({{ $user->id }})"
+                                                        class="btn btn-dark btn-sm m-1" type="submit" wire:loading.attr="disabled" wire:target="unVerifyUser({{ $user->id }})">
+                                                        {{-- <i wire:loading.remove wire:target="unVerifyUser({{ $user->id }})"
+                                                            class="bi bi-patch-check-fill"></i> --}}
+                                                            unverify
+                                                        <span wire:loading wire:target="unVerifyUser({{ $user->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                    @else
+                                                    <button wire:click="verifyUser({{ $user->id }})"
+                                                        class="btn btn-dark btn-sm m-1" type="submit" wire:loading.attr="disabled" wire:target="verifyUser({{ $user->id }})">
+                                                        {{-- <i wire:loading.remove wire:target="verifyUser({{ $user->id }})"
+                                                            class="bi bi-patch-check-fill"></i> --}}
+                                                            verify
+                                                        <span wire:loading wire:target="verifyUser({{ $user->id }})"
+                                                            class="spinner-border spinner-border-sm"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>

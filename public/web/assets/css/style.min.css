@@ -1182,11 +1182,13 @@ ol li a {
 }
 
 .bg_image--9 {
-    background-image: url(../../../logo/SIGNING\ IN.jpg)
+    /* background-image: url(../../../logo/SIGNING\ IN.jpg) */
+    background-image: url(../../../logo/SIGNING\ IN-2.jpeg)
 }
 
 .bg_image--10 {
-    background-image: url(../../../logo/RESET.jpg)
+    /* background-image: url(../../../logo/RESET.jpg) */
+    background-image: url(../../../logo/SIGNING\ IN-2.jpeg)
 }
 
 .bg_image--11 {

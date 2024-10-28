@@ -33,24 +33,31 @@
 
 <body>
     <div class="container">
-      <div class="row mb-5 mt-5">
-        <div class="col mt-5">
-            <div style="text-align: center;">
-                <h3>🎉 Payment Successful!</h3>
-                <p>Thank you for your purchase! Your order has been successfully processed.</p>
-            
-                <div style="margin: 20px 0;">
-                    <p><strong>Amount Paid:</strong> ${{ number_format($session->amount_total / 100) }}</p>
-                    <p><strong>Order Number:</strong> {{ $reference }}</p>
-                </div>
-            
-                <div>
-                    <a href="{{ route("home") }}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go to Home</a>
-                    <a href="{{ route("order", $reference) }}" style="padding: 10px 20px; background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">View Order</a>
+        <div class="row mb-5 mt-5">
+            <div class="col mt-5">
+                <div style="text-align: center;">
+                    {{-- <h3>🎉 Payment Successful!</h3> --}}
+                    <h3>Payment Successful!</h3>
+                    <p>Thank you for your purchase! Your order has been successfully processed, and a copy of your order
+                        information has been sent to your email address.</p>
+
+
+                    <div style="margin: 20px 0;">
+                        <p><strong>Amount Paid:</strong> ${{ number_format($session->amount_total / 100) }}</p>
+                        <p><strong>Order Number:</strong> {{ $reference }}</p>
+                    </div>
+
+                    <div>
+                        <a href="{{ route('home') }}"
+                            style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go
+                            to Home</a>
+                        <a href="{{ route('order', $reference) }}"
+                            style="padding: 10px 20px; background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">View
+                            Order</a>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 
     <!-- JS
@@ -76,8 +83,8 @@
 
     <!-- Main JS -->
     <script src="/web/assets/js/main.js"></script>
-        
-        
+
+
 
 </body>
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Review;
 use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,5 +54,9 @@ class Product extends Model
 
     public function outOfStock(){
         return $this->quantity == 0;
+    }
+
+    public function review(){
+        return $this->hasMany(Review::class);
     }
 }

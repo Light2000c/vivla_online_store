@@ -88,7 +88,7 @@
                 </div>
                 <div class="modal-body m-3" style="padding-top: 30px; padding-bottom: 30px;">
                     <div class="axil-dashboard-account">
-                        <form  wire:submit="send" class="account-details-form" id="createForm">
+                        <form wire:submit="send" class="account-details-form" id="createForm">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -154,10 +154,10 @@
                                     <div class="form-group mb--40">
                                         <label>Country/ Region</label>
                                         <select wire:model="country" class="select2">
-                                            <option value="uk">United Kindom (UK)</option>
-                                            <option value="us">United States (USA)</option>
-                                            <option value="u">United Arab Emirates (UAE)</option>
-                                            <option value="1">Australia</option>
+                                            <option value="">Select a country</option>
+                                            @foreach ($countries as $code => $name)
+                                                <option value="{{ $name }}">{{ $name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('country')
                                             <small class="text-danger">{{ $message }}</small>
@@ -236,8 +236,9 @@
                                     <div wire:ignore class="form-group">
                                         <label>Phone</label>
                                         <input type="tel" id="updatePhone" class="form-control tel-input"
-                                            name="phone"  required>
-                                        <input wire:model="updatePhone" type="hidden" id="full_update_phone" name="full_phone">
+                                            name="phone" required>
+                                        <input wire:model="updatePhone" type="hidden" id="full_update_phone"
+                                            name="full_phone">
                                         <div class="invalid-feedback"></div>
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
@@ -266,10 +267,10 @@
                                     <div class="form-group mb--40">
                                         <label>Country/ Region</label>
                                         <select wire:model="country" class="select2">
-                                            <option value="uk">United Kindom (UK)</option>
-                                            <option value="us">United States (USA)</option>
-                                            <option value="u">United Arab Emirates (UAE)</option>
-                                            <option value="1">Australia</option>
+                                            <option value="">Select a country</option>
+                                            @foreach ($countries as $code => $name)
+                                                <option value="{{ $name }}" {{ $country == $name? "selected" : "" }}>{{ $name }}</option>
+                                            @endforeach
                                         </select>
                                         @error('country')
                                             <small class="text-danger">{{ $message }}</small>
@@ -279,7 +280,7 @@
 
                                 <div class="col-12">
                                     <div class="form-group mb--0">
-                                        <button type="submit" class="btn btn-primary" value="">
+                                        <button type="submit" class="btn btn-primary btn-lg" value="">
                                             <span wire:loading.remove wire:target="update">Save</span>
                                             <span wire:loading wire:target="update"
                                                 class="spinner-border spinner-border-sm" role="status"
@@ -340,62 +341,59 @@
         });
     </script>
 
-@push('scripts')
+    @push('scripts')
 
-{{-- <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/intlTelInput.min.js"></script> --}}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var input = document.querySelector("#phone");
+                var hiddenInput = document.querySelector("#full_phone");
+                var updateInput = document.querySelector("#updatePhone");
+                var updateHiddenInput = document.querySelector("#full_update_phone");
 
-<script>
-   document.addEventListener("DOMContentLoaded", function() {
-       var input = document.querySelector("#phone");
-       var hiddenInput = document.querySelector("#full_phone");
-       var updateInput = document.querySelector("#updatePhone");
-       var updateHiddenInput = document.querySelector("#full_update_phone");
 
-  
-     $('#createModal').on('shown.bs.modal', function () {
-           var itiCreate = window.intlTelInput(input, {
-               utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
-               separateDialCode: true,
-           });
+                $('#createModal').on('shown.bs.modal', function() {
+                    var itiCreate = window.intlTelInput(input, {
+                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+                        separateDialCode: true,
+                    });
 
-        
-           $('#createForm').on('submit', function() {
-               var fullPhoneNumberCreate = itiCreate.getNumber();
-               @this.set('phone', fullPhoneNumberCreate); 
-           });
 
-           $('#createModal').on('hidden.bs.modal', function () {
-               if (itiCreate) {
-                   itiCreate.destroy(); 
-               }
-           });
-       });
+                    $('#createForm').on('submit', function() {
+                        var fullPhoneNumberCreate = itiCreate.getNumber();
+                        @this.set('phone', fullPhoneNumberCreate);
+                    });
 
-       $('#updateModal').on('shown.bs.modal', function () {
-           var itiUpdate = window.intlTelInput(updateInput, {
-               utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
-               separateDialCode: true,
-           });
+                    $('#createModal').on('hidden.bs.modal', function() {
+                        if (itiCreate) {
+                            itiCreate.destroy();
+                        }
+                    });
+                });
 
-           var initialPhoneNumber = @this.get('updatePhone'); 
-           itiUpdate.setNumber(initialPhoneNumber); 
+                $('#updateModal').on('shown.bs.modal', function() {
+                    var itiUpdate = window.intlTelInput(updateInput, {
+                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
+                        separateDialCode: true,
+                    });
 
-           $('#updateForm').on('submit', function() {
-               var fullPhoneNumberUpdate = itiUpdate.getNumber();
-               @this.set('updatePhone', fullPhoneNumberUpdate); 
-           });
+                    var initialPhoneNumber = @this.get('updatePhone');
+                    itiUpdate.setNumber(initialPhoneNumber);
 
-           $('#updateModal').on('hidden.bs.modal', function () {
-               if (itiUpdate) {
-                   itiUpdate.destroy(); 
-               }
-           });
-       });
-   });
-</script>
+                    $('#updateForm').on('submit', function() {
+                        var fullPhoneNumberUpdate = itiUpdate.getNumber();
+                        @this.set('updatePhone', fullPhoneNumberUpdate);
+                    });
 
-@endpush
-@stack('scripts')
+                    $('#updateModal').on('hidden.bs.modal', function() {
+                        if (itiUpdate) {
+                            itiUpdate.destroy();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
+    @stack('scripts')
 
 
 

@@ -47,13 +47,27 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password">
                                 @error('password')
                                     <small class="text-danger text-start">{{ $message }}</small>
                                 @enderror
+                            </div> --}}
+
+                            <div class="form-group">
+                                <label style="z-index: 2;">Password</label>
+                                <div class="input-group mb-3">
+                                    <input name="password" type="password" class="form-control"
+                                        aria-describedby="basic-addon2" style="background: none; z-index: 1;">
+                                    <span class="input-group-text">
+                                        <i onclick="viewPassword(event)" class="bi bi-eye-slash-fill fs-1"></i></span>
+                                </div>
+                                @error('password')
+                                    <small class="text-danger text-start">{{ $message }}</small>
+                                @enderror
                             </div>
+
                             <div class="form-group d-flex align-items-center justify-content-between">
                                 <button type="submit" class="axil-btn btn-bg-primary submit-btn">Sign In</button>
                                 <a href="{{ route('reset-password') }}" class="forgot-btn">Forget password?</a>
@@ -64,4 +78,27 @@
             </div>
         </div>
     </div>
+
+   
+    <script>
+       
+        function viewPassword(e) {
+            e.preventDefault();
+            
+            const passwordInput = document.querySelector('input[name="password"]');
+            const icon = e.target; 
+
+            if(passwordInput.type === "password"){
+                passwordInput.type = "text";
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }else{
+                passwordInput.type = "password";
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            }
+
+            console.log("visibility toggled");
+        }
+    </script>
 @endsection

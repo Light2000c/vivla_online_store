@@ -83,7 +83,7 @@
                         <div class="slick-single-layout h-100">
                             <div class="axil-product product-style-six">
                                 <div class="thumbnail">
-                                    <a href="single-product-7.html">
+                                    <a href="{{ route("product-detail", $new) }}">
                                         <img data-sal="fade" data-sal-delay="100" data-sal-duration="1500"
                                             src="/products/{{ $new->image }}" alt="Product Images"
                                             style="height: 300px">
@@ -100,7 +100,7 @@
                                                     class="price curreent-price">${{ number_format($new->price) }}</span>
                                             @endif
                                         </div>
-                                        <h5 class="title text-start"><a href="single-product-7.html">{{ $new->name }}
+                                        <h5 class="title text-start"><a href="{{ route("product-detail", $new) }}">{{ $new->name }}
                                                 <span class="verified-icon"><i
                                                         class="fas fa-badge-check"></i></span></a></h5>
                                         <div class="product-hover-action">
@@ -331,13 +331,13 @@
                         <div class="col">
                             <div class="axil-product-list product-list-style-2">
                                 <div class="thumbnail">
-                                    <a href="single-product-7.html">
+                                    <a href="{{ route("product-detail", $new) }}">
                                         <img data-sal="zoom-in" data-sal-delay="100" data-sal-duration="1500"
                                             src="/products/{{ $new->image }}" alt="NFT">
                                     </a>
                                 </div>
                                 <div class="product-content">
-                                    <h6 class="product-title"><a href="single-product-7.html">{{ $new->name }} <span
+                                    <h6 class="product-title"><a href="{{ route("product-detail", $new) }}">{{ $new->name }} <span
                                                 class="verified-icon"><i class="fas fa-badge-check"></i></span></a>
                                     </h6>
                                     <div class="product-price-variant">

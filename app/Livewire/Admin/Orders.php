@@ -42,9 +42,9 @@ class Orders extends Component
 
         $this->orders = $transaction->order()->orderBy("created_at", "DESC")->get();
 
-        $address = Address::find($transaction->address_id);
+        // $address = Address::find($transaction->address_id);
 
-        $this->address = $address;
+        // $this->address = $address;
 
         // if (!$this->address) {
             // dd("jdsk");
@@ -53,9 +53,9 @@ class Orders extends Component
             // $this->redirectIntended('/admin/transactions');
         // }
 
-        if (!$this->address || $this->address->user_id !== $transaction->user_id) {
-            $this->address = [];
-        }
+        // if (!$this->address || $this->address->user_id !== $transaction->user_id) {
+        //     $this->address = [];
+        // }
 
 
         $this->total = $this->orders->sum("total");

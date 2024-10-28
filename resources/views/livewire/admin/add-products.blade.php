@@ -258,7 +258,8 @@
                 { name: 'indent', items: ['Outdent', 'Indent'] }
             ],
             removePlugins: 'elementspath',  
-            resize_enabled: false,  
+            resize_enabled: false, 
+            versionCheck: false 
         })
 
              console.log("CKEditor initialized");

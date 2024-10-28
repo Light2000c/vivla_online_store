@@ -303,7 +303,7 @@
 
         <div class="woocommerce-tabs wc-tabs-wrapper bg-vista-white">
             <div class="container">
-                <ul class="nav tabs" id="myTab" role="tablist">
+                {{-- <ul class="nav tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="active" id="description-tab" data-bs-toggle="tab" href="#description"
                             role="tab" aria-controls="description" aria-selected="true">Description</a>
@@ -312,10 +312,23 @@
                         <a id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab"
                             aria-controls="reviews" aria-selected="false">Reviews</a>
                     </li>
+                </ul> --}}
+                <ul class="nav tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="active" id="description-tab" data-bs-toggle="tab"
+                            wire:click.prevent="setTab('description')" role="tab"
+                            aria-selected="{{ $activeTab === 'description' ? true : false }}">Description</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a id="reviews-tab" data-bs-toggle="tab" wire:click.prevent="setTab('review')"
+                            role="tab" aria-selected="{{ $activeTab === 'review' ? true : false }}">Reviews</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="description" role="tabpanel"
-                        aria-labelledby="description-tab">
+                    <div class="tab-pane {{ $activeTab === 'description' ? 'show active' : 'fade' }}"
+                        id="description" role="tabpanel" aria-labelledby="description-tab">
+                        {{-- <div class="tab-pane fade show active" id="description" role="tabpanel"
+                        aria-labelledby="description-tab"> --}}
                         <div class="product-desc-wrapper">
                             <div class="row">
                                 <div class="col-lg-12 mb--30">
@@ -359,118 +372,58 @@
                         </div>
                         <!-- End .product-desc-wrapper -->
                     </div>
-                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="tab-pane {{ $activeTab === 'review' ? 'show active' : 'fade' }}" id="reviews"
+                        role="tabpanel" aria-labelledby="reviews-tab">
+                        {{-- <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab"> --}}
                         <div class="reviews-wrapper">
                             <div class="row">
                                 <div class="col-lg-6 mb--40">
                                     <div class="axil-comment-area pro-desc-commnet-area">
-                                        <h5 class="title">01 Review for this product</h5>
+                                        <h5 class="title">{{ $reviews->count() }} Review for this product</h5>
                                         <ul class="comment-list">
                                             <!-- Start Single Comment  -->
-                                            <li class="comment">
-                                                <div class="comment-body">
-                                                    <div class="single-comment">
-                                                        <div class="comment-img">
-                                                            <img src="./assets/images/blog/author-image-4.png"
-                                                                alt="Author Images">
-                                                        </div>
-                                                        <div class="comment-inner">
-                                                            <h6 class="commenter">
-                                                                <a class="hover-flip-item-wrapper" href="#">
-                                                                    <span class="hover-flip-item">
-                                                                        <span data-text="Cameron Williamson">Eleanor
-                                                                            Pena</span>
-                                                                    </span>
-                                                                </a>
-                                                                <span class="commenter-rating ratiing-four-star">
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i
-                                                                            class="fas fa-star empty-rating"></i></a>
-                                                                </span>
-                                                            </h6>
-                                                            <div class="comment-text">
-                                                                <p>“We’ve created a full-stack structure for our working
-                                                                    workflow processes, were from the funny the century
-                                                                    initial all the made, have spare to negatives. ”
-                                                                </p>
+                                            @if ($reviews->count())
+                                                @foreach ($reviews as $comment)
+                                                    <li class="comment">
+                                                        <div class="comment-body">
+                                                            <div class="single-comment border-bottom">
+                                                                <div class="comment-inner">
+                                                                    <h6 class="commenter ">
+                                                                        <div class="">
+                                                                            <a class="hover-flip-item-wrapper"
+                                                                                href="#">
+                                                                                <span class="hover-flip-item">
+                                                                                    <span
+                                                                                        data-text="Cameron Williamson">{{ $comment->user->name }}<i
+                                                                                            class="bi bi-patch-check-fill text-success ms-3"></i></span>
+                                                                                </span>
+                                                                            </a>
+                                                                            @if (Auth::user() && $comment->user()->is(Auth::user()))
+                                                                                <a class="hover-flip-item-wrapper text-end"
+                                                                                    wire:click.prevent="deleteReview({{ $comment->id }})">
+                                                                                    <span class="hover-flip-item">
+                                                                                        <i
+                                                                                            class="bi bi-trash3-fill"></i></span>
+                                                                                </a>
+                                                                            @endif
+                                                                        </div>
+                                                                    </h6>
+                                                                    <div class="comment-text">
+                                                                        <p>{{ $comment->review }}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                    </li>
+                                                @endforeach
+                                            @else
+                                                <li class="comment">
+                                                    <div class="alert alert-secondary" role="alert">
+                                                        No reviews on this product!
                                                     </div>
-                                                </div>
-                                            </li>
-                                            <!-- End Single Comment  -->
-
-                                            <!-- Start Single Comment  -->
-                                            <li class="comment">
-                                                <div class="comment-body">
-                                                    <div class="single-comment">
-                                                        <div class="comment-img">
-                                                            <img src="./assets/images/blog/author-image-4.png"
-                                                                alt="Author Images">
-                                                        </div>
-                                                        <div class="comment-inner">
-                                                            <h6 class="commenter">
-                                                                <a class="hover-flip-item-wrapper" href="#">
-                                                                    <span class="hover-flip-item">
-                                                                        <span data-text="Rahabi Khan">Courtney
-                                                                            Henry</span>
-                                                                    </span>
-                                                                </a>
-                                                                <span class="commenter-rating ratiing-four-star">
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                </span>
-                                                            </h6>
-                                                            <div class="comment-text">
-                                                                <p>“We’ve created a full-stack structure for our working
-                                                                    workflow processes, were from the funny the century
-                                                                    initial all the made, have spare to negatives. ”</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <!-- End Single Comment  -->
-
-                                            <!-- Start Single Comment  -->
-                                            <li class="comment">
-                                                <div class="comment-body">
-                                                    <div class="single-comment">
-                                                        <div class="comment-img">
-                                                            <img src="./assets/images/blog/author-image-5.png"
-                                                                alt="Author Images">
-                                                        </div>
-                                                        <div class="comment-inner">
-                                                            <h6 class="commenter">
-                                                                <a class="hover-flip-item-wrapper" href="#">
-                                                                    <span class="hover-flip-item">
-                                                                        <span data-text="Rahabi Khan">Devon Lane</span>
-                                                                    </span>
-                                                                </a>
-                                                                <span class="commenter-rating ratiing-four-star">
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                    <a href="#"><i class="fas fa-star"></i></a>
-                                                                </span>
-                                                            </h6>
-                                                            <div class="comment-text">
-                                                                <p>“We’ve created a full-stack structure for our working
-                                                                    workflow processes, were from the funny the century
-                                                                    initial all the made, have spare to negatives. ”
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            @endif
                                             <!-- End Single Comment  -->
                                         </ul>
                                     </div>
@@ -482,7 +435,7 @@
                                     <div class="comment-respond pro-des-commend-respond mt--0">
                                         <h5 class="title mb--30">Add a Review</h5>
                                         <p>Your email address will not be published. Required fields are marked *</p>
-                                        <div class="rating-wrapper d-flex-center mb--40">
+                                        {{-- <div class="rating-wrapper d-flex-center mb--40">
                                             Your Rating <span class="require">*</span>
                                             <div class="reating-inner ml--20">
                                                 <a href="#"><i class="fal fa-star"></i></a>
@@ -491,37 +444,51 @@
                                                 <a href="#"><i class="fal fa-star"></i></a>
                                                 <a href="#"><i class="fal fa-star"></i></a>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <form action="#">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="form-group">
-                                                        <label>Other Notes (optional)</label>
-                                                        <textarea name="message" placeholder="Your Comment"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label>Name <span class="require">*</span></label>
-                                                        <input id="name" type="text">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-12">
-                                                    <div class="form-group">
-                                                        <label>Email <span class="require">*</span> </label>
-                                                        <input id="email" type="email">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12">
-                                                    <div class="form-submit">
-                                                        <button type="submit" id="submit"
-                                                            class="axil-btn btn-bg-primary w-auto">Submit
-                                                            Comment</button>
-                                                    </div>
+                                        {{-- <form action="#"> --}}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Other Notes</label>
+                                                    <textarea wire:model="review" name="message" placeholder="Your Comment"></textarea>
+                                                    @error('review')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                        </form>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Name <span class="require">*</span></label>
+                                                    <input id="name" type="text"
+                                                        value="{{ Auth::user() ? Auth::user()->name : '' }}"
+                                                        {{ Auth::user() ? 'disabled' : '' }}>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Email <span class="require">*</span> </label>
+                                                    <input id="email" type="email"
+                                                        value="{{ Auth::user() ? Auth::user()->email : '' }}"
+                                                        {{ Auth::user() ? 'disabled' : '' }}>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-submit">
+                                                    <button wire:click.prevent="addReview"
+                                                        class="axil-btn btn-bg-primary w-auto" wire:loading.attr="disabled" wire:target="addReview">
+                                                        <span wire:loading.remove wire:target="addReview">Submit
+                                                            Comment</span>
+                                                        <span wire:loading wire:target="addReview"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- </form> --}}
+
+
                                     </div>
                                     <!-- End Comment Respond  -->
                                 </div>
@@ -561,104 +528,6 @@
                                         <div class="product-badget">{{ $related->discount }}% OFF</div>
                                     </div>
                                 @endif
-                                {{-- <div  class="product-hover-action">
-
-                                    @if (!Auth::user())
-                                        <ul class="cart-action">
-                                            <li class="wishlist"><a
-                                                    wire:click="addToWishlist({{ $related->id }})"><i
-                                                        class="far fa-heart"></i></a></li>
-                                            <li class="select-option">
-                                                @if ($this->isInCart($related->id))
-                                                    <a class="btn"
-                                                        wire:click="removeFromSessionCart({{ $related->id }})">
-                                                        <span wire:loading.remove
-                                                            wire:target="removeFromSessionCart({{ $related->id }})"><i
-                                                                class="bi bi-cart"></i> Remove</span>
-                                                        <span wire:loading
-                                                            wire:target="removeFromSessionCart({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @else
-                                                    <a class="btn"
-                                                        wire:click="addToSessionCart({{ $related->id }})">
-                                                        <span wire:loading.remove
-                                                            wire:target="addToSessionCart({{ $related->id }})"><i
-                                                                class="bi bi-cart"></i> Add</span>
-                                                        <span wire:loading
-                                                            wire:target="addToSessionCart({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @endif
-                                            </li>
-                                            <li class="quickview"><a
-                                                    href="{{ route('product-detail', $related->id) }}">
-                                                    <i class="far fa-eye"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    @else
-                                        <ul class="cart-action">
-                                            <li class="wishlist">
-                                                @if ($related->hasWish(Auth::user()))
-                                                    <a wire:click="removeFromWishlist({{ $related->id }})"
-                                                        class="btn">
-                                                        <i wire:loading.remove
-                                                            wire:target="removeFromWishlist({{ $related->id }})"
-                                                            class="far fa-heart text-danger"></i>
-                                                        <span wire:loading
-                                                            wire:target="removeFromWishlist({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @else
-                                                    <a wire:click="addToWishlist({{ $related->id }})"
-                                                        class="btn">
-                                                        <i wire:loading.remove
-                                                            wire:target="addToWishlist({{ $related->id }})"
-                                                            class="far fa-heart"></i>
-                                                        <span wire:loading
-                                                            wire:target="addToWishlist({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @endif
-                                            </li>
-                                            <li class="select-option">
-                                                @if ($product->hasCart(Auth::user()))
-                                                    <a class="btn"
-                                                        wire:click="removeFromCart({{ $related->id }})">
-                                                        <span wire:loading.remove
-                                                            wire:target="removeFromCart({{ $related->id }})">Remove
-                                                            from Cart</span>
-                                                        <span wire:loading
-                                                            wire:target="removeFromCart({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @else
-                                                    <a class="btn" wire:click="addToCart({{ $related->id }})">
-                                                        <span wire:loading.remove
-                                                            wire:target="addToCart({{ $related->id }})">Add
-                                                            to
-                                                            Cart</span>
-                                                        <span wire:loading
-                                                            wire:target="addToCart({{ $related->id }})"
-                                                            class="spinner-border spinner-border-sm"
-                                                            aria-hidden="true"></span>
-                                                    </a>
-                                                @endif
-                                            </li>
-                                            <li class="quickview"><a
-                                                    href="{{ route('product-detail', $related->id) }}"
-                                                    data-bs-toggle="modal" data-bs-target="#quick-view-modal"><i
-                                                        class="far fa-eye"></i></a>
-                                            </li>
-                                        </ul>
-                                    @endif
-                                </div> --}}
                             </div>
                             <div class="product-content">
                                 @if ($related->discount)

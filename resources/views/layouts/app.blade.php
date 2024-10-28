@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Vivla Closet | Online Store</title>
+    <title>Vivlaviv Closet | Online Store</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -89,7 +89,7 @@
                                     <li><a href="{{ route('dashboard') }}"><i class="bi bi-person-fill"></i>
                                             {{ Auth::user()->name }}</a></li>
                                     <li>
-                                        <form action="{{ route('logout') }}" method="POST">
+                                        <form action="{{ route('logout') }}" method="POST" wire:ignore>
                                             @csrf
                                             <button class="btn btn-outline-light" type="submit">Logout</button>
                                         </form>
@@ -301,8 +301,8 @@
                                     United States.
                                 </p>
                                 <ul class="support-list-item">
-                                    <li><a href="mailto:example@domain.com"><i class="fal fa-envelope-open"></i>
-                                            example@domain.com</a></li>
+                                    <li><a href="mailto:info@vivlavivcloset.com"><i class="fal fa-envelope-open"></i>
+                                        info@vivlavivcloset.com</a></li>
                                     <li><a href="tel:+1(713)820-7857"><i class="fal fa-phone-alt"></i> +1 (713) 820-7857</a></li>
                                     <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
                                 </ul>
@@ -333,7 +333,7 @@
                                 <span>Scan the code below to connect with us on WhatsApp for business.</span>
                                 <div class="download-btn-group">
                                     <div class="qr-code">
-                                        <img src="/web/assets/images/others/qr.png" alt="Axilthemes">
+                                        <img src="/logo/whatsAppQr.png" alt="Axilthemes" >
                                     </div>
                                     {{-- <div class="app-link">
                                         <a href="#">
@@ -358,18 +358,16 @@
                 <div class="row align-items-center">
                     <div class="col-xl-4">
                         <div class="social-share">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#"><i class="fab fa-discord"></i></a>
+                            <a href="https://www.facebook.com/share/G4kAfi3gNJTmnkee/"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.instagram.com/vivlavivcloset/profilecard/?igsh=cG9oMGVubzhkNmxv"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.tiktok.com/@vivlavivcloset?_t=8qldLL9cTbq&_r=1"><i class="bi bi-tiktok"></i></a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-12">
                         <div class="copyright-left d-flex flex-wrap justify-content-center">
                             <ul class="quick-link">
                                 <li>© 2023. All rights reserved by <a target="_blank"
-                                        href="https://vivlavivcloset.com/">VivlaCloset</a>.</li>
+                                        href="https://vivlavivcloset.com/">VivlavivCloset</a>.</li>
                             </ul>
                         </div>
                     </div>

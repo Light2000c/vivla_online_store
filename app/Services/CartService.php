@@ -52,6 +52,7 @@ class CartService
             return;
         }
 
+        
         if ($cart->quantity == 1) {
             return;
         }

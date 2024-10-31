@@ -6,6 +6,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Services\CartService;
 use App\Models\Cart as ModelCart;
+use App\Models\ProductSize;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,6 +49,7 @@ class Cart extends Component
                         'discount' => 0,
                     ],
                     'quantity' => $item['quantity'],
+                    'product_size_id' => $item['product_size_id'] ?? null
                 ];
             })->filter();
 
@@ -100,7 +102,13 @@ class Cart extends Component
 
             $cart = ModelCart::find($id);
 
-            if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
+            if ($cart->product->size()->count()) {
+                $quantity_check = $cart->quantity < $cart->productSize->quantity;
+            } else {
+                $quantity_check = $cart->quantity < $cart->product->quantity;
+            }
+
+            if ($cart->product && $quantity_check) {
                 $save = CartService::inc($id);
 
                 if ($save) {
@@ -219,19 +227,101 @@ class Cart extends Component
         return !empty($product) ? $product->image : "";
     }
 
-    public function getProductQuantity($id)
+    public function getProductSize($id, $sizeId)
     {
 
         $product = Product::find($id);
 
-        return !empty($product) ? $product->quantity : "";
+        if ($product->size()->count()) {
+
+            $product_size = ProductSize::where("product_id", $product->id)->where("id", $sizeId)->first();
+
+            return !empty($product_size) ? $product_size->size->name : "";
+        }
+
+        return  null;
+    }
+
+    public function getProductQuantity($id, $sizeId)
+    {
+
+
+        $product = Product::find($id);
+
+        if ($product->size()->count()) {
+
+            $product_size = ProductSize::where("product_id", $product->id)->where("id", $sizeId)->first();
+
+            return !empty($product_size) ? $product_size->quantity : "";
+        } else {
+            return !empty($product) ? $product->quantity : "";
+        }
     }
 
 
-    public function incSessionCart($id)
+    // public function incSessionCart($id)
+    // {
+
+    //     try {
+
+    //         $product = Product::find($id);
+
+    //         if (!$product) {
+    //             return;
+    //         }
+
+    //         $cart = session()->get('cart', []);
+
+    //         if (array_key_exists($id, $cart)) {
+
+    //             if ($cart[$id]['quantity'] < $product->quantity) {
+    //                 $cart[$id]['quantity'] += 1;
+
+    //                 session()->put('cart', $cart);
+
+    //                 $this->dispatch('cartUpdated');
+    //                 return $this->showToast("success", "Cart updated");
+    //             } else {
+    //                 return $this->showToast("failed", "Product is out of stock");
+    //             }
+    //         }
+
+    //         return $this->showToast("error", "Item not found in cart");
+    //     } catch (\Exception $e) {
+    //         return $this->showToast("error", "Something went wrong while updating the cart");
+    //     }
+    // }
+
+    // public function decSessionCart($id)
+    // {
+
+    //     try {
+    //         $cart = session()->get('cart', []);
+
+
+    //         if (array_key_exists($id, $cart)) {
+
+    //             if ($cart[$id]['quantity'] > 1) {
+    //                 $cart[$id]['quantity'] -= 1;
+
+    //                 session()->put('cart', $cart);
+
+    //                 $this->dispatch('cartUpdated');
+
+    //                 return $this->showToast("success", "Cart updated");
+    //             }
+    //         }
+    //     } catch (\Exception $e) {
+    //         return $this->showToast("error", "Something went wrong while updating the cart");
+    //     }
+    // }
+
+    public function incSessionCart($id, $sizeId)
     {
 
         try {
+
+            $cart = session()->get('cart', []);
 
             $product = Product::find($id);
 
@@ -239,12 +329,27 @@ class Cart extends Component
                 return;
             }
 
-            $cart = session()->get('cart', []);
+            $selectedSize = ProductSize::find($sizeId);
 
-            if (array_key_exists($id, $cart)) {
+            if (!$selectedSize) {
+                return;
+            }
 
-                if ($cart[$id]['quantity'] < $product->quantity) {
-                    $cart[$id]['quantity'] += 1;
+            if ($product->size()->count()) {
+                $productId = $product->id;
+                $productSizeId = $selectedSize->id ?? null;
+
+                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+            } else {
+                $key = $product->id;
+            }
+
+            if (array_key_exists($key, $cart)) {
+
+                $quantity = $product->size()->count() ? $selectedSize->quantity : $product->quantity;
+
+                if ($cart[$key]['quantity'] < $quantity) {
+                    $cart[$key]['quantity'] += 1;
 
                     session()->put('cart', $cart);
 
@@ -267,11 +372,25 @@ class Cart extends Component
         try {
             $cart = session()->get('cart', []);
 
+            $product = Product::find($id);
 
-            if (array_key_exists($id, $cart)) {
+            if (!$product) {
+                return;
+            }
 
-                if ($cart[$id]['quantity'] > 1) {
-                    $cart[$id]['quantity'] -= 1;
+            if ($product->size()->count()) {
+                $productId = $product->id;
+                $productSizeId = $this->selectedSize->id ?? null;
+
+                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+            } else {
+                $key = $product->id;
+            }
+
+            if (array_key_exists($key, $cart)) {
+
+                if ($cart[$key]['quantity'] > 1) {
+                    $cart[$key]['quantity'] -= 1;
 
                     session()->put('cart', $cart);
 

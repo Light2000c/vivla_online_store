@@ -55,6 +55,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-2 order-lg-1  mt-3">
+                                <div
+                                    class="row d-flex flex-row flex-sm-row flex-md-column product-small-thumb small-thumb-wrapper">
+                                    @if ($product_images->count())
+                                        @foreach ($product_images as $prod_image)
+                                            <div class="col small-thumb-img">
+                                                <img src="/products/{{ $prod_image->image }}"
+                                                    alt="thumb image">
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="col small-thumb-img">
+                                            <img src="/products/{{ $product->image }}"
+                                                alt="thumb image">
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6 mb--40">
@@ -74,15 +92,7 @@
                                     </div>
                                 @endif
                                 <div class="product-rating">
-                                    {{-- <div class="star-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div> --}}
                                     <div class="review-link">
-                                        {{-- <a href="#">(<span>2</span> unit left)</a> --}}
                                         <a
                                             href="#">({{ $product->quantity <= 1 ? $product->quantity . ' unit left' : $product->quantity . ' units left' }})</a>
                                     </div>
@@ -92,8 +102,6 @@
                                 </p>
 
                                 <div class="product-variations-wrapper">
-
-
                                     <!-- Start Product Variation  -->
                                     @if ($product->brand)
                                         <div class="product-variation product-size-variation">
@@ -108,159 +116,256 @@
                                                 class="ms-3 text-capitalize">{{ $this->getCategory($product->category) }}</span>
                                         </div>
                                     @endif
-                                    <!-- End Product Variation  -->
 
                                 </div>
 
-                                <!-- Start Product Action Wrapper  -->
-                                @if (Auth::guest())
-                                    <div class="product-action-wrapper d-flex-center">
-                                        @if ($this->isInCart($product->id) && !$product->outOfStock())
-                                            {{-- <span wire:click="decSessionCart({{ $product->id }})" class="dec qtybtn">
-                                                <span wire:loading.remove
-                                                    wire:target="decSessionCart({{ $product->id }})">-</span>
-                                                <span wire:loading wire:target="decSessionCart({{ $product->id }})"
-                                                    class="spinner-grow spinner-grow" role="status"
-                                                    aria-hidden="true"></span>
-                                            </span>
-                                        @else --}}
-                                            <div class="pro-qty">
-                                                <span wire:click="decSessionCart({{ $product->id }})"
-                                                    class="dec qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="decSessionCart({{ $product->id }})">-</span>
-                                                    <span wire:loading
-                                                        wire:target="decSessionCart({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
-                                                <input type="text"
-                                                    value="{{ $this->getSessionCartQuantity($product->id) }}" disabled>
-                                                <span wire:click="incSessionCart({{ $product->id }})"
-                                                    class="dec qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="incSessionCart({{ $product->id }})">+</span>
-                                                    <span wire:loading
-                                                        wire:target="incSessionCart({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
+                                <div class="product-variations-wrapper">
+
+                                    <div class="product-variation">
+                                        @if ($product->size()->count())
+                                            <div class="form-group">
+                                                <label for="">Size</label>
+                                                <select wire:model="size" wire:change="sizeChanged" name="size"
+                                                    id="">
+                                                    <option value="">Select a size</option>
+                                                    @foreach ($product->size as $prod_size)
+                                                        <option value="{{ $prod_size->id }}">
+                                                            {{ $prod_size->size->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <small
+                                                    class="text-primary">{{ $selectedSize ? $selectedSize->quantity . ' unit left' : '' }}</small>
                                             </div>
                                         @endif
-                                        <!-- End Quentity Action  -->
+                                    </div>
 
-                                        <!-- Start Product Action  -->
+                                </div>
+
+
+                                @if (Auth::guest())
+                                    <div class="product-action-wrapper d-flex-center">
+                                        @if ($product->size->count())
+                                            @if ($this->showAdd($product->id))
+                                                <div class="pro-qty">
+                                                    <span wire:click="decSessionCart({{ $product->id }})"
+                                                        class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="decSessionCart({{ $product->id }})">-</span>
+                                                        <span wire:loading
+                                                            wire:target="decSessionCart({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input type="text"
+                                                        value="{{ $this->getSessionCartQuantity($product->id) }}"
+                                                        disabled>
+                                                    <span wire:click="incSessionCart({{ $product->id }})"
+                                                        class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="incSessionCart({{ $product->id }})">+</span>
+                                                        <span wire:loading
+                                                            wire:target="incSessionCart({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        @else
+                                            @if ($this->isInCart($product->id))
+                                                <div class="pro-qty">
+                                                    <span wire:click="decSessionCart({{ $product->id }})"
+                                                        class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="decSessionCart({{ $product->id }})">-</span>
+                                                        <span wire:loading
+                                                            wire:target="decSessionCart({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input type="text"
+                                                        value="{{ $this->getSessionCartQuantity($product->id) }}"
+                                                        disabled>
+                                                    <span wire:click="incSessionCart({{ $product->id }})"
+                                                        class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="incSessionCart({{ $product->id }})">+</span>
+                                                        <span wire:loading
+                                                            wire:target="incSessionCart({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        @endif
 
                                         <ul class="product-action d-flex-center mb--0">
-                                            @if ($product->outOfStock())
+                                            @if ($product_size->count())
                                                 <li class="add-to-cart">
-                                                    <a class="btn axil-btn btn-bg-primary">
-                                                        <span>Out Of Stock</span>
-                                                    </a>
+                                                    @if ($this->showAdd($product->id))
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="removeQuickViewCartGuest({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
+                                                            <span wire:loading.remove
+                                                                wire:target="removeQuickViewCartGuest({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Remove</span>
+                                                            <span wire:loading
+                                                                wire:target="removeQuickViewCartGuest({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
+                                                                aria-hidden="true"></span>
+                                                        </a>
+                                                    @else
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="addQuickViewCartGuest({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
+                                                            <span wire:loading.remove
+                                                                wire:target="addQuickViewCartGuest({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Add</span>
+                                                            <span wire:loading
+                                                                wire:target="addQuickViewCartGuest({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
+                                                                aria-hidden="true"></span>
+                                                        </a>
+                                                    @endif
                                                 </li>
                                             @else
-                                                @if ($this->isInCart($product->id))
-                                                    <li class="add-to-cart">
-                                                        <a wire:click="removeFromSessionCart({{ $product->id }})"
-                                                            class="btn axil-btn btn-bg-primary">
+                                                <li class="add-to-cart">
+                                                    @if ($this->isInCart($product->id))
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="removeFromSessionCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
                                                             <span wire:loading.remove
-                                                                wire:target="removeFromSessionCart({{ $product->id }})">Remove
-                                                                from Cart</span>
+                                                                wire:target="removeFromSessionCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Remove</span>
                                                             <span wire:loading
-                                                                wire:target="removeFromSessionCart({{ $product->id }})"
-                                                                class="spinner-border" role="status"
+                                                                wire:target="removeFromSessionCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
                                                                 aria-hidden="true"></span>
                                                         </a>
-                                                    </li>
-                                                @else
-                                                    <li class="add-to-cart">
-                                                        <a wire:click="addToSessionCart({{ $product->id }})"
-                                                            class="btn axil-btn btn-bg-primary">
+                                                    @else
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="addToSessionCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
                                                             <span wire:loading.remove
-                                                                wire:target="addToSessionCart({{ $product->id }})">Add
-                                                                to
-                                                                Cart</span>
+                                                                wire:target="addToSessionCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Add</span>
                                                             <span wire:loading
-                                                                wire:target="addToSessionCart({{ $product->id }})"
-                                                                class="spinner-border" role="status"
+                                                                wire:target="addToSessionCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
                                                                 aria-hidden="true"></span>
                                                         </a>
-                                                    </li>
-                                                @endif
+                                                    @endif
+                                                </li>
                                             @endif
-                                            <li class="wishlist"><a wire:click="addToWishlist({{ $product->id }})"
-                                                    class="btn axil-btn wishlist-btn"><i class="far fa-heart"></i></a>
+                                            <li class="wishlist"><a href="{{ route('wishlist') }}"
+                                                    class="axil-btn wishlist-btn"><i class="far fa-heart"></i></a>
                                             </li>
                                         </ul>
-                                        <!-- End Product Action  -->
-
-                                    </div>
                                 @endif
-                                <!-- End Product Action Wrapper  -->
 
 
                                 @if (Auth::user())
                                     <div class="product-action-wrapper d-flex-center">
-                                        @if ($product->hasCart(Auth::user()) && !$product->outOfStock())
-                                            <div class="pro-qty">
-                                                <span wire:click="dec({{ $product->id }})" class="dec qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="dec({{ $product->id }})">-</span>
-                                                    <span wire:loading wire:target="dec({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
-                                                <input type="text"
-                                                    value="{{ $this->getCartQuantity($product->id) }}" disabled>
-                                                <span wire:click="inc({{ $product->id }})" class="dec qtybtn">
-                                                    <span wire:loading.remove
-                                                        wire:target="inc({{ $product->id }})">+</span>
-                                                    <span wire:loading wire:target="inc({{ $product->id }})"
-                                                        class="spinner-grow spinner-grow" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
-                                            </div>
+                                        @if ($product->size->count())
+                                            @if ($this->hasCartWithSize($product->id))
+                                                <div class="pro-qty">
+                                                    <span wire:click="dec({{ $product->id }})" class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="dec({{ $product->id }})">-</span>
+                                                        <span wire:loading wire:target="dec({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input type="text"
+                                                        value="{{ $this->getCartQuantity($product->id) }}" disabled>
+                                                    <span wire:click="inc({{ $product->id }})" class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="inc({{ $product->id }})">+</span>
+                                                        <span wire:loading wire:target="inc({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        @else
+                                            @if ($product->hasCart(Auth::user()))
+                                                <div class="pro-qty">
+                                                    <span wire:click="dec({{ $product->id }})" class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="dec({{ $product->id }})">-</span>
+                                                        <span wire:loading wire:target="dec({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                    <input type="text"
+                                                        value="{{ $this->getCartQuantity($product->id) }}" disabled>
+                                                    <span wire:click="inc({{ $product->id }})" class="dec qtybtn">
+                                                        <span wire:loading.remove
+                                                            wire:target="inc({{ $product->id }})">+</span>
+                                                        <span wire:loading wire:target="inc({{ $product->id }})"
+                                                            class="spinner-grow spinner-grow" role="status"
+                                                            aria-hidden="true"></span>
+                                                    </span>
+                                                </div>
+                                            @endif
                                         @endif
-                                        <!-- End Quentity Action  -->
-
-                                        <!-- Start Product Action  -->
                                         <ul class="product-action d-flex-center mb--0">
-                                            @if ($product->outOfStock())
+                                            @if ($product->size->count())
                                                 <li class="add-to-cart">
-                                                    <a class="btn axil-btn btn-bg-primary">
-                                                        <span>Out Of Stock</span>
-                                                    </a>
+                                                    @if ($this->hasCartWithSize($product->id))
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="removeQuickViewCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
+                                                            <span wire:loading.remove
+                                                                wire:target="removeQuickViewCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Remove</span>
+                                                            <span wire:loading
+                                                                wire:target="removeQuickViewCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
+                                                                aria-hidden="true"></span>
+                                                        </a>
+                                                    @else
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="addQuickViewCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
+                                                            <span wire:loading.remove
+                                                                wire:target="addQuickViewCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Add</span>
+                                                            <span wire:loading
+                                                                wire:target="addQuickViewCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
+                                                                aria-hidden="true"></span>
+                                                        </a>
+                                                    @endif
                                                 </li>
                                             @else
-                                                @if ($product->hasCart(Auth::user()))
-                                                    <li class="add-to-cart">
-                                                        <a wire:click="removeFromCart({{ $product->id }})"
-                                                            class="btn axil-btn btn-bg-primary">
+                                                <li class="add-to-cart">
+                                                    @if ($product->hasCart(Auth::user()))
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="removeFromCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
                                                             <span wire:loading.remove
-                                                                wire:target="removeFromCart({{ $product->id }})">Remove
-                                                                from Cart</span>
+                                                                wire:target="removeFromCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Remove</span>
                                                             <span wire:loading
-                                                                wire:target="removeFromCart({{ $product->id }})"
-                                                                class="spinner-border" role="status"
+                                                                wire:target="removeFromCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
                                                                 aria-hidden="true"></span>
                                                         </a>
-                                                    </li>
-                                                @else
-                                                    <li class="add-to-cart">
-                                                        <a wire:click="addToCart({{ $product->id }})"
-                                                            class="btn axil-btn btn-bg-primary">
+                                                    @else
+                                                        <a class="btn axil-btn btn-bg-primary"
+                                                            wire:click="addToCart({{ $product->id ?? '' }})"
+                                                            wire:loading.attr="disabled">
                                                             <span wire:loading.remove
-                                                                wire:target="addToCart({{ $product->id }})">Add to
-                                                                Cart</span>
+                                                                wire:target="addToCart({{ $product->id ?? '' }})">
+                                                                <i class="bi bi-cart"></i> Add</span>
                                                             <span wire:loading
-                                                                wire:target="addToCart({{ $product->id }})"
-                                                                class="spinner-border" role="status"
+                                                                wire:target="addToCart({{ $product->id ?? '' }})"
+                                                                class="spinner-border spinner-border-sm"
                                                                 aria-hidden="true"></span>
                                                         </a>
-                                                    </li>
-                                                @endif
+                                                    @endif
+                                                </li>
                                             @endif
-
                                             @if ($product->hasWish(Auth::user()))
                                                 <li class="wishlist">
                                                     <a wire:click="removeFromWishlist({{ $product->id }})"
@@ -289,10 +394,9 @@
                                                 </li>
                                             @endif
                                         </ul>
-                                        <!-- End Product Action  -->
                                     </div>
-                                    <!-- End Product Action Wrapper  -->
-                                @endif
+                                @endIf
+
                             </div>
                         </div>
                     </div>
@@ -476,7 +580,8 @@
                                             <div class="col-lg-12">
                                                 <div class="form-submit">
                                                     <button wire:click.prevent="addReview"
-                                                        class="axil-btn btn-bg-primary w-auto" wire:loading.attr="disabled" wire:target="addReview">
+                                                        class="axil-btn btn-bg-primary w-auto"
+                                                        wire:loading.attr="disabled" wire:target="addReview">
                                                         <span wire:loading.remove wire:target="addReview">Submit
                                                             Comment</span>
                                                         <span wire:loading wire:target="addReview"

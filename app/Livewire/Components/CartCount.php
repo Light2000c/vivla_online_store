@@ -61,8 +61,14 @@ class CartCount extends Component
     public function inc($id)
     {
         $cart = Cart::find($id);
+        
+        if ($cart->product->size()->count()) {
+            $quantity_check = $cart->quantity < $cart->productSize->quantity;
+        } else {
+            $quantity_check = $cart->quantity < $cart->product->quantity;
+        }
 
-        if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
+        if ($cart->product && $quantity_check) {
             $save = CartService::inc($id);
 
             if ($save) {

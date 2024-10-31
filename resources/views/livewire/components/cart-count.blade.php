@@ -43,8 +43,13 @@
                                  @endif
                              </div>
                              <div>
-                                 <small>{{ $cart->product->quantity > 1 ? $cart->product->quantity . ' units left' : $cart->product->quantity . ' unit left' }}
-                                 </small>
+                                 @if ($cart->product->size()->count())
+                                     <small>{{ $cart->productSize->quantity > 1 ? $cart->productSize->quantity . ' units left' : $cart->productSize->quantity . ' unit left' }}</small>
+                                     <br><h5>{{ $cart->productSize->size->name }}</h5>
+                                 @else
+                                     <small>{{ $cart->product->quantity > 1 ? $cart->product->quantity . ' units left' : $cart->product->quantity . ' unit left' }}
+                                     </small>
+                                 @endif
                              </div>
 
                              <div class="pro-qty item-quantity">

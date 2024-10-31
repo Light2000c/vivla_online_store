@@ -231,6 +231,13 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-size') }}"><span>
+                                            <i class="bi bi-ui-checks me-2"
+                                                style="font-size: 16px"></i>Sizes</span></a>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-cart') }}"><span>
                                             <i class="bi bi-cart4 me-2" style="font-size: 16px"></i>Carts</span></a>
                                 </li>

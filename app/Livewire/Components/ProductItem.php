@@ -7,10 +7,15 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class ProductItem extends Component
 {
+
+    use WithPagination;
+
     public $product;
+    public $activeProduct;
 
     public function render()
     {
@@ -95,5 +100,11 @@ class ProductItem extends Component
                 return $this->dispatch('cartUpdated');
             }
         }
+    }
+
+    public function openQuickView($productId){
+
+        // $this->dispatch("openViewModal");
+        $this->dispatch('openViewModal', ['productId' => $productId]);
     }
 }

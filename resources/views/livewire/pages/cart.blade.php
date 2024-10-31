@@ -31,7 +31,7 @@
             <div class="axil-product-cart-wrap">
                 <div class="product-table-heading">
                     <h4 class="title">Your Cart</h4>
-                    <a  class="cart-clear">Clear Shoping Cart</a>
+                    <a class="cart-clear">Clear Shoping Cart</a>
                 </div>
 
                 <div class="table-responsive">
@@ -42,6 +42,7 @@
                                 <th scope="col" class="product-thumbnail">Product</th>
                                 <th scope="col" class="product-title"></th>
                                 <th scope="col" class="product-price">Price</th>
+                                <th scope="col" class="product-size">Size</th>
                                 <th scope="col" class="product-quantity">Quantity</th>
                                 <th scope="col" class="product-subtotal">Subtotal</th>
                             </tr>
@@ -66,8 +67,14 @@
                                                         alt="Digital Product"></a></td>
                                             <td class="product-title"><a
                                                     href="{{ route('product-detail', $cart->product->id) }}">{{ $cart->product->name }}
-                                                    <p><small>{{ $cart->product->quantity > 1 ? $cart->product->quantity . ' units left' : $cart->product->quantity . ' unit left' }}</small>
-                                                    </p></a></td>
+                                                    @if ($cart->product->size()->count())
+                                                        <p><small>{{ $cart->productSize->quantity > 1 ? $cart->productSize->quantity . ' units left' : $cart->productSize->quantity . ' unit left' }}</small>
+                                                        </p>
+                                                    @else
+                                                        <p><small>{{ $cart->product->quantity > 1 ? $cart->product->quantity . ' units left' : $cart->product->quantity . ' unit left' }}</small>
+                                                        </p>
+                                                    @endif
+                                                </a></td>
                                             <td class="product-price" data-title="Price"><span
                                                     class="currency-symbol">$</span>
                                                 @if ($cart->product->discount)
@@ -76,6 +83,8 @@
                                                     {{ number_format($cart->product->price) }}
                                                 @endif
                                             </td>
+                                            <td class="product-size" data-title="Size">
+                                                {{ $cart->productSize ? $cart->productSize->size->name : null }} </td>
                                             <td class="product-quantity" data-title="Qty">
                                                 <div class="pro-qty">
                                                     <span wire:click="dec({{ $cart->id }})" class="dec qtybtn">
@@ -131,8 +140,12 @@
                                                         alt="Digital Product"></a></td>
                                             <td class="product-title"><a
                                                     href="{{ route('product-detail', $cart->id) }}">{{ $this->getProductName($cart->id) }}
-                                                    <p><small>{{ $this->getProductQuantity($cart->id) > 1 ? $this->getProductQuantity($cart->id) . ' units left' : $this->getProductQuantity($cart->id) . ' unit left' }}</small>
-                                                    </p></a></td>
+
+                                                    <p><small>{{ $this->getProductQuantity($cart->id, $cart->product_size_id) > 1 ? $this->getProductQuantity($cart->id, $cart->product_size_id) . ' units left' : $this->getProductQuantity($cart->id,$cart->product_size_id) . ' unit left' }}</small>
+                                                    </p>
+                                                </a></td>
+                                                <td class="product-size" data-title="Size">
+                                                    {{ $this->getProductSize($cart->id, $cart->product_size_id) }} </td>
                                             <td class="product-price" data-title="Price"><span
                                                     class="currency-symbol">$</span>{{ number_format($cart->product->price) }}
                                             </td>
@@ -149,12 +162,12 @@
                                                     </span>
                                                     <input type="number" class="quantity-input"
                                                         value="{{ $cart->quantity }}" disabled>
-                                                    <span wire:click="incSessionCart({{ $cart->id }})"
+                                                    <span wire:click="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})"
                                                         class="inc qtybtn">
                                                         <span wire:loading.remove
-                                                            wire:target="incSessionCart({{ $cart->id }})">+</span>
+                                                            wire:target="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})">+</span>
                                                         <span wire:loading
-                                                            wire:target="incSessionCart({{ $cart->id }})"
+                                                            wire:target="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})"
                                                             class="spinner-grow spinner-grow" role="status"
                                                             aria-hidden="true"></span>
                                                     </span>

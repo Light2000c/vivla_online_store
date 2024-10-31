@@ -17,11 +17,14 @@ use App\Livewire\Admin\EditProduct;
 use App\Livewire\Admin\Favourites;
 use App\Livewire\Admin\Orders;
 use App\Livewire\Admin\Payments;
+use App\Livewire\Admin\ProductItems;
 use App\Livewire\Admin\Products;
 use App\Livewire\Admin\Reviews;
+use App\Livewire\Admin\Size;
 use App\Livewire\Admin\TeamMembers;
 use App\Livewire\Admin\Transactions;
 use App\Livewire\Admin\Users;
+use App\Livewire\Components\ProductItem;
 use App\Livewire\Pages\About;
 use App\Livewire\Pages\Cart;
 use App\Livewire\Pages\Checkout;
@@ -131,7 +134,11 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
 
     Route::get("admin/products/{id}", EditProduct::class)->name("edit-product");
 
+    Route::get("admin/products/{id}/items", ProductItems::class)->name("product-item");
+
     Route::get("admin/categories", Category::class)->name("admin-categories");
+
+    Route::get("admin/sizes", Size::class)->name("admin-size");
 
     Route::get("admin/carts", Carts::class)->name("admin-cart");
 

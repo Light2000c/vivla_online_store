@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\ProductSize;
 use App\Models\Review;
 use App\Models\Wishlist;
 use App\Services\CartService;
@@ -19,6 +20,11 @@ class ProductDetails extends Component
     public $review;
     public $activeTab = 'description';
 
+    public $product_size = [];
+    public $size;
+    public $selectedSize;
+    public $product_images = [];
+
 
     public function mount($id)
     {
@@ -26,6 +32,8 @@ class ProductDetails extends Component
         $this->related_products = Product::where("category", "LIKE", "%" . $this->product->category . "%")
             ->whereNot("id", $this->product->id)->take(5)->get();
         $this->reviews = $this->product->review()->get();
+        $this->product_size = $this->product->size()->get();
+        $this->product_images = $this->product->image()->get();
     }
 
     public function render()
@@ -39,6 +47,8 @@ class ProductDetails extends Component
         $this->related_products = Product::where("category", "LIKE", "%" . $this->product->category . "%")
             ->whereNot("id", $this->product->id)->take(5)->get();
         $this->reviews = $this->product->review()->get();
+        $this->product_size = $this->product->size()->get();
+        $this->product_images = $this->product->image()->get();
     }
 
     public function getCategory($category)
@@ -188,20 +198,36 @@ class ProductDetails extends Component
         }
     }
 
+
     public function inc($id)
     {
 
         try {
 
-            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+            $product = Product::find($id);
 
+            if (!$product) {
+                return;
+            }
+
+
+            if ($product->size()->count()) {
+                if (!$this->selectedSize) {
+                    return;
+                }
+                $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)
+                    ->where("product_size_id", $this->selectedSize->id)->first();
+            } else {
+                $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+            }
 
             if (!$cart) {
                 return;
             }
 
+            $quantity_check = $product->size()->count() ? $cart->quantity < $cart->productSize->quantity : $cart->quantity < $cart->product->quantity;
 
-            if ($cart->product && ($cart->quantity < $cart->product->quantity)) {
+            if ($cart->product && $quantity_check) {
 
                 $cart->quantity++;
                 $save =  $cart->save();
@@ -224,11 +250,26 @@ class ProductDetails extends Component
     {
         try {
 
-            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+            $product = Product::find($id);
+
+            if (!$product) {
+                return;
+            }
+
+            if ($product->size()->count()) {
+                if (!$this->selectedSize) {
+                    return;
+                }
+                $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)
+                    ->where("product_size_id", $this->selectedSize->id)->first();
+            } else {
+                $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+            }
 
             if (!$cart) {
                 return;
             }
+
 
             if ($cart->quantity == 1) {
                 return;
@@ -249,7 +290,23 @@ class ProductDetails extends Component
 
     public function getCartQuantity($id)
     {
-        $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return null;
+        }
+
+
+        if ($product->size()->count()) {
+            if (!$this->selectedSize) {
+                return;
+            }
+            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)
+                ->where("product_size_id", $this->selectedSize->id)->first();
+        } else {
+            $cart = Cart::where("user_id", Auth::user()->id)->where("product_id", $id)->first();
+        }
 
         if (!$cart) {
             return;
@@ -321,10 +378,13 @@ class ProductDetails extends Component
         }
     }
 
+
     public function incSessionCart($id)
     {
 
         try {
+
+            $cart = session()->get('cart', []);
 
             $product = Product::find($id);
 
@@ -332,12 +392,21 @@ class ProductDetails extends Component
                 return;
             }
 
-            $cart = session()->get('cart', []);
+            if ($product->size()->count()) {
+                $productId = $product->id;
+                $productSizeId = $this->selectedSize->id ?? null;
 
-            if (array_key_exists($id, $cart)) {
+                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+            } else {
+                $key = $product->id;
+            }
 
-                if ($cart[$id]['quantity'] < $product->quantity) {
-                    $cart[$id]['quantity'] += 1;
+            if (array_key_exists($key, $cart)) {
+
+                $quantity = $product->size()->count() ? $this->selectedSize->quantity : $product->quantity;
+
+                if ($cart[$key]['quantity'] < $quantity) {
+                    $cart[$key]['quantity'] += 1;
 
                     session()->put('cart', $cart);
 
@@ -358,11 +427,25 @@ class ProductDetails extends Component
 
             $cart = session()->get('cart', []);
 
+            $product = Product::find($id);
 
-            if (array_key_exists($id, $cart)) {
+            if (!$product) {
+                return;
+            }
 
-                if ($cart[$id]['quantity'] > 1) {
-                    $cart[$id]['quantity'] -= 1;
+            if ($product->size()->count()) {
+                $productId = $product->id;
+                $productSizeId = $this->selectedSize->id ?? null;
+
+                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+            } else {
+                $key = $product->id;
+            }
+
+            if (array_key_exists($key, $cart)) {
+
+                if ($cart[$key]['quantity'] > 1) {
+                    $cart[$key]['quantity'] -= 1;
 
                     session()->put('cart', $cart);
 
@@ -376,15 +459,31 @@ class ProductDetails extends Component
         }
     }
 
+
     public function getSessionCartQuantity($id)
     {
         $cart = session()->get('cart', []);
 
+        $product = Product::find($id);
 
-        if (array_key_exists($id, $cart)) {
-
-            return $cart[$id]['quantity'];
+        if (!$product) {
+            return;
         }
+
+        if ($product->size()->count()) {
+            $productId = $product->id;
+            $productSizeId = $this->selectedSize->id ?? null;
+
+            $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+        } else {
+            $key = $product->id;
+        }
+
+        if (array_key_exists($key, $cart)) {
+            return $cart[$key]['quantity'] ?? null;
+        }
+
+
         return 0;
     }
 
@@ -458,11 +557,221 @@ class ProductDetails extends Component
                     $this->load();
                     return $this->showToast("success", "Review was successfully deleted");
                 } else {
-                    return $this->showToast("error", "Review was noit successfully deleted.");
+                    return $this->showToast("error", "Review was not successfully deleted.");
                 }
             }
         } catch (\Exception $e) {
             return $this->showToast("error", "Something went wrong while trying delete review.");
         }
+    }
+
+    public function setSizeQuantity()
+    {
+
+        $size = ProductSize::find($this->size);
+
+        if (!$size) {
+            return "";
+        }
+
+        $this->selectedSize = $size ?? "";
+    }
+
+    public function sizeChanged()
+    {
+        // dd($this->size);
+        $this->setSizeQuantity();
+    }
+
+
+    public function addQuickViewCart($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $user = Auth::user();
+        $size = $product->size()->get();
+
+        if ($size->count()) {
+            if ($this->selectedSize) {
+
+                if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
+                    return;
+                }
+
+                $cart =  $user->cart()->create([
+                    "product_id" => $product->id,
+                    "product_size_id" => $this->selectedSize->id
+                ]);
+
+                if ($cart) {
+                    $this->showToast("success", "Product has been added to cart");
+                    return $this->dispatch('cartUpdated');
+                }
+            } else {
+                return $this->showToast("info", "Please select a size");
+            }
+        }
+    }
+
+
+
+    public function removeQuickViewCart($id)
+    {
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $user = Auth::user();
+        $size = $product->size()->get();
+
+        if ($size->count()) {
+            if ($this->selectedSize) {
+
+                $cart = $user->cart()->where("product_size_id", $this->selectedSize->id)->first();
+
+                if (!$cart) {
+                    return $this->showToast("info", "Cart was not found");
+                }
+
+                $deleted = $cart->delete();
+
+
+                if ($deleted) {
+                    $this->showToast("success", "Product has been removed from cart");
+                    return $this->dispatch('cartUpdated');
+                }
+            } else {
+                return $this->showToast("info", "Please select a size");
+            }
+        }
+    }
+
+
+    public function hasCartWithSize($id)
+    {
+
+        $product = Product::find($id);
+
+        return $product->hasCartWithSize(Auth::user(), $this->selectedSize->id ?? "");
+    }
+
+
+    public function hasCart($id)
+    {
+
+        $product = Product::find($id);
+
+        return $product->hasCart(Auth::user());
+    }
+
+
+    public function addQuickViewCartGuest($id)
+    {
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $user = Auth::user();
+        $size = $product->size()->get();
+
+        if ($size->count()) {
+            if ($this->selectedSize) {
+
+                if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
+                    // return;
+                    return $this->showToast("info", "Product already exist in cart");
+                }
+
+                $cart = session()->get('cart', []);
+
+                if (array_key_exists($id, $cart)) {
+                    return;
+                }
+
+                $key = $product->id . (isset($this->selectedSize) ? "_{$this->selectedSize->id}" : "");
+
+                $cart[$key] = [
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                    'price' => $product->price,
+                    'product_size_id' => $this->selectedSize->id ?? null,
+                ];
+
+
+                session()->put('cart', $cart);
+
+                return $this->dispatch('cartUpdated');
+            } else {
+                return $this->showToast("info", "Please select a size");
+            }
+        }
+    }
+
+
+
+    public function removeQuickViewCartGuest($id)
+    {
+
+        $product = Product::find($id);
+
+        if (!$product) {
+            return;
+        }
+
+        $size = $product->size()->get();
+
+        if ($size->count()) {
+            if ($this->selectedSize) {
+
+                $cart = session()->get('cart', []);
+
+                $productId = $product->id;
+                $productSizeId = $this->selectedSize->id ?? null;
+
+
+                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+
+
+                if (array_key_exists($key, $cart)) {
+                    unset($cart[$key]);
+                    session()->put('cart', $cart);
+
+                    return $this->dispatch('cartUpdated');
+                }
+            } else {
+                return $this->showToast("info", "Please select a size");
+            }
+        }
+    }
+
+
+    public function isInQuickViewCart($productId, $productSizeId)
+    {
+        $sessionCart = collect(session()->get('cart', []));
+
+        return $sessionCart->contains(function ($item) use ($productId, $productSizeId) {
+            return $item['product_id'] === $productId && $item['product_size_id'] === $productSizeId;
+        });
+    }
+
+
+    public function showAdd($productId)
+    {
+        $productSizeId = $this->selectedSize->id ?? "";
+        $sessionCart = collect(session()->get('cart', []));
+
+        return $sessionCart->contains(function ($item) use ($productId, $productSizeId) {
+            return $item['product_id'] === $productId && $item['product_size_id'] === $productSizeId;
+        });
     }
 }

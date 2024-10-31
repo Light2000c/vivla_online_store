@@ -143,6 +143,7 @@
                                 </div>
 
                                 <div class="btn-showcase text-end">
+                                    <a href="{{ route("product-item", $this->product->id) }}" class="btn btn-primary">View Items</a>
                                     <button type="submit" class="btn btn-primary" id="submitBtn"
                                     wire:loading.attr="disabled" wire:target="update">
                                     <span wire:loading.remove wire:target="update">Save Changes</span>

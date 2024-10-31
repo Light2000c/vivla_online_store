@@ -12367,6 +12367,7 @@ body.open .closeMask {
     border-radius: 10px;
     border: 2px solid rgba(0, 0, 0, 0);
     width: 80px;
+    height: 80px;
     height: auto;
     transition: all .2s
 }

@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\Wishlist;
+use App\Models\ProductSize;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,6 +26,7 @@ class Product extends Model
         "category",
         "image",
         "description",
+        "product_size_id"
     ];
 
 
@@ -35,6 +38,13 @@ class Product extends Model
     public function hasCart(User $user)
     {
         return $this->cart->contains("user_id", $user->id);
+    }
+
+    public function hasCartWithSize(User $user, $product_size_id)
+    {
+        return $this->cart->contains(function ($item) use ($user, $product_size_id) {
+            return $item->user_id === $user->id && $item->product_size_id === $product_size_id;
+        });
     }
 
     public function order()
@@ -52,11 +62,23 @@ class Product extends Model
         return $this->wishlist->contains("user_id", $user->id);
     }
 
-    public function outOfStock(){
+    public function outOfStock()
+    {
         return $this->quantity == 0;
     }
 
-    public function review(){
+    public function review()
+    {
         return $this->hasMany(Review::class);
+    }
+
+    public function image()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function size()
+    {
+        return $this->hasMany(ProductSize::class);
     }
 }

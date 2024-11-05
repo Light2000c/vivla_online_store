@@ -43,7 +43,7 @@
 
 
                     <div style="margin: 20px 0;">
-                        <p><strong>Amount Paid:</strong> ${{ number_format($session->amount_total / 100) }}</p>
+                        <p><strong>Amount Paid:</strong> ${{ number_format($session->amount_total / 100, 2) }}</p>
                         <p><strong>Order Number:</strong> {{ $reference }}</p>
                     </div>
 

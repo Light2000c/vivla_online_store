@@ -291,6 +291,7 @@ class Products extends Component
 
     public function openQuickView($productId)
     {
+        try{
         $this->resetModalValues();
 
         $product = Product::find($productId);
@@ -306,6 +307,10 @@ class Products extends Component
         $this->getProductSize($product);
 
         $this->dispatch('openViewModal', ['productId' => $productId]);
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
     public function getProductSize($product)
@@ -345,6 +350,8 @@ class Products extends Component
 
     public function addQuickViewCart($id)
     {
+
+        try{
         $product = Product::find($id);
 
         if (!$product) {
@@ -374,12 +381,18 @@ class Products extends Component
                 return $this->showToast("info", "Please select a size");
             }
         }
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
 
 
     public function removeQuickViewCart($id)
     {
+
+        try{
 
         $product = Product::find($id);
 
@@ -410,6 +423,10 @@ class Products extends Component
                 return $this->showToast("info", "Please select a size");
             }
         }
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
 
@@ -434,6 +451,7 @@ class Products extends Component
     public function addQuickViewCartGuest($id)
     {
 
+        try{
         $product = Product::find($id);
 
         if (!$product) {
@@ -474,12 +492,18 @@ class Products extends Component
                 return $this->showToast("info", "Please select a size");
             }
         }
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
 
 
     public function removeQuickViewCartGuest($id)
     {
+
+        try{
 
         $product = Product::find($id);
 
@@ -511,6 +535,10 @@ class Products extends Component
                 return $this->showToast("info", "Please select a size");
             }
         }
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
 

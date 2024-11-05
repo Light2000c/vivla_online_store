@@ -84,8 +84,10 @@ class Size extends Component
             "name" => "required",
         ]);
 
+        try{
+
         $size = ModelsSize::create([
-            "name" =>  $this->name
+            "name" => "required|unique:sizes,name",
         ]);
 
         if (!$size) {
@@ -96,6 +98,10 @@ class Size extends Component
         $this->dispatch("closeCreateModal");
         $this->resetValues();
         return $this->showToast("success", "Size has been added.");
+
+    } catch (\Exception $e) {
+        return $this->showToast("error", "Something went wrong, please try again.");
+    }
     }
 
 
@@ -104,10 +110,8 @@ class Size extends Component
     {
 
         $validationRules = [
-            "name" => "required",
+            "name" => "required|unique:sizes,name",
         ];
-
-
 
         $this->validate($validationRules);
 
@@ -179,7 +183,7 @@ class Size extends Component
             $this->resetSelectItem();
             return $this->showToast("success", "Sizes has been deleted");
         } catch (\Exception $e) {
-            return $this->showToast("error", "Something went wrong, sizess were not successfully deleted");
+            return $this->showToast("error", "Something went wrong, sizes were not successfully deleted");
         }
     }
 

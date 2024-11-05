@@ -77,11 +77,11 @@
                                 </li>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b class="me-3">Sub Total: </b> ${{ number_format($amount) }}
+                                    <b class="me-3">Sub Total: </b> ${{ number_format($amount, 2) }}
                                 </li>
                                 <li
                                     style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 18px;">
-                                    <b class="me-3">Total Amount: </b> ${{  number_format($amount) }}
+                                    <b class="me-3">Total Amount: </b> ${{  number_format($amount, 2) }}
                                 </li>
                             </div>
                             <hr>

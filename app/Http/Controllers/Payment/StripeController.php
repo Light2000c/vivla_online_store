@@ -7,6 +7,8 @@ use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Price;
+use App\Models\Size;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,10 +25,13 @@ class StripeController extends Controller
 {
     public $stripe;
     public $reference;
+    public $shipping;
 
     public function __construct()
     {
         $this->stripe = new StripeClient(config('stripe.sk'));
+
+        $this->shipping = Price::where("name", "shipping")->first();
     }
 
 
@@ -37,6 +42,7 @@ class StripeController extends Controller
             'amount' => 'required|numeric',
         ]);
 
+        $total_amount = $request->amount + $this->shipping->price;
 
         try {
             $session = $this->stripe->checkout->sessions->create([
@@ -48,7 +54,8 @@ class StripeController extends Controller
                         'product_data' => [
                             'name' => 'Purchase from Vivla Closet',
                         ],
-                        'unit_amount' => $request->amount * 100,
+                        // 'unit_amount' => $request->amount * 100,
+                        'unit_amount' => $total_amount * 100,
                     ],
                     'quantity' => 1,
                 ]],
@@ -192,6 +199,8 @@ class StripeController extends Controller
                         ->where('id', $item->product_id)
                         ->value('discount');
 
+
+
                     if ($productDiscount) {
                         $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
                     } else {
@@ -201,6 +210,7 @@ class StripeController extends Controller
                     return [
                         'user_id' => $item->user_id,
                         'product_id' => $item->product_id,
+                        'product_size_id' => $item->product_size_id,
                         'price' => $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
                         'quantity' => $item->quantity,
                         'transaction_id' => $transactionId,
@@ -231,9 +241,14 @@ class StripeController extends Controller
             foreach ($orders as $order) {
                 $product = $order->product;
 
-                if ($product->quantity >= $order->quantity) {
-                    $product->decrement('quantity', $order->quantity);
+                if ($order->product->size()->count()) {
+                    if ($order->productSize->quantity >= $order->quantity) {
+                        $order->productSize->decrement('quantity', $order->quantity);
+                    }
                 } else {
+                    if ($product->quantity >= $order->quantity) {
+                        $product->decrement('quantity', $order->quantity);
+                    }
                 }
             }
         }

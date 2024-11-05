@@ -40,7 +40,7 @@
                     <ul style="list-style: none;">
                         <li>{{ $quantity }} Items</li>
                         <li>Placed on {{ $transaction->created_at }}</li>
-                        <li>Total: $ {{ number_format($total) }}</li>
+                        <li>Total: $ {{ number_format($total,2) }}</li>
                     </ul>
                 </div>
             </div>
@@ -56,6 +56,7 @@
                         <tr>
                             <th scope="col" class="product-thumbnail">Product</th>
                             <th scope="col" class="product-title">name</th>
+                            <th scope="col" class="product-sie">size</th>
                             <th scope="col" class="product-price">quantity</th>
                             <th scope="col" class="product-price">Unit Price</th>
                             <th scope="col" class="product-price">Total Amount</th>
@@ -70,10 +71,11 @@
                                             alt="Digital Product"></a></td>
                                 <td class="product-title"><a href="{{ route("product-detail", $order->product->id) }}">{{ $order->product->name }}</a>
                                 </td>
+                                <td class="product-price" data-title="size">{{ $order->productSize? $order->productSize->size->name : null  }}</td>
                                 <td class="product-price" data-title="Quantity">{{ $order->quantity }}</td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>
                                     @if ($order->product->discount)
-                                        {{ number_format($order->product->price - ($order->product->price * $order->product->discount) / 100) }}
+                                        {{ number_format($order->product->price - ($order->product->price * $order->product->discount) / 100,2) }}
                                     @else
                                         {{ number_format($order->product->price) }}
                                     @endif

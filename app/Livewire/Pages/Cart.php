@@ -35,19 +35,41 @@ class Cart extends Component
             $this->subTotal = $this->calculateSubTotal($this->carts);
         } else {
             $sessionCarts = session()->get('cart', []);
+            // $this->carts = collect($sessionCarts)->map(function ($item, $id) {
+
+            //     // $product = Product::find($id);
+            //     $product = Product::find($item["product_id"]);
+
+            //     if (!$product) {
+            //         return null;
+            //     }
+            //     return (object) [
+            //         'id' => $id,
+            //         'product' => (object) [
+            //             'price' => $item['price'],
+            //             'discount' => 0,
+            //         ],
+            //         'product_id' => $item['product_id'],
+            //         'quantity' => $item['quantity'],
+            //         'product_size_id' => $item['product_size_id'] ?? null
+            //     ];
+            // })->filter();
+
             $this->carts = collect($sessionCarts)->map(function ($item, $id) {
 
-                $product = Product::find($id);
+                $product = Product::find($item['product_id']);
 
                 if (!$product) {
                     return null;
                 }
+
                 return (object) [
                     'id' => $id,
                     'product' => (object) [
                         'price' => $item['price'],
                         'discount' => 0,
                     ],
+                    'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
                     'product_size_id' => $item['product_size_id'] ?? null
                 ];
@@ -259,90 +281,36 @@ class Cart extends Component
     }
 
 
-    // public function incSessionCart($id)
-    // {
-
-    //     try {
-
-    //         $product = Product::find($id);
-
-    //         if (!$product) {
-    //             return;
-    //         }
-
-    //         $cart = session()->get('cart', []);
-
-    //         if (array_key_exists($id, $cart)) {
-
-    //             if ($cart[$id]['quantity'] < $product->quantity) {
-    //                 $cart[$id]['quantity'] += 1;
-
-    //                 session()->put('cart', $cart);
-
-    //                 $this->dispatch('cartUpdated');
-    //                 return $this->showToast("success", "Cart updated");
-    //             } else {
-    //                 return $this->showToast("failed", "Product is out of stock");
-    //             }
-    //         }
-
-    //         return $this->showToast("error", "Item not found in cart");
-    //     } catch (\Exception $e) {
-    //         return $this->showToast("error", "Something went wrong while updating the cart");
-    //     }
-    // }
-
-    // public function decSessionCart($id)
-    // {
-
-    //     try {
-    //         $cart = session()->get('cart', []);
-
-
-    //         if (array_key_exists($id, $cart)) {
-
-    //             if ($cart[$id]['quantity'] > 1) {
-    //                 $cart[$id]['quantity'] -= 1;
-
-    //                 session()->put('cart', $cart);
-
-    //                 $this->dispatch('cartUpdated');
-
-    //                 return $this->showToast("success", "Cart updated");
-    //             }
-    //         }
-    //     } catch (\Exception $e) {
-    //         return $this->showToast("error", "Something went wrong while updating the cart");
-    //     }
-    // }
-
-    public function incSessionCart($id, $sizeId)
+    public function incSessionCart($id, $sizeId = null)
     {
 
         try {
 
             $cart = session()->get('cart', []);
 
-            $product = Product::find($id);
+            $product_id = $cart[$id]["product_id"];
+
+
+            $product = Product::find($product_id);
 
             if (!$product) {
                 return;
             }
 
-            $selectedSize = ProductSize::find($sizeId);
-
-            if (!$selectedSize) {
-                return;
-            }
 
             if ($product->size()->count()) {
-                $productId = $product->id;
-                $productSizeId = $selectedSize->id ?? null;
 
-                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+                $selectedSize = ProductSize::find($sizeId);
+
+                if (!$selectedSize) {
+                    return;
+                }
+
+                $key = $id;
             } else {
                 $key = $product->id;
             }
+
 
             if (array_key_exists($key, $cart)) {
 
@@ -372,20 +340,22 @@ class Cart extends Component
         try {
             $cart = session()->get('cart', []);
 
-            $product = Product::find($id);
+            $product_id = $cart[$id]["product_id"];
+
+
+            $product = Product::find($product_id);
 
             if (!$product) {
                 return;
             }
 
-            if ($product->size()->count()) {
-                $productId = $product->id;
-                $productSizeId = $this->selectedSize->id ?? null;
 
-                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+            if ($product->size()->count()) {
+                $key = $id;
             } else {
                 $key = $product->id;
             }
+
 
             if (array_key_exists($key, $cart)) {
 

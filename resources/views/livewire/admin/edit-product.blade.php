@@ -60,8 +60,7 @@
                                 </div> --}}
                                 <div class="col-12 col-lg-12 mb-3">
                                     <div wire:ignore>
-                                        <label class="form-label"
-                                            for="exampleFormControlTextarea1">Description</label>
+                                        <label class="form-label" for="exampleFormControlTextarea1">Description</label>
                                         <textarea class="form-control" id="editor" rows="4">{{ $this->description }}</textarea>
                                     </div>
 
@@ -82,7 +81,7 @@
                                 <div class="col-12 col-lg-12 mb-3">
                                     <label for="validationCustom01">Price</label>
                                     <input wire:model="price" class="form-control" id="validationCustom01"
-                                        type="number" placeholder="Product Price">
+                                        type="number" step="0.01" min="0">
                                     @error('price')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -143,21 +142,20 @@
                                 </div>
 
                                 <div class="btn-showcase text-end">
-                                    <a href="{{ route("product-item", $this->product->id) }}" class="btn btn-primary">View Items</a>
                                     <button type="submit" class="btn btn-primary" id="submitBtn"
-                                    wire:loading.attr="disabled" wire:target="update">
-                                    <span wire:loading.remove wire:target="update">Save Changes</span>
-                                    <div wire:loading wire:target="update">
-                                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                        <span role="status">Loading...</span>
-                                    </div>
-                                </button>
+                                        wire:loading.attr="disabled" wire:target="update">
+                                        <span wire:loading.remove wire:target="update">Save Changes</span>
+                                        <div wire:loading wire:target="update">
+                                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                            <span role="status">Loading...</span>
+                                        </div>
+                                    </button>
                                 </div>
-                            </div>
+                                <div class="btn-showcase text-end mt-3 mb-3">
+                                    <a href="{{ route('product-item', $this->product->id) }}"
+                                        class="btn btn-primary">View Items</a>
+                                </div>
 
-
-
-                           
                         </form>
 
                     </div>
@@ -189,47 +187,61 @@
         });
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor');
 
-        var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor', {
-            toolbar: [
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
-                { name: 'styles', items: ['Format', 'Paragraph'] },
-                { name: 'alignment', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight'] },
-                { name: 'indent', items: ['Outdent', 'Indent'] }
-            ],
-            removePlugins: 'elementspath',
-            resize_enabled: false,
-            versionCheck: false 
-        })
-        console.log("CKEditor initialized");
+            var editor = CKEDITOR.instances['editor'] || CKEDITOR.replace('editor', {
+                toolbar: [{
+                        name: 'basicstyles',
+                        items: ['Bold', 'Italic', 'Underline']
+                    },
+                    {
+                        name: 'paragraph',
+                        items: ['NumberedList', 'BulletedList']
+                    },
+                    {
+                        name: 'styles',
+                        items: ['Format', 'Paragraph']
+                    },
+                    {
+                        name: 'alignment',
+                        items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
+                    },
+                    {
+                        name: 'indent',
+                        items: ['Outdent', 'Indent']
+                    }
+                ],
+                removePlugins: 'elementspath',
+                resize_enabled: false,
+                versionCheck: false
+            })
+            console.log("CKEditor initialized");
 
-        // editor.on('change', function() {
-        //     var data = editor.getData();
-        //     console.log('CKEditor content changed: ', data);
-        //     @this.set('description', data);
-        // });
+            // editor.on('change', function() {
+            //     var data = editor.getData();
+            //     console.log('CKEditor content changed: ', data);
+            //     @this.set('description', data);
+            // });
 
-       
-        document.getElementById('productForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
 
-            var data = editor.getData(); 
-            console.log('CKEditor content on submit: ', data);
+            document.getElementById('productForm').addEventListener('submit', function(event) {
+                event.preventDefault();
 
-         
-            @this.set('description', data).then(() => {
-                // @this.call(
-                // 'update'); 
+                var data = editor.getData();
+                console.log('CKEditor content on submit: ', data);
+
+
+                @this.set('description', data).then(() => {
+                    // @this.call(
+                    // 'update'); 
+                });
             });
         });
-    });
-</script>
+    </script>
 
 
 
- @stack('scripts')
+    @stack('scripts')
 </div>

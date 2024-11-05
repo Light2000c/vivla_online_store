@@ -64,7 +64,7 @@
                                             </th>
                                             <th scope="row">{{ $product->id }}</th>
                                             <td>{{ Str::words($product->name, 6) }}</td>
-                                            <td>{{ number_format($product->price) }}</td>
+                                            <td>{{ number_format($product->price,2) }}</td>
                                             <td>{{ $product->discount }}</td>
                                             <td>{{ $product->brand }}</td>
                                             <td>{{ $product->category }}</td>

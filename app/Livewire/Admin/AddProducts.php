@@ -25,6 +25,8 @@ class AddProducts extends Component
     public $categories;
     public $selectedItems = [];
     public $category_error;
+    public $tax_price;
+    public $tax_total;
 
 
     public function render()
@@ -53,56 +55,54 @@ class AddProducts extends Component
         $this->validate([
             "name" => "required|unique:products,name",
             "price" => "required|numeric|min:0",
-            "quantity" => "required|numeric|min:0",
+            // "quantity" => "required|numeric|min:0",
             "image" => "required|mimes:jpeg,jpg,png,webp,jfif",
             "description" => "required",
         ]);
 
-        try{
+        try {
 
-    
-        if (empty($this->selectedItems)) {
-            return $this->addError("category_error", "Please select product categories");
+
+            if (empty($this->selectedItems)) {
+                return $this->addError("category_error", "Please select product categories");
+            }
+
+            // dd($this->selectedItems);
+
+            $this->category = $this->getSelectedCategories();
+
+            // dd($this->category);
+
+
+            $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
+
+            $upload = $this->image->storeAs('products', $file_name, 'public');
+
+            if (!$upload) {
+                return $this->addError("message", "An error occurred while trying to upload product image, please try again!.");
+            }
+
+            $product = Product::create([
+                "name" => $this->name,
+                "price" => $this->price,
+                "discount" => $this->discount,
+                "quantity" => $this->quantity,
+                "brand" => $this->brand,
+                "category" => $this->category,
+                "tag" => $this->tag,
+                "image" => $file_name,
+                "description" => $this->description,
+            ]);
+
+            if (!$product) {
+                return  $this->addError("message", "Product was not successfully created!");
+            }
+
+            $this->resetValues();
+            return $this->showAlert("Success", "Product has been successfully created", "success");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong please try again.");
         }
-
-        // dd($this->selectedItems);
-
-        $this->category = $this->getSelectedCategories();
-
-        // dd($this->category);
-
-
-        $file_name = time() . '-' . $this->name . '.' . $this->image->guessExtension();
-
-        $upload = $this->image->storeAs('products', $file_name, 'public');
-
-        if (!$upload) {
-            return $this->addError("message", "An error occurred while trying to upload product image, please try again!.");
-        }
-
-        $product = Product::create([
-            "name" => $this->name,
-            "price" => $this->price,
-            "discount" => $this->discount,
-            "quantity" => $this->quantity,
-            "brand" => $this->brand,
-            "category" => $this->category,
-            "tag" => $this->tag,
-            "image" => $file_name,
-            "description" => $this->description,
-        ]);
-
-        if (!$product) {
-            return  $this->addError("message", "Product was not successfully created!");
-        }
-
-        $this->resetValues();
-        return $this->showAlert("Success", "Product has been successfully created", "success");
-
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong please try again.");
-    }
-
     }
 
 
@@ -143,7 +143,7 @@ class AddProducts extends Component
             redirectUrl: url('/admin/products')
         );
     }
-    
+
     public function showToast($icon, $title)
     {
         $this->dispatch(
@@ -157,5 +157,18 @@ class AddProducts extends Component
     public function setDescription($value)
     {
         $this->description = $value;
+    }
+
+    public function getTotalWithTax()
+    {
+
+
+        $this->validate([
+            "tax_price" => "required|numeric"
+        ]);
+
+        $tax = ($this->tax_price * 8.25) / 100;
+
+        $this->tax_total = $this->tax_price + $tax;
     }
 }

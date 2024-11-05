@@ -94,10 +94,10 @@
                                         <div class="product-price-variant" style="background-color: #d8ba56;">
                                             @if ($new->discount)
                                                 <span
-                                                    class="price curreent-price">${{ number_format($new->price - ($new->price * $new->discount) / 100) }}</span>
+                                                    class="price curreent-price">${{ number_format($new->price - ($new->price * $new->discount) / 100, 2) }}</span>
                                             @else
                                                 <span
-                                                    class="price curreent-price">${{ number_format($new->price) }}</span>
+                                                    class="price curreent-price">${{ number_format($new->price,2) }}</span>
                                             @endif
                                         </div>
                                         <h5 class="title text-start"><a href="{{ route("product-detail", $new) }}">{{ $new->name }}
@@ -343,10 +343,10 @@
                                     <div class="product-price-variant">
                                         @if ($new->discount)
                                             <span
-                                                class="price curreent-price">${{ number_format($new->price - ($new->price * $new->discount) / 100) }}</span>
+                                                class="price curreent-price">${{ number_format($new->price - ($new->price * $new->discount) / 100,2) }}</span>
                                         @else
                                             <span
-                                                class="price curreent-price">${{ number_format($new->price) }}</span>
+                                                class="price curreent-price">${{ number_format($new->price, 2) }}</span>
                                         @endif
                                     </div>
                                     <div class="product-cart">

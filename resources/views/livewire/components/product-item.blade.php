@@ -96,8 +96,8 @@
                     </h5>
                     <div class="product-price-variant">
                         <span
-                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
-                        <span class="price old-price">${{ number_format($product->price) }}</span>
+                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100,2) }}</span>
+                        <span class="price old-price">${{ number_format($product->price,2) }}</span>
                     </div>
                 </div>
             @else
@@ -105,7 +105,7 @@
                     <h5 class="title"><a href="{{ route('product-detail', $product->id) }}">{{ $product->name }}</a>
                     </h5>
                     <div class="product-price-variant">
-                        <span class="price current-price">${{ number_format($product->price) }}</span>
+                        <span class="price current-price">${{ number_format($product->price,2) }}</span>
                     </div>
                 </div>
             @endif
@@ -429,9 +429,9 @@
                     </h5>
                     <div class="product-price-variant">
                         <span
-                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
+                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100,2) }}</span>
                         <span
-                            class="price old-price">${{ number_format($product->price) }}</span>
+                            class="price old-price">${{ number_format($product->price,2) }}</span>
                     </div>
                 </div>
             @else
@@ -441,7 +441,7 @@
                     </h5>
                     <div class="product-price-variant">
                         <span
-                            class="price current-price">${{ number_format($product->price) }}</span>
+                            class="price current-price">${{ number_format($product->price,2) }}</span>
                     </div>
                 </div>
             @endif

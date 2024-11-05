@@ -73,7 +73,7 @@
         <div class="page-header">
             <div class="header-wrapper row m-0">
                 <div class="header-logo-wrapper col-auto p-0">
-                    <div class="logo-wrapper"><a href="{{ route("home") }}">
+                    <div class="logo-wrapper"><a href="{{ route('home') }}">
                             <img class="img-fluid for-light" src="/web1/assets/images/logo/logo-1.png" alt="">
                             <img class="img-fluid for-dark" src="/web1/assets/images/logo/logo.png" alt=""></a>
                     </div>
@@ -133,13 +133,15 @@
                                 </div>
                             </div>
                             <ul class="profile-dropdown onhover-show-div">
-                                <li><a href="{{ route("edit-account") }}"><i data-feather="user"></i><span>Account </span></a>
+                                <li><a href="{{ route('edit-account') }}"><i data-feather="user"></i><span>Account
+                                        </span></a>
                                 </li>
                                 {{-- <li><a href=""><i data-feather="settings"></i><span>Settings</span></a></li> --}}
                                 <li>
-                                    <form  action="{{ route('admin-logout') }}" method="POST">
+                                    <form action="{{ route('admin-logout') }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-link btn-sm"><i data-feather="log-in"> </i><span>Logout</span></button>
+                                        <button type="submit" class="btn btn-link btn-sm"><i data-feather="log-in">
+                                            </i><span>Logout</span></button>
                                     </form>
                                 </li>
                             </ul>
@@ -164,8 +166,8 @@
             <div class="sidebar-wrapper" data-layout="fill-svg">
                 <div>
                     <div class="logo-wrapper">
-                        <a href="index.html"><img class="img-fluid"
-                                src="/logo/VIVLA MAIN LOGO WEBT2.png"  alt="" width="40" height="157"></a>
+                        <a href="index.html"><img class="img-fluid" src="/logo/VIVLA MAIN LOGO WEBT2.png"
+                                alt="" width="40" height="157"></a>
                         {{-- <a href="index.html"><img class="img-fluid"
                                 src="/web1/assets/images/logo/logo.png" alt=""></a> --}}
                         <div class="toggle-sidebar">
@@ -255,10 +257,6 @@
                                             <i class="bi bi-chat-right-quote-fill me-2"
                                                 style="font-size: 16px"></i>Reviews</span></a>
                                 </li>
-                                {{-- <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('admin-order') }}"><span>Orders</span></a>
-                                </li> --}}
 
                                 <li class="sidebar-main-title">
                                     <div>
@@ -268,12 +266,19 @@
 
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-price') }}"><span>
+                                            <i class="bi bi-arrows-angle-contract me-2"
+                                                style="font-size: 16px"></i>Prices</span></a>
+                                </li>
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-transaction') }}"><span>
                                             <i class="bi bi-arrows-angle-contract me-2"
                                                 style="font-size: 16px"></i>Transaction</span></a>
                                 </li>
                                 <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav" href="{{ route("admin-payment") }}"><span><i
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-payment') }}"><span><i
                                                 class="bi bi-credit-card-2-back me-2"
                                                 style="font-size: 16px"></i>Payment</span></a>
                                 </li>

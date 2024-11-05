@@ -17,6 +17,7 @@ use App\Livewire\Admin\EditProduct;
 use App\Livewire\Admin\Favourites;
 use App\Livewire\Admin\Orders;
 use App\Livewire\Admin\Payments;
+use App\Livewire\Admin\Prices;
 use App\Livewire\Admin\ProductItems;
 use App\Livewire\Admin\Products;
 use App\Livewire\Admin\Reviews;
@@ -159,6 +160,8 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
     Route::get("admin/transactions", Transactions::class)->name("admin-transaction");
 
     Route::get("admin/payments", Payments::class)->name("admin-payment");
+
+    Route::get("admin/prices", Prices::class)->name("admin-price");
 
     Route::post("admin/logout", [AdminLogoutController::class, "logout"])->name("admin-logout");
 });

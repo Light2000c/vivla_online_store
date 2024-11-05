@@ -4,7 +4,7 @@
              {{ $cartCount->sum('quantity') }}
          @elseif($display === 'total')
              @if (Auth::user())
-                 <span class="subtotal-amount">${{ number_format($this->getTotal()) }}</span>
+                 <span class="subtotal-amount">${{ number_format($this->getTotal(),2) }}</span>
              @endif
          @else
              @if ($cartCount->count())
@@ -37,9 +37,9 @@
                              </h3>
                              <div class="item-price"><span class="currency-symbol">$</span>
                                  @if ($cart->product->discount)
-                                     {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
+                                     {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100,2) }}
                                  @else
-                                     {{ number_format($cart->product->price) }}
+                                     {{ number_format($cart->product->price,2) }}
                                  @endif
                              </div>
                              <div>

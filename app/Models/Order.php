@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -15,20 +16,34 @@ class Order extends Model
     public $fillable = [
         "user_id",
         "product_id",
+        "product_size_id",
         "price",
         "quantity",
         "total",
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function product(){
+    public function product()
+    {
         return $this->belongsTo(Product::class);
     }
 
-    public function transactiion(){
+    public function transactiion()
+    {
         return $this->belongsTo(Transaction::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function productSize()
+    {
+        return $this->belongsTo(ProductSize::class);
     }
 }

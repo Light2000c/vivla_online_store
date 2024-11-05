@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -83,28 +84,36 @@ class RegisterController extends Controller
     public function moveCartToDb()
     {
 
-        $carts = session()->get('cart', []);
+        try {
+            $carts = session()->get('cart', []);
 
-        if (!empty($carts)) {
-            foreach ($carts as $id => $item) {
+            if (!empty($carts)) {
+                foreach ($carts as $id => $item) {
 
-                $product = Product::find($id);
+                    $product = Product::find($item['product_id']);
 
-                if (!$product) {
-                    continue;
+                    if (!$product) {
+                        continue;
+                    }
+
+                    $sizeId = $item['product_size_id'] ?? null;
+
+                    $cart =  Cart::where("user_id", Auth::user()->id)->where("product_id", $product->id)->where("product_size_id", $sizeId)->first();
+
+                    if ($cart) {
+                        continue;
+                    }
+
+                    Auth::user()->cart()->create([
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'product_size_id' => $sizeId,
+                    ]);
                 }
 
-                if ($product->hasCart(Auth::user())) {
-                    continue;
-                }
-
-                Auth::user()->cart()->create([
-                    'product_id' => $id,
-                    'quantity' => $item['quantity']
-                ]);
+                session()->forget('cart');
             }
-
-            session()->forget('cart');
+        } catch (\Exception $e) {
         }
     }
 }

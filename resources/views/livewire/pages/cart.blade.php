@@ -78,9 +78,9 @@
                                             <td class="product-price" data-title="Price"><span
                                                     class="currency-symbol">$</span>
                                                 @if ($cart->product->discount)
-                                                    {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
+                                                    {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100,2) }}
                                                 @else
-                                                    {{ number_format($cart->product->price) }}
+                                                    {{ number_format($cart->product->price,2) }}
                                                 @endif
                                             </td>
                                             <td class="product-size" data-title="Size">
@@ -110,9 +110,9 @@
                                             <td class="product-subtotal" data-title="Subtotal"><span
                                                     class="currency-symbol">$</span>
                                                 @if ($cart->product->discount)
-                                                    {{ number_format($cart->quantity * $cart->product->price - ($cart->product->price * $cart->product->discount) / 100) }}
+                                                    {{ number_format($cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount / 100)),2) }}
                                                 @else
-                                                    {{ number_format($cart->quantity * $cart->product->price) }}
+                                                    {{ number_format($cart->quantity * $cart->product->price,2) }}
                                                 @endif
                                             </td>
                                         </tr>
@@ -123,13 +123,13 @@
                                     @foreach ($carts as $cart)
                                         <tr>
                                             <td class="product-remove">
-                                                <a wire:click="removeFromSessionCart({{ $cart->id }})"
+                                                <a wire:click="removeFromSessionCart('{{ $cart->id }}')"
                                                     class="remove-wishlist">
                                                     <i wire:loading.remove
-                                                        wire:target="removeFromSessionCart({{ $cart->id }})"
+                                                        wire:target="removeFromSessionCart('{{ $cart->id }}')"
                                                         class="fal fa-times"></i>
                                                     <span wire:loading
-                                                        wire:target="removeFromSessionCart({{ $cart->id }})"
+                                                        wire:target="removeFromSessionCart('{{ $cart->id }}')"
                                                         class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
                                                 </a>
@@ -141,40 +141,41 @@
                                             <td class="product-title"><a
                                                     href="{{ route('product-detail', $cart->id) }}">{{ $this->getProductName($cart->id) }}
 
-                                                    <p><small>{{ $this->getProductQuantity($cart->id, $cart->product_size_id) > 1 ? $this->getProductQuantity($cart->id, $cart->product_size_id) . ' units left' : $this->getProductQuantity($cart->id,$cart->product_size_id) . ' unit left' }}</small>
+                                                    <p><small>{{ $this->getProductQuantity($cart->id, $cart->product_size_id) > 1 ? $this->getProductQuantity($cart->id, $cart->product_size_id) . ' units left' : $this->getProductQuantity($cart->id, $cart->product_size_id) . ' unit left' }}</small>
                                                     </p>
                                                 </a></td>
-                                                <td class="product-size" data-title="Size">
-                                                    {{ $this->getProductSize($cart->id, $cart->product_size_id) }} </td>
                                             <td class="product-price" data-title="Price"><span
-                                                    class="currency-symbol">$</span>{{ number_format($cart->product->price) }}
+                                                    class="currency-symbol">$</span>{{ number_format($cart->product->price,2) }}
                                             </td>
+                                            <td class="product-size" data-title="Size">
+                                                {{ $this->getProductSize($cart->id, $cart->product_size_id) }} </td>
                                             <td class="product-quantity" data-title="Qty">
                                                 <div class="pro-qty">
-                                                    <span wire:click="decSessionCart({{ $cart->id }})"
+                                                    <span wire:click="decSessionCart('{{ $cart->id }}')"
                                                         class="dec qtybtn">
                                                         <span wire:loading.remove
-                                                            wire:target="decSessionCart({{ $cart->id }})">-</span>
+                                                            wire:target="decSessionCart('{{ $cart->id }}')">-</span>
                                                         <span wire:loading
-                                                            wire:target="decSessionCart({{ $cart->id }})"
+                                                            wire:target="decSessionCart('{{ $cart->id }}')"
                                                             class="spinner-grow spinner-grow" role="status"
                                                             aria-hidden="true"></span>
                                                     </span>
                                                     <input type="number" class="quantity-input"
                                                         value="{{ $cart->quantity }}" disabled>
-                                                    <span wire:click="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})"
+                                                    <span
+                                                        wire:click="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})"
                                                         class="inc qtybtn">
                                                         <span wire:loading.remove
-                                                            wire:target="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})">+</span>
+                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})">+</span>
                                                         <span wire:loading
-                                                            wire:target="incSessionCart({{ $cart->id }}, {{ $cart->product_size_id }})"
+                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})"
                                                             class="spinner-grow spinner-grow" role="status"
                                                             aria-hidden="true"></span>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td class="product-subtotal" data-title="Subtotal"><span
-                                                    class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity)) }}
+                                                    class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity),2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -199,7 +200,7 @@
                                     <tbody>
                                         <tr class="order-subtotal">
                                             <td>Subtotal</td>
-                                            <td>${{ number_format($subTotal) }}</td>
+                                            <td>${{ number_format($subTotal,2) }}</td>
                                         </tr>
                                         <tr class="order-shipping">
                                             <td>Shipping</td>
@@ -220,7 +221,7 @@
                                         </tr>
                                         <tr class="order-total">
                                             <td>Total</td>
-                                            <td class="order-total-amount">${{ number_format($subTotal) }}</td>
+                                            <td class="order-total-amount">${{ number_format($subTotal,2) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

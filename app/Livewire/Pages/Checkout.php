@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Models\Address;
+use App\Models\Price;
 use App\Models\User;
 use App\Services\CountryServices;
 
@@ -29,6 +30,7 @@ class Checkout extends Component
     public $country;
     public $activeAddress;
     public $countries = [];
+    public $shipping;
 
 
     public function mount()
@@ -47,6 +49,7 @@ class Checkout extends Component
     {
         $this->carts = Auth::user()->cart()->orderBy("created_at", "DESC")->get();
         $this->address = Auth::user()->address()->where("active", 1)->first();
+        $this->shipping = Price::where("name", "shipping")->first();
 
         if ($this->address) {
             $this->setValues($this->address);
@@ -167,13 +170,20 @@ class Checkout extends Component
         // }
 
         foreach ($carts as $cart) {
-            if ($cart->quantity > $cart->product->quantity) {
-                return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+            if ($cart->product->size()->count()) {
+                if ($cart->quantity > $cart->productSize->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+                }
+            } else {
+                if ($cart->quantity > $cart->product->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+                }
             }
         }
 
         $this->dispatch('submit-payment-form');
     }
+
 
     public function payWithPaypal()
     {
@@ -190,13 +200,20 @@ class Checkout extends Component
         }
 
         foreach ($carts as $cart) {
-            if ($cart->quantity > $cart->product->quantity) {
-                return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+            if ($cart->product->size()->count()) {
+                if ($cart->quantity > $cart->productSize->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+                }
+            } else {
+                if ($cart->quantity > $cart->product->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to add is currently out of stock. Please review your cart and confirm available items.");
+                }
             }
         }
 
         $this->dispatch('submit-paypal-payment-form');
     }
+
 
     public function setWhatsappUrl()
     {

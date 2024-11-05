@@ -93,7 +93,7 @@ class EditProduct extends Component
         $validationRules = [
             "name" => $product->name === $this->name ? "required" : "required|unique:products,name",
             "price" => "required|numeric|min:0",
-            "quantity" => "required|numeric|min:0",
+            // "quantity" => "required|numeric|min:0",
             "category" => "required",
             "description" => "required",
         ];

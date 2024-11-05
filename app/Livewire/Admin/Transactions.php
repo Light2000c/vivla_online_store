@@ -86,7 +86,7 @@ class Transactions extends Component
         $total = $orders->sum("total");
         $quantity = $orders->sum("quantity");
 
-        return number_format($total)  . ' for ' . $quantity . ' item';
+        return number_format($total,2)  . ' for ' . $quantity . ' item';
     }
 
     public function openUpdateModal($id)

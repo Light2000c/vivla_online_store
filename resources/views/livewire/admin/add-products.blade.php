@@ -51,7 +51,7 @@
                                              <div class="col-12 col-lg-6 mb-3">
                                                  <label for="validationCustom01">Price</label>
                                                  <input wire:model="price" class="form-control" id="validationCustom01"
-                                                     type="number" placeholder="Product Price">
+                                                     type="number" step="0.01" min="0">
                                                  @error('price')
                                                      <small class="text-danger">{{ $message }}</small>
                                                  @enderror
@@ -116,17 +116,6 @@
                                                      <small class="text-danger">{{ $message }}</small>
                                                  @enderror
                                              </div>
-                                             {{-- <div class="col-12 mb-3">
-                                                 <div wire:ignore>
-                                                     <label class="form-label"
-                                                         for="exampleFormControlTextarea1">Description</label>
-                                                     <textarea wire:model="description" class="form-control" id="editor" rows="4"></textarea>
-                                                 </div>
-
-                                                 @error('description')
-                                                     <small class="text-danger">{{ $message }}</small>
-                                                 @enderror
-                                             </div> --}}
                                              <div class="col-12 mb-3">
                                                  <div wire:ignore>
                                                      <label class="form-label"
@@ -182,6 +171,40 @@
                                  </button>
                              </div>
                          </form>
+
+                         <div class="mt-5 pt-5 border p-3">
+                            <div class="mb-3">
+                                <h5>Calculate Tax</h5>
+                                <p>Enter the price below to calculate the total with tax included.</p>
+                            </div>
+                      
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="">Price</label>
+                                        <input wire:model="tax_price" type="number" class="form-control">
+                                        @error("tax_price")
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="">Total (Amount + Tax)</label>
+                                        <input wire:model="tax_total" type="number" class="form-control" @disabled(true)>
+                                    </div>
+                                    <div class="btn-showcase text-start">
+                                        <button wire:click="getTotalWithTax" class="btn btn-primary" id="submitBtn"
+                                            wire:loading.attr="disabled" wire:target="getTotalWithTax">
+                                            <span wire:loading.remove wire:target="getTotalWithTax">Calculate</span>
+                                            <div wire:loading wire:target="getTotalWithTax">
+                                                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                                <span role="status">Loading...</span>
+                                            </div>
+                                        </button>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
 
                      </div>
                  </div>

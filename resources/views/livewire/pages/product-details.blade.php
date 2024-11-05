@@ -82,13 +82,13 @@
                                 @if ($product->discount)
                                     <div class="price-amount price-offer-amount">
                                         <span
-                                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100) }}</span>
-                                        <span class="price old-price">${{ number_format($product->price) }}</span>
+                                            class="price current-price">${{ number_format($product->price - ($product->price * $product->discount) / 100,2) }}</span>
+                                        <span class="price old-price">${{ number_format($product->price,2) }}</span>
                                         {{-- <span class="offer-badge">20% OFF</span> --}}
                                     </div>
                                 @else
                                     <div class="price-amount price-offer-amount">
-                                        <span class="price current-price">${{ number_format($product->price) }}</span>
+                                        <span class="price current-price">${{ number_format($product->price,2) }}</span>
                                     </div>
                                 @endif
                                 <div class="product-rating">
@@ -642,8 +642,8 @@
                                         </h5>
                                         <div class="product-price-variant">
                                             <span
-                                                class="price current-price">${{ number_format($related->price - ($related->price * $product->discount) / 100) }}</span>
-                                            <span class="price old-price">${{ number_format($related->price) }}</span>
+                                                class="price current-price">${{ number_format($related->price - ($related->price * $product->discount) / 100,2) }}</span>
+                                            <span class="price old-price">${{ number_format($related->price,2) }}</span>
                                         </div>
                                     </div>
                                 @else
@@ -653,7 +653,7 @@
                                         </h5>
                                         <div class="product-price-variant">
                                             <span
-                                                class="price current-price">${{ number_format($related->price) }}</span>
+                                                class="price current-price">${{ number_format($related->price, 2) }}</span>
                                         </div>
                                     </div>
                                 @endif

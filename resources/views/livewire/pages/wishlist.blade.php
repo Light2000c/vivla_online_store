@@ -64,9 +64,9 @@
                                 </td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>
                                     @if ($wishes->product->discount)
-                                        {{ number_format($wishes->product->price - ($wishes->product->price * $wishes->product->discount) / 100) }}
+                                        {{ number_format($wishes->product->price - ($wishes->product->price * $wishes->product->discount) / 100,2) }}
                                     @else
-                                        {{ number_format($wishes->product->price) }}
+                                        {{ number_format($wishes->product->price, 2) }}
                                     @endif
                                 </td>
                                 <td class="product-stock-status" data-title="Status">

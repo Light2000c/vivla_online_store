@@ -579,41 +579,46 @@ class ProductDetails extends Component
 
     public function sizeChanged()
     {
-        // dd($this->size);
         $this->setSizeQuantity();
     }
 
 
     public function addQuickViewCart($id)
     {
-        $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
+        try {
 
-        $user = Auth::user();
-        $size = $product->size()->get();
+            $product = Product::find($id);
 
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
-                    return;
-                }
-
-                $cart =  $user->cart()->create([
-                    "product_id" => $product->id,
-                    "product_size_id" => $this->selectedSize->id
-                ]);
-
-                if ($cart) {
-                    $this->showToast("success", "Product has been added to cart");
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
+
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
+                        return;
+                    }
+
+                    $cart =  $user->cart()->create([
+                        "product_id" => $product->id,
+                        "product_size_id" => $this->selectedSize->id
+                    ]);
+
+                    if ($cart) {
+                        $this->showToast("success", "Product has been added to cart");
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
         }
     }
 
@@ -621,35 +626,39 @@ class ProductDetails extends Component
 
     public function removeQuickViewCart($id)
     {
+        try {
 
-        $product = Product::find($id);
+            $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
-
-        $user = Auth::user();
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                $cart = $user->cart()->where("product_size_id", $this->selectedSize->id)->first();
-
-                if (!$cart) {
-                    return $this->showToast("info", "Cart was not found");
-                }
-
-                $deleted = $cart->delete();
-
-
-                if ($deleted) {
-                    $this->showToast("success", "Product has been removed from cart");
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
+
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    $cart = $user->cart()->where("product_size_id", $this->selectedSize->id)->first();
+
+                    if (!$cart) {
+                        return $this->showToast("info", "Cart was not found");
+                    }
+
+                    $deleted = $cart->delete();
+
+
+                    if ($deleted) {
+                        $this->showToast("success", "Product has been removed from cart");
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
         }
     }
 
@@ -675,45 +684,51 @@ class ProductDetails extends Component
     public function addQuickViewCartGuest($id)
     {
 
-        $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
+        try {
+            $product = Product::find($id);
 
-        $user = Auth::user();
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
-                    // return;
-                    return $this->showToast("info", "Product already exist in cart");
-                }
-
-                $cart = session()->get('cart', []);
-
-                if (array_key_exists($id, $cart)) {
-                    return;
-                }
-
-                $key = $product->id . (isset($this->selectedSize) ? "_{$this->selectedSize->id}" : "");
-
-                $cart[$key] = [
-                    'product_id' => $product->id,
-                    'quantity' => 1,
-                    'price' => $product->price,
-                    'product_size_id' => $this->selectedSize->id ?? null,
-                ];
-
-
-                session()->put('cart', $cart);
-
-                return $this->dispatch('cartUpdated');
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
+
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
+                        // return;
+                        return $this->showToast("info", "Product already exist in cart");
+                    }
+
+                    $cart = session()->get('cart', []);
+
+                    if (array_key_exists($id, $cart)) {
+                        return;
+                    }
+
+                    $key = $product->id . (isset($this->selectedSize) ? "_{$this->selectedSize->id}" : "");
+
+
+                    $cart[$key] = [
+                        'product_id' => $product->id,
+                        'quantity' => 1,
+                        'price' => $product->price,
+                        'product_size_id' => $this->selectedSize->id ?? null,
+                    ];
+
+
+                    session()->put('cart', $cart);
+
+                    return $this->dispatch('cartUpdated');
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
         }
     }
 
@@ -722,35 +737,40 @@ class ProductDetails extends Component
     public function removeQuickViewCartGuest($id)
     {
 
-        $product = Product::find($id);
+        try {
 
-        if (!$product) {
-            return;
-        }
+            $product = Product::find($id);
 
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                $cart = session()->get('cart', []);
-
-                $productId = $product->id;
-                $productSizeId = $this->selectedSize->id ?? null;
-
-
-                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
-
-
-                if (array_key_exists($key, $cart)) {
-                    unset($cart[$key]);
-                    session()->put('cart', $cart);
-
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
+
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    $cart = session()->get('cart', []);
+
+                    $productId = $product->id;
+                    $productSizeId = $this->selectedSize->id ?? null;
+
+
+                    $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+
+
+                    if (array_key_exists($key, $cart)) {
+                        unset($cart[$key]);
+                        session()->put('cart', $cart);
+
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
         }
     }
 

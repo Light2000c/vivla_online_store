@@ -6,6 +6,7 @@
 - **Customer Name:** {{ $details['name'] }}
 - **Customer Email:** {{ $details['email'] }}
 - **Order Date:** {{ $details['order_date'] }}
+- **Total Amount:** ${{ $details['total_amount'] }}
 
 A new order has been placed by {{ $details['name'] }} on Vivlaviv Closet. Please review the order and prepare it for processing.
 

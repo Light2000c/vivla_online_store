@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\payment\PaypalController;
 use App\Http\Controllers\Payment\StripeController;
+use App\Http\Controllers\ReceiptController;
 use App\Livewire\Admin\AddProducts;
 use App\Livewire\Admin\Address;
 use App\Livewire\Admin\Carts;
@@ -82,6 +83,9 @@ Route::get("contact-us", Contact::class)->name("contact");
 
 Route::middleware('web')->group(function () {
     Route::post("logout", [LogoutController::class, "logout"])->name("logout");
+
+    Route::get('/generate-pdf/{id}', [ReceiptController::class, 'index'])->name('generate.pdf');
+
 });
 
 //Pages Routes

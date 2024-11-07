@@ -31,6 +31,7 @@ class Checkout extends Component
     public $activeAddress;
     public $countries = [];
     public $shipping;
+    public $tax;
 
 
     public function mount()
@@ -50,6 +51,7 @@ class Checkout extends Component
         $this->carts = Auth::user()->cart()->orderBy("created_at", "DESC")->get();
         $this->address = Auth::user()->address()->where("active", 1)->first();
         $this->shipping = Price::where("name", "shipping")->first();
+        $this->tax = Price::where("name", "tax")->first();
 
         if ($this->address) {
             $this->setValues($this->address);
@@ -240,6 +242,15 @@ class Checkout extends Component
         $this->whatsAppUrl = "https://wa.me/$phone?text=$encodedMessage";
     }
 
+
+    public function getTax($total)
+    {
+
+        $percentage = $this->tax->price ?? 8.25;
+        $tax = ($total * $percentage) / 100;
+
+        return $tax;
+    }
 
 
     public function showToast($icon, $title)

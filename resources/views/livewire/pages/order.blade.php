@@ -40,8 +40,17 @@
                     <ul style="list-style: none;">
                         <li>{{ $quantity }} Items</li>
                         <li>Placed on {{ $transaction->created_at }}</li>
-                        <li>Total: $ {{ number_format($total,2) }}</li>
+                        <li>Tax ${{ number_format($this->getTax($total), 2) }}</li>
+                        <li>Shipping ${{ number_format($shipping->price, 2) ?? 0 }}</li>
+                        <li>SubTotal: ${{ number_format($total, 2) }}</li>
+                        <li>Total: ${{ number_format($total + $shipping->price + $this->getTax($total), 2) }}</li>
                     </ul>
+                </div>
+                <div class="row d-flex justify-content-end  m-3">
+                    <div class="col-6 col-lg-2">
+                        <button wire:click="generatePdf" class="btn btn-primary btn-lg"><i class="bi bi-printer"></i>
+                            Print Receipt</button>
+                    </div>
                 </div>
             </div>
             <div class="product-table-heading mt-4">
@@ -66,21 +75,24 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td class="product-thumbnail"><a href="{{ route("product-detail", $order->product->id) }}"><img
-                                            src="/products/{{ $order->product->image }}"
-                                            alt="Digital Product"></a></td>
-                                <td class="product-title"><a href="{{ route("product-detail", $order->product->id) }}">{{ $order->product->name }}</a>
+                                <td class="product-thumbnail"><a
+                                        href="{{ route('product-detail', $order->product->id) }}"><img
+                                            src="/products/{{ $order->product->image }}" alt="Digital Product"></a>
                                 </td>
-                                <td class="product-price" data-title="size">{{ $order->productSize? $order->productSize->size->name : null  }}</td>
+                                <td class="product-title"><a
+                                        href="{{ route('product-detail', $order->product->id) }}">{{ $order->product->name }}</a>
+                                </td>
+                                <td class="product-price" data-title="size">
+                                    {{ $order->productSize ? $order->productSize->size->name : null }}</td>
                                 <td class="product-price" data-title="Quantity">{{ $order->quantity }}</td>
                                 <td class="product-price" data-title="Price"><span class="currency-symbol">$</span>
                                     @if ($order->product->discount)
-                                        {{ number_format($order->product->price - ($order->product->price * $order->product->discount) / 100,2) }}
+                                        {{ number_format($order->product->price - ($order->product->price * $order->product->discount) / 100, 2) }}
                                     @else
-                                        {{ number_format($order->product->price) }}
+                                        {{ number_format($order->product->price, 2) }}
                                     @endif
                                 </td>
-                                <td class="product-price" data-title="Total">${{ $order->total }}</td>
+                                <td class="product-price" data-title="Total">${{ number_format($order->total,2) }}</td>
                                 <td class="" data-title="Date">{{ $order->created_at }}</td>
                             </tr>
                         @endforeach
@@ -158,8 +170,7 @@
                                 <span>19-03-2024</span>
                               </div>
                             </li> --}}
-                            <li
-                                class="timeline-item-end {{ $transaction->status === 4 ? 'completed' : 'pending' }}">
+                            <li class="timeline-item-end {{ $transaction->status === 4 ? 'completed' : 'pending' }}">
                                 @if ($transaction->status === 4)
                                     <i class="bi bi-record-circle-fill icon"></i>
                                 @else
@@ -176,4 +187,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        window.addEventListener("openPdf", (e) => {
+
+            let id = e.detail[0].id;
+
+            console.log(id);
+
+            window.open(`/generate-pdf/${id}`, '_blank');
+        });
+    </script>
 </main>

@@ -202,7 +202,7 @@
                                             <td>Subtotal</td>
                                             <td>${{ number_format($subTotal,2) }}</td>
                                         </tr>
-                                        <tr class="order-shipping">
+                                        {{-- <tr class="order-shipping">
                                             <td>Shipping</td>
                                             <td>
                                                 <div class="input-group">
@@ -218,7 +218,7 @@
                                                     <label for="radio3">Flat rate: $12.00</label>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         <tr class="order-total">
                                             <td>Total</td>
                                             <td class="order-total-amount">${{ number_format($subTotal,2) }}</td>

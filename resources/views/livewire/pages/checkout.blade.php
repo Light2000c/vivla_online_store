@@ -282,7 +282,7 @@
                                                     @if ($cart->product->discount)
                                                         {{ number_format($cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount) / 100), 2) }}
                                                     @else
-                                                        {{ number_format($cart->quantity * $cart->product->price,2) }}
+                                                        {{ number_format($cart->quantity * $cart->product->price, 2) }}
                                                     @endif
                                                 </td>
                                             </tr>
@@ -307,21 +307,23 @@
                                         </div>
                                     @endif
 
-                                    <tr class="order-subtotal checkout-item">
+                                    <tr class="order-total checkout-item">
                                         <td>Subtotal</td>
-                                        <td>${{ number_format($subTotal,2) }}</td>
+                                        <td>${{ number_format($subTotal, 2) }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <td>Tax</td>
-                                        <td class="order-total-amount">8.5%</td>
+                                        <td class="order-total-amount">
+                                            ${{ number_format($this->getTax($subTotal), 2) }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <td>Shipping Fee</td>
-                                        <td class="order-total-amount">${{ $shipping->price }}</td>
+                                        <td class="order-total-amount">${{ number_format($shipping->price, 2) }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <td>Total</td>
-                                        <td class="order-total-amount">${{ number_format($subTotal + $shipping->price, 2) }}</td>
+                                        <td class="order-total-amount">
+                                            ${{ number_format($subTotal + $shipping->price + $this->getTax($subTotal), 2) }}</td>
                                     </tr>
                                 </tbody>
                             </table>

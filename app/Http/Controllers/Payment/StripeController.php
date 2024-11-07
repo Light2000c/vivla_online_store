@@ -26,12 +26,14 @@ class StripeController extends Controller
     public $stripe;
     public $reference;
     public $shipping;
+    public $tax;
 
     public function __construct()
     {
         $this->stripe = new StripeClient(config('stripe.sk'));
 
         $this->shipping = Price::where("name", "shipping")->first();
+        $this->tax = Price::where("name", "tax")->first();
     }
 
 
@@ -42,11 +44,10 @@ class StripeController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-        $total_amount = $request->amount + $this->shipping->price;
+        $total_amount = $request->amount + $this->shipping->price + $this->getTax($request->amount);
 
         try {
             $session = $this->stripe->checkout->sessions->create([
-                // 'payment_method_types' => ['card', 'paypal'],
                 'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
@@ -55,7 +56,7 @@ class StripeController extends Controller
                             'name' => 'Purchase from Vivla Closet',
                         ],
                         // 'unit_amount' => $request->amount * 100,
-                        'unit_amount' => $total_amount * 100,
+                        'unit_amount' => intval($total_amount * 100),
                     ],
                     'quantity' => 1,
                 ]],
@@ -67,8 +68,7 @@ class StripeController extends Controller
 
             return redirect($session->url);
         } catch (\Exception $e) {
-
-            // dd($e->getMessage());
+            // dd($e->getMessage())
             // return back()->with('error', 'Failed to create Stripe Checkout session: ' . $e->getMessage());
             return back()->with('error', 'Something went wrong while trying to checkout, please try again');
         }
@@ -95,11 +95,15 @@ class StripeController extends Controller
 
                 $date = now()->format('Y-m-d H:i:s');
 
+                $amount = $session->amount_total / 100;
+
                 $details = [
                     "name" => Auth::user()->name,
                     "email" => Auth::user()->email,
                     "order_number" => $reference,
-                    "order_date" => $date
+                    "order_date" => $date,
+                    "total_amount" => $amount
+
                 ];
 
                 try {
@@ -258,5 +262,14 @@ class StripeController extends Controller
     {
         $random_number = "TN" . random_int(100000, 999999);
         return $random_number;
+    }
+
+    public function getTax($total)
+    {
+
+        $percentage = $this->tax->price ?? 8.25;
+        $tax = ($total * $percentage) / 100;
+
+        return $tax;
     }
 }

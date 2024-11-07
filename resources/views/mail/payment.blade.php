@@ -4,6 +4,7 @@
     ### Order Details
     - **Order Number:** {{ $details['order_number'] }}
     - **Order Date:** {{ $details['order_date'] }}
+    - **Total Amount:** ${{ $details['total_amount'] }}
 
     Dear {{ $details['name'] }},
 

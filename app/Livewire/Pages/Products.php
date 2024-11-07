@@ -34,7 +34,7 @@ class Products extends Component
     public $product_size = [];
     public $size;
     public $selectedSize;
-    
+
 
     public function mount() {}
 
@@ -123,6 +123,10 @@ class Products extends Component
             }
 
             $user = Auth::user();
+
+            if ($product->quantity < 1) {
+                return $this->showToast("info", "Product is out of stock.");
+            }
 
             if ($product->hasCart(Auth::user())) {
                 return;
@@ -232,6 +236,10 @@ class Products extends Component
                 return;
             }
 
+            if ($product->quantity < 1) {
+                return $this->showToast("info", "Product is out of stock.");
+            }
+
             $cart = session()->get('cart', []);
 
             if (array_key_exists($id, $cart)) {
@@ -291,26 +299,25 @@ class Products extends Component
 
     public function openQuickView($productId)
     {
-        try{
-        $this->resetModalValues();
+        try {
+            $this->resetModalValues();
 
-        $product = Product::find($productId);
+            $product = Product::find($productId);
 
-        if (!$product) {
-            return;
+            if (!$product) {
+                return;
+            }
+
+            $this->activeProduct = $product;
+
+            $this->product_images = $product->image()->get();
+
+            $this->getProductSize($product);
+
+            $this->dispatch('openViewModal', ['productId' => $productId]);
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
         }
-
-        $this->activeProduct = $product;
-
-        $this->product_images = $product->image()->get();
-
-        $this->getProductSize($product);
-
-        $this->dispatch('openViewModal', ['productId' => $productId]);
-
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong, please try again.");
-    }
     }
 
     public function getProductSize($product)
@@ -351,40 +358,44 @@ class Products extends Component
     public function addQuickViewCart($id)
     {
 
-        try{
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
-
-        $user = Auth::user();
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
-                    return;
-                }
-
-                $cart =  $user->cart()->create([
-                    "product_id" => $product->id,
-                    "product_size_id" => $this->selectedSize->id
-                ]);
-
-                if ($cart) {
-                    $this->showToast("success", "Product has been added to cart");
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
-        }
 
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong, please try again.");
-    }
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    if ($this->selectedSize->quantity < 1) {
+                        return $this->showToast("info", "Product is out of stock.");
+                    }
+
+                    if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
+                        return;
+                    }
+
+                    $cart =  $user->cart()->create([
+                        "product_id" => $product->id,
+                        "product_size_id" => $this->selectedSize->id
+                    ]);
+
+                    if ($cart) {
+                        $this->showToast("success", "Product has been added to cart");
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
+        }
     }
 
 
@@ -392,41 +403,40 @@ class Products extends Component
     public function removeQuickViewCart($id)
     {
 
-        try{
+        try {
 
-        $product = Product::find($id);
+            $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
-
-        $user = Auth::user();
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                $cart = $user->cart()->where("product_size_id", $this->selectedSize->id)->first();
-
-                if (!$cart) {
-                    return $this->showToast("info", "Cart was not found");
-                }
-
-                $deleted = $cart->delete();
-
-
-                if ($deleted) {
-                    $this->showToast("success", "Product has been removed from cart");
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
-        }
 
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong, please try again.");
-    }
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    $cart = $user->cart()->where("product_size_id", $this->selectedSize->id)->first();
+
+                    if (!$cart) {
+                        return $this->showToast("info", "Cart was not found");
+                    }
+
+                    $deleted = $cart->delete();
+
+
+                    if ($deleted) {
+                        $this->showToast("success", "Product has been removed from cart");
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
+        }
     }
 
 
@@ -451,51 +461,54 @@ class Products extends Component
     public function addQuickViewCartGuest($id)
     {
 
-        try{
-        $product = Product::find($id);
+        try {
+            $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
-
-        $user = Auth::user();
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
-                    // return;
-                    return $this->showToast("info", "Product already exist in cart");
-                }
-
-                $cart = session()->get('cart', []);
-
-                if (array_key_exists($id, $cart)) {
-                    return;
-                }
-
-                $key = $product->id . (isset($this->selectedSize) ? "_{$this->selectedSize->id}" : "");
-
-                $cart[$key] = [
-                    'product_id' => $product->id,
-                    'quantity' => 1,
-                    'price' => $product->price,
-                    'product_size_id' => $this->selectedSize->id ?? null,
-                ];
-
-
-                session()->put('cart', $cart);
-
-                return $this->dispatch('cartUpdated');
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
-        }
 
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong, please try again.");
-    }
+            $user = Auth::user();
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    if ($this->selectedSize->quantity < 1) {
+                        return $this->showToast("info", "Product is out of stock.");
+                    }
+
+                    if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
+                        // return;
+                        return $this->showToast("info", "Product already exist in cart");
+                    }
+
+                    $cart = session()->get('cart', []);
+
+                    if (array_key_exists($id, $cart)) {
+                        return;
+                    }
+
+                    $key = $product->id . (isset($this->selectedSize) ? "_{$this->selectedSize->id}" : "");
+
+                    $cart[$key] = [
+                        'product_id' => $product->id,
+                        'quantity' => 1,
+                        'price' => $product->price,
+                        'product_size_id' => $this->selectedSize->id ?? null,
+                    ];
+
+
+                    session()->put('cart', $cart);
+
+                    return $this->dispatch('cartUpdated');
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
+        }
     }
 
 
@@ -503,42 +516,41 @@ class Products extends Component
     public function removeQuickViewCartGuest($id)
     {
 
-        try{
+        try {
 
-        $product = Product::find($id);
+            $product = Product::find($id);
 
-        if (!$product) {
-            return;
-        }
-
-        $size = $product->size()->get();
-
-        if ($size->count()) {
-            if ($this->selectedSize) {
-
-                $cart = session()->get('cart', []);
-
-                $productId = $product->id;
-                $productSizeId = $this->selectedSize->id ?? null;
-
-
-                $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
-
-
-                if (array_key_exists($key, $cart)) {
-                    unset($cart[$key]);
-                    session()->put('cart', $cart);
-
-                    return $this->dispatch('cartUpdated');
-                }
-            } else {
-                return $this->showToast("info", "Please select a size");
+            if (!$product) {
+                return;
             }
-        }
 
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong, please try again.");
-    }
+            $size = $product->size()->get();
+
+            if ($size->count()) {
+                if ($this->selectedSize) {
+
+                    $cart = session()->get('cart', []);
+
+                    $productId = $product->id;
+                    $productSizeId = $this->selectedSize->id ?? null;
+
+
+                    $key = $productId . ($productSizeId ? "_{$productSizeId}" : "");
+
+
+                    if (array_key_exists($key, $cart)) {
+                        unset($cart[$key]);
+                        session()->put('cart', $cart);
+
+                        return $this->dispatch('cartUpdated');
+                    }
+                } else {
+                    return $this->showToast("info", "Please select a size");
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, please try again.");
+        }
     }
 
 

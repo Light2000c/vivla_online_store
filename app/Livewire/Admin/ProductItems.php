@@ -173,6 +173,10 @@ class ProductItems extends Component
 
         try {
 
+            if ($this->product->image()->count() >= 3) {
+                return $this->showToast("error", "You caan onky add up to 3 images");
+            }
+
             $file_name = time() . '-' . $this->product->name . '.' . $this->image->guessExtension();
 
             // dd($file_name);

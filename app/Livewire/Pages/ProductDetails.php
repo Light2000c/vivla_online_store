@@ -76,6 +76,11 @@ class ProductDetails extends Component
 
             $user = Auth::user();
 
+
+            if ($product->quantity < 1) {
+                return $this->showToast("info", "Product is out of stock.");
+            }
+
             if ($product->hasCart(Auth::user())) {
                 return;
             }
@@ -334,6 +339,11 @@ class ProductDetails extends Component
 
             if (!$product) {
                 return;
+            }
+
+
+            if ($product->quantity < 1) {
+                return $this->showToast("info", "Product is out of stock.");
             }
 
             $cart = session()->get('cart', []);
@@ -600,6 +610,10 @@ class ProductDetails extends Component
             if ($size->count()) {
                 if ($this->selectedSize) {
 
+                    if ($this->selectedSize->quantity < 1) {
+                        return $this->showToast("info", "Product is out of stock.");
+                    }
+
                     if ($product->hasCartWithSize($user, $this->selectedSize->id)) {
                         return;
                     }
@@ -697,6 +711,10 @@ class ProductDetails extends Component
 
             if ($size->count()) {
                 if ($this->selectedSize) {
+
+                    if ($this->selectedSize->quantity < 1) {
+                        return $this->showToast("info", "Product is out of stock.");
+                    }
 
                     if ($this->isInQuickViewCart($product->id, $this->selectedSize->id)) {
                         // return;

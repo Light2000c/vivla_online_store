@@ -195,11 +195,6 @@ class Checkout extends Component
             return $this->showToast("info", "You don't have any product on your cart yet!");
         }
 
-        $default_address = request()->user()->address()->where("active", 1)->first();
-
-        if (!$default_address) {
-            return $this->showToast("info", "You haven't set you default address yet");
-        }
 
         foreach ($carts as $cart) {
             if ($cart->product->size()->count()) {

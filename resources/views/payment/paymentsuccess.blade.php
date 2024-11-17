@@ -43,15 +43,21 @@
 
 
                     <div style="margin: 20px 0;">
-                        <p><strong>Amount Paid:</strong> ${{ number_format($session->amount_total / 100, 2) }}</p>
-                        <p><strong>Order Number:</strong> {{ $reference }}</p>
+                        @if ($details['method'] === 'stripe')
+                            <p><strong>Amount Paid:</strong> ${{ number_format($details['total_amount'], 2) }}</p>
+                        @endif
+
+                        @if ($details['method'] === 'paypal')
+                            <p><strong>Amount Paid:</strong> ${{ number_format($details['total_amount'], 2) }}</p>
+                        @endif
+                        <p><strong>Order Number:</strong> {{ $details['order_number'] }}</p>
                     </div>
 
                     <div>
                         <a href="{{ route('home') }}"
                             style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Go
                             to Home</a>
-                        <a href="{{ route('order', $reference) }}"
+                        <a href="{{ route('order', $details['order_number']) }}"
                             style="padding: 10px 20px; background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">View
                             Order</a>
                     </div>

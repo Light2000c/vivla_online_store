@@ -318,12 +318,14 @@
                                     </tr>
                                     <tr class="order-total">
                                         <td>Shipping Fee</td>
-                                        <td class="order-total-amount">${{ number_format($shipping->price, 2) }}</td>
+                                        <td class="order-total-amount">
+                                            ${{ $carts->count() ? number_format($shipping->price, 2) : 0 }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <td>Total</td>
                                         <td class="order-total-amount">
-                                            ${{ number_format($subTotal + $shipping->price + $this->getTax($subTotal), 2) }}</td>
+                                            ${{ number_format($subTotal + ($carts->count() ? $shipping->price : 0) + $this->getTax($subTotal), 2) }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -369,7 +371,7 @@
                             class="axil-btn btn-bg-primary checkout-btn mb-3">Pay with
                             Card</button>
 
-                        {{-- <form id="paypal-payment-form" action="{{ route('payWithPaypal') }}" method="POST">
+                        <form id="paypal-payment-form" action="{{ route('payWithPaypal') }}" method="POST">
                             @csrf
 
                             @if (session(session('error')))
@@ -384,10 +386,10 @@
                             @error('amount')
                                 <small>{{ $message }}</small>
                             @enderror
-                        </form> --}}
-                        {{-- <button wire:click="payWithPaypal" class="axil-btn btn-bg-primary checkout-btn mb-3">Checkout
+                        </form>
+                        <button wire:click="payWithPaypal" class="axil-btn btn-bg-primary checkout-btn mb-3">Pay
                             with
-                            Paypal</button> --}}
+                            Paypal</button>
                         {{-- <a href="{{ $whatsAppUrl }}" class="axil-btn btn-bg-primary checkout-btn">Checkout on
                             WhatsApp</a> --}}
                     </div>

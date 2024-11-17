@@ -102,7 +102,8 @@ class StripeController extends Controller
                     "email" => Auth::user()->email,
                     "order_number" => $reference,
                     "order_date" => $date,
-                    "total_amount" => $amount
+                    "total_amount" => $amount,
+                    "method" => "stripe"
 
                 ];
 
@@ -115,7 +116,7 @@ class StripeController extends Controller
                     return $this->error();
                 }
 
-                return view('payment.paymentsuccess', ['session' => $session, 'reference' => $reference]);
+                return view('payment.paymentsuccess', ['details' => $details]);
             } else {
                 return $this->error();
             }
@@ -163,7 +164,7 @@ class StripeController extends Controller
 
     public function saveTransaction($session)
     {
-        DB::beginTransaction(); // Begin a transaction
+        DB::beginTransaction();
 
         try {
 

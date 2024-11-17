@@ -85,7 +85,6 @@ Route::middleware('web')->group(function () {
     Route::post("logout", [LogoutController::class, "logout"])->name("logout");
 
     Route::get('/generate-pdf/{id}', [ReceiptController::class, 'index'])->name('generate.pdf');
-
 });
 
 //Pages Routes
@@ -119,9 +118,9 @@ Route::group(["middleware" => ["auth", "verified"]], function () {
     Route::get('/pay/cancel', [StripeController::class, 'cancel'])->name('checkout.cancel');
 
 
-    // Route::post('/payWithPaypal', [PaypalController::class, 'checkout'])->name('payWithPaypal');
-    // Route::get('/payWithPaypal/success', [PaypalController::class, 'success'])->name('checkout.paypal.success');
-    // Route::get('/payWithPaypal/cancel', [PaypalController::class, 'cancel'])->name('checkout.paypal.cancel');
+    Route::post('/payWithPaypal', [PaypalController::class, 'checkout'])->name('payWithPaypal');
+    Route::get('/payWithPaypal/success', [PaypalController::class, 'success'])->name('checkout.paypal.success');
+    Route::get('/payWithPaypal/cancel', [PaypalController::class, 'cancel'])->name('checkout.paypal.cancel');
 });
 
 

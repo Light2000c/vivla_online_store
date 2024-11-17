@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Models\Order;
+use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,8 @@ class PaypalController extends Controller
 
     public $paypal;
     public $reference;
+    public $shipping;
+    public $tax;
 
     public function __construct()
     {
@@ -26,6 +29,9 @@ class PaypalController extends Controller
         $this->paypal->setClientId(env('PAYPAL_CLIENT_ID'));
         $this->paypal->setSecret(env('PAYPAL_CLIENT_SECRET'));
         $this->paypal->setTestMode(env('PAYPAL_SANDBOX_MODE', true));
+
+        $this->shipping = Price::where("name", "shipping")->first();
+        $this->tax = Price::where("name", "tax")->first();
     }
 
     public function checkout(Request $request)
@@ -38,30 +44,31 @@ class PaypalController extends Controller
             'amount' => 'required|numeric',
         ]);
 
+        $total_amount = $request->amount + $this->shipping->price + $this->getTax($request->amount);
 
-        // try {
-        // Create a purchase request for PayPal
-        $response = $this->paypal->purchase([
-            'amount' => $request->amount,
-            'currency' => 'USD',
-            'returnUrl' => route('checkout.paypal.success', ['transaction_id' => $transactionId]),
-            'cancelUrl' => route('checkout.paypal.cancel'),
-            'description' => 'Purchase from Vivla Closet',
-        ])->send();
 
-        // dd($response->getRedirectUrl());
-        // dd($response->getData());
-        // dd($response);
+        try {
+            // Create a purchase request for PayPal
+            $response = $this->paypal->purchase([
+                'amount' => $total_amount,
+                'currency' => 'USD',
+                'returnUrl' => route('checkout.paypal.success', ['transaction_id' => $transactionId]),
+                'cancelUrl' => route('checkout.paypal.cancel'),
+                'description' => 'Purchase from Vivla Closet',
+            ])->send();
 
-        if ($response->isRedirect()) {
-            return redirect($response->getRedirectUrl());
-        } else {
-            dd($response->getMessage());
-            return back()->with('error', $response->getMessage());
+ 
+            // dd($response);
+
+            if ($response->isRedirect()) {
+                return redirect($response->getRedirectUrl());
+            } else {
+                // return back()->with('error', $response->getMessage());
+                return back()->with('error', "Something went wrong while trying to checkout, please try again");
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong while trying to checkout, please try again');
         }
-        // } catch (\Exception $e) {
-        //     return back()->with('error', 'Something went wrong while trying to checkout, please try again');
-        // }
     }
 
     public function success(Request $request)
@@ -70,7 +77,6 @@ class PaypalController extends Controller
         $payerId = $request->query('PayerID');
 
         if (!$paymentId || !$payerId) {
-            dd("No payment of payment id");
             return $this->error();
         }
 
@@ -88,12 +94,16 @@ class PaypalController extends Controller
 
                 $reference = $this->reference ? $this->reference : "";
                 $date = now()->format('Y-m-d H:i:s');
-                
+
+                $amount = $data['transactions'][0]['amount']['total'];
+
                 $details = [
                     "name" => Auth::user()->name,
                     "email" => Auth::user()->email,
                     "order_number" => $reference,
-                    "order_date" => $date
+                    "order_date" => $date,
+                    "total_amount" => $amount,
+                    "method" => "paypal"
                 ];
 
 
@@ -101,17 +111,14 @@ class PaypalController extends Controller
                     Mail::to(Auth::user()->email)->send(new PaymentMail($details));
                     Mail::to("sales@vivlavivcloset.com")->send(new InfoMail($details));
                 } catch (\Exception $e) {
-                    dd($e->getMessage());
                     return $this->error();
                 }
 
-                return view('payment.paymentsuccess', ['reference' => $reference]);
+                return view('payment.paymentsuccess', ['details' => $details]);
             } else {
-                dd("No data ACDK");
                 return $this->error();
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return $this->error();
         }
     }
@@ -129,8 +136,8 @@ class PaypalController extends Controller
 
     public function savePayment($data)
     {
-      $amount = $data['transactions'][0]['amount']['total'];
-      $currency =  $data['transactions'][0]['amount']['currency'];
+        $amount = $data['transactions'][0]['amount']['total'];
+        $currency =  $data['transactions'][0]['amount']['currency'];
 
         try {
             $payment = request()->user()->payment()->create([
@@ -144,7 +151,6 @@ class PaypalController extends Controller
 
             return true;
         } catch (\Exception $e) {
-            dd($e->getMessage());
             return false;
         }
     }
@@ -156,33 +162,25 @@ class PaypalController extends Controller
         try {
             $random_number = $this->generateReference();
 
-            $address = auth::user()->address()->where("active", 1)->first();
-            if (!$address) {
-                dd("Something went wrong while trying to save transaction");
-                return $this->error();
-            }
 
             if (!$this->savePayment($data)) {
-                dd("show 1");
                 DB::rollBack();
                 return $this->error();
             }
 
             $transaction = request()->user()->transaction()->create([
                 "reference" => $random_number,
-                "address_id" => $address->id
             ]);
 
             $this->reference = $random_number;
 
             if (!$transaction) {
-                dd("Something went wrong while trying to save transaction");
                 return $this->error();
             }
 
             $transactionId = $transaction->id;
 
-            DB::table('carts')->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
+            DB::table('carts')->where('user_id', Auth::id())->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
                 $orders = $carts->map(function ($item) use ($transactionId) {
                     $productPrice = DB::table('products')
                         ->where('id', $item->product_id)
@@ -191,6 +189,8 @@ class PaypalController extends Controller
                     $productDiscount = DB::table('products')
                         ->where('id', $item->product_id)
                         ->value('discount');
+
+
 
                     if ($productDiscount) {
                         $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
@@ -201,6 +201,7 @@ class PaypalController extends Controller
                     return [
                         'user_id' => $item->user_id,
                         'product_id' => $item->product_id,
+                        'product_size_id' => $item->product_size_id,
                         'price' => $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
                         'quantity' => $item->quantity,
                         'transaction_id' => $transactionId,
@@ -217,8 +218,6 @@ class PaypalController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
-
-            dd($e->getMessage());
             DB::rollBack();
             return $this->error();
         }
@@ -232,8 +231,14 @@ class PaypalController extends Controller
             foreach ($orders as $order) {
                 $product = $order->product;
 
-                if ($product->quantity >= $order->quantity) {
-                    $product->decrement('quantity', $order->quantity);
+                if ($order->product->size()->count()) {
+                    if ($order->productSize->quantity >= $order->quantity) {
+                        $order->productSize->decrement('quantity', $order->quantity);
+                    }
+                } else {
+                    if ($product->quantity >= $order->quantity) {
+                        $product->decrement('quantity', $order->quantity);
+                    }
                 }
             }
         }
@@ -243,5 +248,14 @@ class PaypalController extends Controller
     {
         $random_number = "TN" . random_int(100000, 999999);
         return $random_number;
+    }
+
+    public function getTax($total)
+    {
+
+        $percentage = $this->tax->price ?? 8.25;
+        $tax = ($total * $percentage) / 100;
+
+        return $tax;
     }
 }

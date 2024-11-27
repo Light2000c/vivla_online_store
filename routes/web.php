@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\LogoutController as AdminLogoutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\payment\PaypalController;
+use App\Http\Controllers\Payment\PaypalController;
 use App\Http\Controllers\Payment\StripeController;
 use App\Http\Controllers\ReceiptController;
 use App\Livewire\Admin\AddProducts;

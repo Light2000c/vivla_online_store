@@ -344,8 +344,7 @@
                                 <div class="input-group justify-content-between align-items-start text-white">
                                     {{-- <input type="radio" id="radio6" name="payment" checked>
                                     <label class="text-dark" for="radio6">Stripe</label> --}}
-                                    <p>Checkout securely with your Stripe credit card or via WhatsApp for a seamless
-                                        experience!</p>
+                                    <p>Checkout with your stripe credit card or paypal for seamless experience</p>
                                 </div>
                             </div>
 

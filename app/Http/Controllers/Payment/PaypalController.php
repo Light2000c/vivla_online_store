@@ -28,7 +28,7 @@ class PaypalController extends Controller
         $this->paypal = Omnipay::create('PayPal_Rest');
         $this->paypal->setClientId(env('PAYPAL_CLIENT_ID'));
         $this->paypal->setSecret(env('PAYPAL_CLIENT_SECRET'));
-        $this->paypal->setTestMode(env('PAYPAL_SANDBOX_MODE', true));
+        // $this->paypal->setTestMode(env('PAYPAL_SANDBOX_MODE', true));
 
         $this->shipping = Price::where("name", "shipping")->first();
         $this->tax = Price::where("name", "tax")->first();
@@ -46,11 +46,12 @@ class PaypalController extends Controller
 
         $total_amount = $request->amount + $this->shipping->price + $this->getTax($request->amount);
 
+        $formatted_amount = number_format($total_amount, 2, '.', '');
 
         try {
             // Create a purchase request for PayPal
             $response = $this->paypal->purchase([
-                'amount' => $total_amount,
+                'amount' =>  $formatted_amount,
                 'currency' => 'USD',
                 'returnUrl' => route('checkout.paypal.success', ['transaction_id' => $transactionId]),
                 'cancelUrl' => route('checkout.paypal.cancel'),

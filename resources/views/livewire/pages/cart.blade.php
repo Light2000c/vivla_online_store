@@ -78,9 +78,9 @@
                                             <td class="product-price" data-title="Price"><span
                                                     class="currency-symbol">$</span>
                                                 @if ($cart->product->discount)
-                                                    {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100,2) }}
+                                                    {{ number_format($cart->product->price - ($cart->product->price * $cart->product->discount) / 100, 2) }}
                                                 @else
-                                                    {{ number_format($cart->product->price,2) }}
+                                                    {{ number_format($cart->product->price, 2) }}
                                                 @endif
                                             </td>
                                             <td class="product-size" data-title="Size">
@@ -110,9 +110,9 @@
                                             <td class="product-subtotal" data-title="Subtotal"><span
                                                     class="currency-symbol">$</span>
                                                 @if ($cart->product->discount)
-                                                    {{ number_format($cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount / 100)),2) }}
+                                                    {{ number_format($cart->quantity * ($cart->product->price - ($cart->product->price * $cart->product->discount) / 100), 2) }}
                                                 @else
-                                                    {{ number_format($cart->quantity * $cart->product->price,2) }}
+                                                    {{ number_format($cart->quantity * $cart->product->price, 2) }}
                                                 @endif
                                             </td>
                                         </tr>
@@ -145,7 +145,7 @@
                                                     </p>
                                                 </a></td>
                                             <td class="product-price" data-title="Price"><span
-                                                    class="currency-symbol">$</span>{{ number_format($cart->product->price,2) }}
+                                                    class="currency-symbol">$</span>{{ number_format($cart->product->price, 2) }}
                                             </td>
                                             <td class="product-size" data-title="Size">
                                                 {{ $this->getProductSize($cart->id, $cart->product_size_id) }} </td>
@@ -163,19 +163,19 @@
                                                     <input type="number" class="quantity-input"
                                                         value="{{ $cart->quantity }}" disabled>
                                                     <span
-                                                        wire:click="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})"
+                                                        wire:click="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id }})"
                                                         class="inc qtybtn">
                                                         <span wire:loading.remove
-                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})">+</span>
+                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id }})">+</span>
                                                         <span wire:loading
-                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id  }})"
+                                                            wire:target="incSessionCart('{{ $cart->id }}', {{ $cart->product_size_id }})"
                                                             class="spinner-grow spinner-grow" role="status"
                                                             aria-hidden="true"></span>
                                                     </span>
                                                 </div>
                                             </td>
                                             <td class="product-subtotal" data-title="Subtotal"><span
-                                                    class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity),2) }}
+                                                    class="currency-symbol">$</span>{{ number_format($this->getCartTotal($cart->id, $cart->quantity), 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -200,33 +200,19 @@
                                     <tbody>
                                         <tr class="order-subtotal">
                                             <td>Subtotal</td>
-                                            <td>${{ number_format($subTotal,2) }}</td>
+                                            <td>${{ number_format($subTotal, 2) }}</td>
                                         </tr>
-                                        {{-- <tr class="order-shipping">
-                                            <td>Shipping</td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <input type="radio" id="radio1" name="shipping" checked>
-                                                    <label for="radio1">Free Shippping</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="radio" id="radio2" name="shipping">
-                                                    <label for="radio2">Local: $35.00</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="radio" id="radio3" name="shipping">
-                                                    <label for="radio3">Flat rate: $12.00</label>
-                                                </div>
-                                            </td>
-                                        </tr> --}}
                                         <tr class="order-total">
                                             <td>Total</td>
-                                            <td class="order-total-amount">${{ number_format($subTotal,2) }}</td>
+                                            <td class="order-total-amount">${{ number_format($subTotal, 2) }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="{{ route('checkout') }}" class="axil-btn btn-bg-primary checkout-btn">Proceed to
+                            {{-- <a href="{{ route('checkout') }}" class="axil-btn btn-bg-primary checkout-btn">Proceed to
+                                Checkout</a> --}}
+                            <a wire:click="displayCheckoutMessage" class="axil-btn btn-bg-primary checkout-btn"
+                                style="cursor: default;">Proceed to
                                 Checkout</a>
                         </div>
                     </div>
@@ -259,6 +245,42 @@
             });
 
         });
+    </script>
+
+    <script>
+        window.addEventListener("showItems", function(e) {
+            $("#itemModal").modal("show");
+        });
+
+
+        window.addEventListener("checkoutMessage", function(e) {
+
+            let data = e.detail;
+
+            console.log(data);
+
+            Swal.fire({
+                title: data.title,
+                text: data.text,
+                icon: data.icon,
+                showCancelButton: true,
+                cancelButtonText: 'Close',
+                showConfirmButton: false, // Disable the default confirm button
+                html: `
+                <div>
+        <a href="${data.withAuthUrl}"><button id="signInToCheckout" class="swal2-confirm swal2-styled">
+            Sign In to Checkout
+        </button>
+         </a>
+        <a href="${data.withoutAuthUrl}"><button id="checkoutWithoutSignIn" class="swal2-confirm swal2-styled" style="background-color: #3085d6; color: #fff; margin-left: 10px;">
+            Checkout As Guest
+        </button>
+        </a>
+        </div>
+    `
+            });
+        });
+
     </script>
 
 </main>

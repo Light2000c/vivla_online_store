@@ -53,48 +53,46 @@ class Carts extends Component
     public function delete($id)
     {
 
-        try{
-        $cart = Cart::find($id);
+        try {
+            $cart = Cart::find($id);
 
-        if (!$cart) {
-            return $this->showToast("error", "cart was not successfully deleted");
+            if (!$cart) {
+                return $this->showToast("error", "cart was not successfully deleted");
+            }
+
+            $deleted = $cart->delete();
+
+            if (!$deleted) {
+                return $this->showToast("error", "cart was not successfully deleted");
+            }
+
+            $this->load();
+            return $this->showToast("success", "cart has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong please try again.");
         }
-
-        $deleted = $cart->delete();
-
-        if (!$deleted) {
-            return $this->showToast("error", "cart was not successfully deleted");
-        }
-
-        $this->load();
-        return $this->showToast("success", "cart has been deleted");
-
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong please try again.");
-    }
     }
 
     public function deleteSelected()
     {
 
-        try{
-        if (empty($this->selectedItems)) {
-            return $this->showToast("info", "you haven't selected any item yet!");
+        try {
+            if (empty($this->selectedItems)) {
+                return $this->showToast("info", "you haven't selected any item yet!");
+            }
+
+            $delete = Cart::whereIn("id", $this->selectedItems)->delete();
+
+            if (!$delete) {
+                return $this->showToast("error", "carts was not successfully deleted");
+            }
+
+            $this->load();
+            $this->resetValue();
+            return $this->showToast("success", "carts has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong please try again.");
         }
-
-        $delete = Cart::whereIn("id", $this->selectedItems)->delete();
-
-        if (!$delete) {
-            return $this->showToast("error", "carts was not successfully deleted");
-        }
-
-        $this->load();
-        $this->resetValue();
-        return $this->showToast("success", "carts has been deleted");
-
-    } catch (\Exception $e) {
-        return $this->showToast("error", "Something went wrong please try again.");
-    }
     }
 
     public function resetValue()
@@ -110,4 +108,5 @@ class Carts extends Component
             title: $title,
         );
     }
+
 }

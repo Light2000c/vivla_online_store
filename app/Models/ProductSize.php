@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Cart;
 use App\Models\Size;
 use App\Models\Product;
+use App\Models\GuestOrder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -37,5 +38,9 @@ class ProductSize extends Model
     public function hasSize($sizeId)
     {
         return $this->contains("size_id", $sizeId);
+    }
+
+    public function guestOrder(){
+        return $this->hasMany(GuestOrder::class);
     }
 }

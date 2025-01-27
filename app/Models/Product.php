@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Review;
 use App\Models\Wishlist;
+use App\Models\GuestOrder;
 use App\Models\ProductSize;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
@@ -80,5 +81,9 @@ class Product extends Model
     public function size()
     {
         return $this->hasMany(ProductSize::class);
+    }
+
+    public function guestOrder(){
+        return $this->hasMany(GuestOrder::class);
     }
 }

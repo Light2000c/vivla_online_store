@@ -17,7 +17,7 @@ class Cart extends Component
 
     private $carts;
     private $subTotal;
-
+    
     public function render()
     {
         $this->load();
@@ -35,25 +35,6 @@ class Cart extends Component
             $this->subTotal = $this->calculateSubTotal($this->carts);
         } else {
             $sessionCarts = session()->get('cart', []);
-            // $this->carts = collect($sessionCarts)->map(function ($item, $id) {
-
-            //     // $product = Product::find($id);
-            //     $product = Product::find($item["product_id"]);
-
-            //     if (!$product) {
-            //         return null;
-            //     }
-            //     return (object) [
-            //         'id' => $id,
-            //         'product' => (object) [
-            //             'price' => $item['price'],
-            //             'discount' => 0,
-            //         ],
-            //         'product_id' => $item['product_id'],
-            //         'quantity' => $item['quantity'],
-            //         'product_size_id' => $item['product_size_id'] ?? null
-            //     ];
-            // })->filter();
 
             $this->carts = collect($sessionCarts)->map(function ($item, $id) {
 
@@ -390,5 +371,17 @@ class Cart extends Component
         } catch (\Exception $e) {
             return $this->showToast("error", "Something went wrong while updating the cart");
         }
+    }
+
+    public function displayCheckoutMessage()
+    {
+
+        $this->dispatch(
+            "checkoutMessage",
+            title: "Select Your Checkout Option",
+            text: "Please choose a checkout type that's convenient for you.",
+            withAuthUrl: url("checkout"),
+            withoutAuthUrl: url("guest-checkout"),
+        );
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\LogoutController as AdminLogoutController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\payment\GuestStripeController;
 use App\Http\Controllers\Payment\PaypalController;
 use App\Http\Controllers\Payment\StripeController;
 use App\Http\Controllers\ReceiptController;
@@ -31,6 +32,7 @@ use App\Livewire\Pages\About;
 use App\Livewire\Pages\Cart;
 use App\Livewire\Pages\Checkout;
 use App\Livewire\Pages\Contact;
+use App\Livewire\Pages\GuestCheckout;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Order;
 use App\Livewire\Pages\ProductDetails;
@@ -97,6 +99,8 @@ Route::get("shop", PagesProducts::class)->name("products");
 Route::get("shop/{id}", ProductDetails::class)->name("product-detail");
 
 Route::get("cart", Cart::class)->name("cart");
+
+Route::get("guest-checkout", GuestCheckout::class)->name("guess-checkout");
 
 
 Route::group(["middleware" => ["auth", "verified"]], function () {
@@ -173,3 +177,7 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
 //Payment controller
 // Route::get('/pay', [StripeController::class, 'index'])->name('pay');
 // Route::post('pay-checkout', [StripeController::class, 'checkout']);
+
+Route::post('/guest-pay', [GuestStripeController::class, 'checkout'])->name('guest-pay');
+Route::get('/guest-pay/success', [GuestStripeController::class, 'success'])->name('guest-checkout.success');
+Route::get('guest-pay/cancel', [GuestStripeController::class, 'cancel'])->name('guest-checkout.cancel');

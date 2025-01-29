@@ -258,6 +258,13 @@
                                                 style="font-size: 16px"></i>Reviews</span></a>
                                 </li>
 
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-transaction') }}"><span>
+                                            <i class="bi bi-arrows-angle-contract me-2"
+                                                style="font-size: 16px"></i>Transaction</span></a>
+                                </li>
+
                                 <li class="sidebar-main-title">
                                     <div>
                                         <h6 class="">Other</h6>
@@ -270,18 +277,34 @@
                                             <i class="bi bi-arrows-angle-contract me-2"
                                                 style="font-size: 16px"></i>Prices</span></a>
                                 </li>
-                                <li class="sidebar-list">
-                                    <a class="sidebar-link sidebar-title link-nav"
-                                        href="{{ route('admin-transaction') }}"><span>
-                                            <i class="bi bi-arrows-angle-contract me-2"
-                                                style="font-size: 16px"></i>Transaction</span></a>
-                                </li>
+
                                 <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav"
                                         href="{{ route('admin-payment') }}"><span><i
                                                 class="bi bi-credit-card-2-back me-2"
                                                 style="font-size: 16px"></i>Payment</span></a>
                                 </li>
+
+                                <li class="sidebar-main-title">
+                                    <div>
+                                        <h6 class="">Guest</h6>
+                                    </div>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('guest-transaction') }}"><span><i
+                                                class="bi bi-credit-card-2-back me-2"
+                                                style="font-size: 16px"></i>Guest Transaction</span></a>
+                                </li>
+
+                                <li class="sidebar-list">
+                                    <a class="sidebar-link sidebar-title link-nav"
+                                        href="{{ route('admin-guest-payment') }}"><span><i
+                                                class="bi bi-credit-card-2-back me-2"
+                                                style="font-size: 16px"></i>Guest Payment</span></a>
+                                </li>
+
 
                                 <li class="sidebar-main-title">
                                     <div>

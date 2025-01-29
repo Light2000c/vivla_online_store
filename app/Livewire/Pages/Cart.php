@@ -17,7 +17,7 @@ class Cart extends Component
 
     private $carts;
     private $subTotal;
-    
+
     public function render()
     {
         $this->load();
@@ -239,10 +239,10 @@ class Cart extends Component
 
             $product_size = ProductSize::where("product_id", $product->id)->where("id", $sizeId)->first();
 
-            return !empty($product_size) ? $product_size->size->name : "";
+            return !empty($product_size) ? $product_size->size->name : "none";
         }
 
-        return  null;
+        return  "none";
     }
 
     public function getProductQuantity($id, $sizeId)
@@ -330,13 +330,11 @@ class Cart extends Component
                 return;
             }
 
-
             if ($product->size()->count()) {
                 $key = $id;
             } else {
                 $key = $product->id;
             }
-
 
             if (array_key_exists($key, $cart)) {
 

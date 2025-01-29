@@ -124,6 +124,7 @@ class PaypalController extends Controller
         }
     }
 
+    
 
     public function error()
     {

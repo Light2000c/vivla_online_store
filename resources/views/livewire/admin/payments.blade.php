@@ -4,7 +4,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6 ps-0">
-                    <h3>Wishlist</h3>
+                    <h3>payment</h3>
                 </div>
                 <div class="col-sm-6 pe-0">
                     <ol class="breadcrumb">
@@ -24,7 +24,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Reviews Table</h3>
+                        <h3>Payment Table</h3>
                     </div>
 
                     <div class="align-self-end search-form m-3">

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class GuestPayment extends Model
 {
     use HasFactory;
+
+    public $fillable = [
+        "name",
+        "amount",
+        "reference",
+        "currency",
+        "type",
+    ];
 }

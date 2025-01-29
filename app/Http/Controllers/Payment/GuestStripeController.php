@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\InfoMail;
 use App\Mail\PaymentMail;
 use App\Models\GuestOrder;
+use App\Models\GuestPayment;
 use App\Models\GuestTransaction;
 use App\Models\Order;
 use App\Models\Price;
@@ -26,6 +27,8 @@ class GuestStripeController extends Controller
 
     public function __construct()
     {
+        $this->middleware(["guest"]);
+        
         $this->stripe = new StripeClient(config('stripe.sk'));
 
         $this->shipping = Price::where("name", "shipping")->first();
@@ -121,7 +124,7 @@ class GuestStripeController extends Controller
                     return $this->error();
                 }
 
-                return view('payment.paymentsuccess', ['details' => $details]);
+                return view('payment.guestpaymentsuccess', ['details' => $details]);
             } else {
                 return $this->error();
             }
@@ -132,7 +135,7 @@ class GuestStripeController extends Controller
 
     public function error()
     {
-        return view('payment.paymenterror');
+        return view('payment.guestpaymenterror');
     }
 
 
@@ -149,9 +152,12 @@ class GuestStripeController extends Controller
         $amount = $data->amount_total / 100;
 
         try {
-            $payment = request()->user()->payment()->create([
+            $payment = GuestPayment::create([
+                "name" => $data["metadata"]->customer_name,
                 "amount" => $amount,
-                "currency" => $data->currency
+                "currency" => $data->currency,
+                "reference" => $this->reference,
+                "type" => "stripe"
             ]);
 
             if (!$payment) {
@@ -175,10 +181,12 @@ class GuestStripeController extends Controller
 
             $random_number = $this->generateReference();
 
-            // if (!$this->savePayment($session)) {
-            //     DB::rollBack();
-            //     return $this->error();
-            // }
+            $this->reference = $random_number;
+
+            if (!$this->savePayment($session)) {
+                DB::rollBack();
+                return $this->error();
+            }
 
             $transaction = GuestTransaction::create([
                 "name" => $session["metadata"]->customer_name,
@@ -190,7 +198,6 @@ class GuestStripeController extends Controller
                 "reference" => $random_number,
             ]);
 
-            $this->reference = $random_number;
 
             if (!$transaction) {
                 return $this->error();
@@ -198,43 +205,6 @@ class GuestStripeController extends Controller
 
             $transactionId = $transaction->id;
 
-
-            // DB::table('carts')->where('user_id', Auth::id())->orderBy('id')->chunk(1000, function ($carts) use ($transactionId) {
-            //     $orders = $carts->map(function ($item) use ($transactionId) {
-            //         $productPrice = DB::table('products')
-            //             ->where('id', $item->product_id)
-            //             ->value('price');
-
-            //         $productDiscount = DB::table('products')
-            //             ->where('id', $item->product_id)
-            //             ->value('discount');
-
-
-
-            //         if ($productDiscount) {
-            //             $total = $item->quantity * ($productPrice - (($productPrice * $productDiscount) / 100));
-            //         } else {
-            //             $total = $productPrice * $item->quantity;
-            //         }
-
-            //         return [
-            //             'user_id' => $item->user_id,
-            //             'product_id' => $item->product_id,
-            //             'product_size_id' => $item->product_size_id,
-            //             'price' => $productDiscount ? $productPrice - (($productPrice * $productDiscount) / 100) : $productPrice,
-            //             'quantity' => $item->quantity,
-            //             'transaction_id' => $transactionId,
-            //             'total' => $total,
-            //         ];
-            //     });
-
-            //     DB::table('orders')->insert($orders->toArray());
-
-            //     DB::table('carts')->whereIn('id', $carts->pluck('id'))->delete();
-            // });
-
-
-            //start Test
 
             $carts = session()->get('cart', []);
 
@@ -269,7 +239,6 @@ class GuestStripeController extends Controller
             }
 
             session()->forget('cart');
-            //end Test
 
             $this->updateProdQuantity($transactionId);
 

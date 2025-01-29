@@ -470,8 +470,7 @@
                     }
 
                     if (event.detail[0].address) {
-                        console.log("Entered here second 2");
-                        console.log("Event address ==> ", event.detail[0].address);
+
                         if (updateInput) {
                             iti = window.intlTelInput(updateInput, {
                                 utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
@@ -486,7 +485,7 @@
                             };
                         } else {}
                     } else {
-                        console.log("Entered here first 1");
+                     
                         if (input) {
                             iti = window.intlTelInput(input, {
                                 utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js",
@@ -498,7 +497,7 @@
                                 @this.set('phone', fullPhoneNumber);
                             };
                         } else {
-                            console.error("Phone input not found!");
+                            // console.error("Phone input not found!");
                         }
                     }
                 });

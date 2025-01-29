@@ -1,0 +1,202 @@
+<?php
+
+namespace App\Livewire\Admin;
+
+use App\Models\GuestTransaction as ModelsGuestTransaction;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class GuestTransaction extends Component
+{
+    use WithPagination;
+
+    protected $paginationTheme = "bootstrap";
+    private $transactions;
+    public $search = "";
+    public $activeTransaction;
+    public $status;
+    public $groupSelect;
+    public $selectedItems = [];
+
+    public $statusList = [
+
+        [
+            "id" => 0,
+            "name" => "Order Placed"
+        ],
+        [
+            "id" => 1,
+            "name" => "Pending Confirmation"
+        ],
+        [
+            "id" => 2,
+            "name" => "Waiting To Be Sent"
+        ],
+        [
+            "id" => 3,
+            "name" => "Sent"
+        ],
+        [
+            "id" => 4,
+            "name" => "Delivered"
+        ],
+    ];
+
+    public function render()
+    {
+
+        $this->load();
+        return view('livewire.admin.guest-transaction',[
+            "transactions" => $this->transactions
+        ])->layout("layouts.admin.app");
+    }
+
+    public function load()
+    {
+        if (!$this->search) {
+            $transactions = ModelsGuestTransaction::orderBy("created_at", "DESC")->paginate(10);
+            $this->transactions = $transactions;
+        } else {
+            $transactions = ModelsGuestTransaction::orderBy("created_at", "DESC")->where("reference", "LIKE", '%' . $this->search . '%')->paginate(10);
+            $this->transactions = $transactions;
+        }
+    }
+
+    public function resetSelectItem()
+    {
+        $this->selectedItems = [];
+    }
+
+    public function getTotal($id)
+    {
+
+
+        $transaction = ModelsGuestTransaction::find($id);
+
+        if (!$transaction) {
+            return null;
+        }
+
+        $orders = $transaction->guestOrder()->get();
+
+        $total = $orders->sum("total");
+        $quantity = $orders->sum("quantity");
+
+        return number_format($total,2)  . ' for ' . $quantity . ' item';
+    }
+
+    public function openUpdateModal($id)
+    {
+
+        $this->activeTransaction = "";
+        $this->status = "";
+
+        $transaction = ModelsGuestTransaction::find($id);
+
+        if (!$transaction) {
+            return $this->showToast("error", "Order not found!!");
+        }
+
+        $this->activeTransaction = $transaction;
+        $this->status = $transaction->status;
+
+        $this->dispatch("openUpdateModal");
+    }
+
+    public function updateOrderStatus()
+    {
+
+        $this->validate([
+            "status" => "required",
+        ]);
+
+        try {
+
+            $transaction = ModelsGuestTransaction::find($this->activeTransaction->id);
+
+            if (!$transaction) {
+                return $this->showToast("error", "Transaction not found!!");
+            }
+
+            $transaction->status = $this->status;
+            $saved = $transaction->save();
+
+            if (!$saved) {
+                return $this->showToast("error", "Transaction was not successfully updated!!");
+            }
+
+
+            $this->load();
+            $this->dispatch("closeUpdateModal");
+            return $this->showToast("success", "Transaction has been successfully updated!!");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, Transaction was not successfully updated!!");
+        }
+    }
+
+
+    public function delete($id)
+    {
+
+        try {
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $transaction = ModelsGuestTransaction::find($id);
+
+            if (!$transaction) {
+                return $this->showToast("error", "Transaction was not successfully deleted");
+            }
+
+            $deleted = $transaction->delete();
+
+            if (!$deleted) {
+                return $this->showToast("error", "Transaction was not successfully deleted");
+            }
+
+            $this->load();
+            return $this->showToast("success", "Transaction has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, transaction was not successfully deleted");
+        }
+    }
+
+
+    public function deleteSelected()
+    {
+
+        try {
+            if (empty($this->selectedItems)) {
+                return $this->showToast("info", "you haven't selected any Transaction yet!");
+            }
+
+            if (Auth::user()->role != 2) {
+                return $this->showToast("error", "You don't have permission to perform this action");
+            }
+
+            $delete = ModelsGuestTransaction::whereIn("id", $this->selectedItems)->delete();
+
+            if (!$delete) {
+                return $this->showToast("error", "Transactions was not successfully deleted");
+            }
+
+            $this->load();
+            $this->resetSelectItem();
+            return $this->showToast("success", "Transactions has been deleted");
+        } catch (\Exception $e) {
+            return $this->showToast("error", "Something went wrong, transactions were not successfully deleted");
+        }
+    }
+
+    public function showToast($icon, $title)
+    {
+        $this->dispatch(
+            'message',
+            icon: $icon,
+            title: $title,
+        );
+    }
+}

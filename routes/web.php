@@ -1,46 +1,52 @@
 <?php
 
-use App\Http\Controllers\Admin\LoginController as AdminLoginController;
-use App\Http\Controllers\Admin\LogoutController as AdminLogoutController;
+
+use App\Livewire\Admin\Size;
+use App\Livewire\Pages\Cart;
+use App\Livewire\Pages\Home;
+use App\Livewire\Admin\Carts;
+use App\Livewire\Admin\Users;
+use App\Livewire\Pages\About;
+use App\Livewire\Admin\Orders;
+use App\Livewire\Admin\Prices;
+use App\Livewire\Admin\Address;
+use App\Livewire\Admin\Reviews;
+use App\Livewire\Pages\Contact;
+use App\Livewire\Admin\Category;
+use App\Livewire\Admin\Payments;
+use App\Livewire\Admin\Products;
+use App\Livewire\Pages\Checkout;
+use App\Livewire\Pages\Wishlist;
+use App\Models\GuestTransaction;
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Favourites;
+use App\Livewire\Admin\GuestOrder;
+use App\Livewire\Admin\AddProducts;
+use App\Livewire\Admin\EditAccount;
+use App\Livewire\Admin\EditProduct;
+use App\Livewire\Admin\TeamMembers;
+use App\Livewire\Admin\ProductItems;
+use App\Livewire\Admin\Transactions;
+use Illuminate\Support\Facades\Auth;
+use App\Livewire\Pages\GuestCheckout;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Pages\ProductDetails;
+use App\Livewire\Components\ProductItem;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\payment\GuestStripeController;
+use App\Livewire\Pages\Products as PagesProducts;
 use App\Http\Controllers\Payment\PaypalController;
 use App\Http\Controllers\Payment\StripeController;
-use App\Http\Controllers\ReceiptController;
-use App\Livewire\Admin\AddProducts;
-use App\Livewire\Admin\Address;
-use App\Livewire\Admin\Carts;
-use App\Livewire\Admin\Category;
-use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\EditAccount;
-use App\Livewire\Admin\EditProduct;
-use App\Livewire\Admin\Favourites;
-use App\Livewire\Admin\Orders;
-use App\Livewire\Admin\Payments;
-use App\Livewire\Admin\Prices;
-use App\Livewire\Admin\ProductItems;
-use App\Livewire\Admin\Products;
-use App\Livewire\Admin\Reviews;
-use App\Livewire\Admin\Size;
-use App\Livewire\Admin\TeamMembers;
-use App\Livewire\Admin\Transactions;
-use App\Livewire\Admin\Users;
-use App\Livewire\Components\ProductItem;
-use App\Livewire\Pages\About;
-use App\Livewire\Pages\Cart;
-use App\Livewire\Pages\Checkout;
-use App\Livewire\Pages\Contact;
-use App\Livewire\Pages\GuestCheckout;
-use App\Livewire\Pages\Home;
-use App\Livewire\Pages\Order;
-use App\Livewire\Pages\ProductDetails;
-use App\Livewire\Pages\Products as PagesProducts;
-use App\Livewire\Pages\Wishlist;
+use App\Http\Controllers\Payment\GuestPaypalController;
+use App\Http\Controllers\Payment\GuestStripeController;
 use App\Livewire\Profile\Dashboard as ProfileDashboard;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\GuestTransaction as AdminGuestTransaction;
+use App\Http\Controllers\Admin\LoginController as AdminLoginController;
+use App\Http\Controllers\Admin\LogoutController as AdminLogoutController;
+use App\Livewire\Admin\GuestPayment;
+use App\Livewire\Components\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +106,7 @@ Route::get("shop/{id}", ProductDetails::class)->name("product-detail");
 
 Route::get("cart", Cart::class)->name("cart");
 
-Route::get("guest-checkout", GuestCheckout::class)->name("guess-checkout");
+Route::get("guest-checkout", GuestCheckout::class)->name("guest-checkout");
 
 
 Route::group(["middleware" => ["auth", "verified"]], function () {
@@ -126,6 +132,17 @@ Route::group(["middleware" => ["auth", "verified"]], function () {
     Route::get('/payWithPaypal/success', [PaypalController::class, 'success'])->name('checkout.paypal.success');
     Route::get('/payWithPaypal/cancel', [PaypalController::class, 'cancel'])->name('checkout.paypal.cancel');
 });
+
+
+
+Route::post('/guest-pay', [GuestStripeController::class, 'checkout'])->name('guest-pay');
+Route::get('/guest-pay/success', [GuestStripeController::class, 'success'])->name('guest-checkout.success');
+Route::get('guest-pay/cancel', [GuestStripeController::class, 'cancel'])->name('guest-checkout.cancel');
+
+
+Route::post('/guest-payWithPaypal', [GuestPaypalController::class, 'checkout'])->name('guest-payWithPaypal');
+Route::get('/guest-payWithPaypal/success', [GuestPaypalController::class, 'success'])->name('guest-checkout.paypal.success');
+Route::get('/guest-payWithPaypal/cancel', [GuestPaypalController::class, 'cancel'])->name('guest-checkout.paypal.cancel');
 
 
 
@@ -171,6 +188,14 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
     Route::get("admin/prices", Prices::class)->name("admin-price");
 
     Route::post("admin/logout", [AdminLogoutController::class, "logout"])->name("admin-logout");
+
+
+    //Guest Transaction
+    Route::get("admin/guest-orders/{id}", GuestOrder::class)->name("admin-guest-order");
+
+    Route::get("admin/guest-transactions", AdminGuestTransaction::class)->name("guest-transaction");
+
+    Route::get("admin/guest-payments", GuestPayment::class)->name("admin-guest-payment");
 });
 
 
@@ -178,6 +203,3 @@ Route::group(["middleware" => ["auth", "is_admin"]], function () {
 // Route::get('/pay', [StripeController::class, 'index'])->name('pay');
 // Route::post('pay-checkout', [StripeController::class, 'checkout']);
 
-Route::post('/guest-pay', [GuestStripeController::class, 'checkout'])->name('guest-pay');
-Route::get('/guest-pay/success', [GuestStripeController::class, 'success'])->name('guest-checkout.success');
-Route::get('guest-pay/cancel', [GuestStripeController::class, 'cancel'])->name('guest-checkout.cancel');

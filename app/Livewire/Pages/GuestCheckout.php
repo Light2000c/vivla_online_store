@@ -5,7 +5,7 @@ namespace App\Livewire\Pages;
 use App\Models\Price;
 use App\Models\Product;
 use App\Models\ProductSize;
-use App\Services\countryServices;
+use App\Services\CountryServices;
 use Livewire\Component;
 
 class GuestCheckout extends Component
@@ -23,6 +23,8 @@ class GuestCheckout extends Component
     public $shipping;
     public $tax;
 
+    protected $listeners = ['proceedWithPayment'];
+
 
     public function render()
     {
@@ -34,7 +36,8 @@ class GuestCheckout extends Component
     public function load()
     {
         $sessionCarts = session()->get('cart', []);
-        $this->countries = countryServices::getAllCountries();
+
+        $this->countries = CountryServices::getAllCountries();
         $this->shipping = Price::where("name", "shipping")->first();
         $this->tax = Price::where("name", "tax")->first();
 
@@ -59,6 +62,8 @@ class GuestCheckout extends Component
         })->filter();
 
         $this->subTotal = $this->calculateSessionSubTotal($sessionCarts);
+
+        $this->dispatch('initializePhoneInputs', []);
     }
 
 
@@ -131,10 +136,13 @@ class GuestCheckout extends Component
     }
 
 
-    public function payWithCard()
+    public function proceedWithPayment($phone, $type)
     {
 
-     $validated =   $this->validate([
+        $this->phone = $phone;
+
+
+        $validated =   $this->validate([
             "name" => "required",
             "email" => "required",
             "phone" => "required",
@@ -142,8 +150,6 @@ class GuestCheckout extends Component
             "city" => "sometimes",
             "country" => "sometimes",
         ]);
-
-       
 
         $guestData = session()->get("guestData", []);
 
@@ -163,30 +169,36 @@ class GuestCheckout extends Component
 
             $product = Product::find($sessionCart->id);
 
-            if(!$product){
+            if (!$product) {
                 return $this->showAlert("info", "Product Don't Exixt", "Unfortunately, a product you're trying to purchase no longer exist. Please review your cart and confirm available items.");
             }
 
-                
-                if ($product->size()->count()) {
-                    $productSize = ProductSize::find($sessionCart->product_size_id);
 
-                    if(!$productSize){
-                        if(!$product){
-                            return $this->showAlert("info", "Product Don't Exixt", "Unfortunately, a product you're trying to purchase no longer exist. Please review your cart and confirm available items.");
-                        }
-                    }
-                    if ($sessionCart->quantity > $productSize->quantity) {
-                        return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to purchase is currently out of stock. Please review your cart and confirm available items.");
-                    }
-                } else {
-                    if ($sessionCart->quantity > $product->quantity) {
-                        return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to purchase is currently out of stock. Please review your cart and confirm available items.");
+            if ($product->size()->count()) {
+                $productSize = ProductSize::find($sessionCart->product_size_id);
+
+                if (!$productSize) {
+                    if (!$product) {
+                        return $this->showAlert("info", "Product Don't Exixt", "Unfortunately, a product you're trying to purchase no longer exist. Please review your cart and confirm available items.");
                     }
                 }
-
+                if ($sessionCart->quantity > $productSize->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to purchase is currently out of stock. Please review your cart and confirm available items.");
+                }
+            } else {
+                if ($sessionCart->quantity > $product->quantity) {
+                    return $this->showAlert("info", "Product Out of Stock", "Unfortunately, a product you're trying to purchase is currently out of stock. Please review your cart and confirm available items.");
+                }
+            }
         }
 
-        $this->dispatch('submit-payment-form');
+
+        if ($type == "card") {
+            $this->dispatch('submit-payment-form');
+        }
+
+        if ($type == "paypal") {
+            $this->dispatch('submit-paypal-payment-form');
+        }
     }
 }
